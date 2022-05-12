@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { doc, setDoc } from "firebase/firestore";
 export default {
 	data() {
 		return {
@@ -23,7 +24,12 @@ export default {
 		};
 	},
 	methods: {
-		register(user) { },
+		register(user) {
+			const docRef()
+			if (user != '') {
+
+			}
+		},
 	},
 };
 </script>
