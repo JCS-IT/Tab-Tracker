@@ -39,6 +39,25 @@
 </template>
 
 <script>
+<<<<<<< HEAD
+import { doc, setDoc } from "firebase/firestore";
+export default {
+	data() {
+		return {
+			showNewUserMenu: false,
+			newUser: "",
+			users: null,
+		};
+	},
+	methods: {
+		register(user) {
+			const docRef()
+			if (user != '') {
+
+			}
+		},
+	},
+=======
 import { db } from "../firebase";
 import {
   doc,
@@ -91,6 +110,7 @@ export default {
   mounted() {
     this.init();
   },
+>>>>>>> 6024653dddfa7dcbc1b7e50eebbdb5d62f964ec6
 };
 </script>
 
