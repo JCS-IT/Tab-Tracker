@@ -1,13 +1,18 @@
 <template>
-  <router-view />
+  <v-app>
+    <v-main>
+      <router-view/>
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+<script>
 
-  font-weight: normal;
+export default {
+  name: 'App',
+
+  data: () => ({
+    //
+  }),
 }
-</style>
+</script>
