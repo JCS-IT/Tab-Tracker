@@ -151,7 +151,6 @@ import {
   getDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { objectToString } from "@vue/shared";
 export default {
   data() {
     return {
