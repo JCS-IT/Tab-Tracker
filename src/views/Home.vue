@@ -207,9 +207,6 @@ export default {
       const unsub = onSnapshot(doc(db, `staff/${user.id}`), (doc) => {
         this.tab = doc.data().tab;
       });
-      setTimeout(() => {
-        this.test();
-      }, 300);
     },
     async clearTab(user) {
       this.clearTabMenu = false;
@@ -217,10 +214,6 @@ export default {
       await updateDoc(docRef, {
         tab: [],
       });
-    },
-    test() {
-      let temp = this.tab;
-      temp.forEach((i) => {});
     },
   },
   mounted() {
