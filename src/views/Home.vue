@@ -46,7 +46,7 @@
               <template v-slot:activator="{ props }">
                 <v-btn color="error" v-bind="props"> Clear All </v-btn>
               </template>
-              <v-card class="w-25">
+              <v-card>
                 <v-card-title>
                   Are you sure you want to clear the tab?
                 </v-card-title>
@@ -65,7 +65,7 @@
       <v-container grid-list-xs class="w-50" v-if="showItemMenu">
         <v-card class="pa-5">
           <v-card-title primary-title> Add Item </v-card-title>
-          <v-btn color="success" v-for="item in items.food" :key="item" @click="addItem(item)">
+          <v-btn color="success" v-for="item in items" :key="item" @click="addItem(item)">
             {{ item }}
           </v-btn>
         </v-card>
@@ -73,7 +73,6 @@
       <v-container>
         <v-row>
           <v-col>
-            <div> {{ test }} </div>
             <h4 class="text-center">History</h4>
             <v-table>
               <thead>
@@ -95,12 +94,16 @@
             <v-table>
               <thead>
                 <tr>
-                  <th v-for="item in items.food" :key="item">
+                  <th v-for="item in items" :key="item">
                     {{ item }}
                   </th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                <td v-for="item in total" :key="item">
+                  {{ item }}
+                </td>
+              </tbody>
             </v-table>
           </v-col>
         </v-row>
@@ -134,15 +137,18 @@ export default {
       currentUser: "",
       showItemMenu: false,
       items: [],
-      total: {},
     };
   },
   computed: {
-    test() {
-      this.tab?.forEach((item) => {
-        this.total[item.name]++;
+    total() {
+      let total = {};
+      this.items.forEach((item) => {
+        total[item] = 0;
       })
-      console.log(this.total)
+      this.tab?.forEach((item) => {
+        total[item.name]++;
+      })
+      return total
     }
   },
   methods: {
@@ -160,9 +166,6 @@ export default {
       const docRef = doc(db, `items/food`);
       const docSnap = await getDoc(docRef);
       this.items = docSnap.data().food;
-      this.items.forEach((item) => {
-        this.total[item] = 0;
-      })
     },
     async addUser(user) {
       this.newUser = "";
@@ -177,6 +180,7 @@ export default {
       const docRef = doc(db, `staff/${this.currentUser.id}`);
       let input = {
         name: item,
+        date: this.getDate()
       };
       this.tab.push(input)
       await updateDoc(docRef, {
@@ -198,6 +202,14 @@ export default {
         tab: [],
       });
     },
+    getDate() {
+      const current = new Date();
+      const date = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
+      const time = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
+      const dateTime = date + ' ' + time;
+
+      return dateTime;
+    }
   },
   mounted() {
     this.init();
