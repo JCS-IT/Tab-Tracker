@@ -4,26 +4,13 @@
       <h1 class="pb-6">Welcome</h1>
       <v-row>
         <v-col>
-          <v-btn
-            v-if="!showNewUserMenu"
-            color="primary"
-            @click="showNewUserMenu = true"
-          >
+          <v-btn v-if="!showNewUserMenu" color="primary" @click="showNewUserMenu = true">
             Add User
           </v-btn>
-          <v-card
-            class="newUser"
-            width="300"
-            color="white"
-            v-if="showNewUserMenu"
-          >
+          <v-card class="newUser" width="300" color="white" v-if="showNewUserMenu">
             <v-card-title primary-title> Add New User </v-card-title>
             <v-form>
-              <v-text-field
-                type="text"
-                v-model="newUser"
-                placeholder="Enter your name..."
-              />
+              <v-text-field type="text" v-model="newUser" placeholder="Enter your name..." />
               <v-card-actions>
                 <v-btn color="success" @click="addUser(newUser)">
                   Add User
@@ -50,24 +37,12 @@
           <v-btn color="error" class="back" @click="showGrid = false">
             <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back
           </v-btn>
-          <v-btn
-            color="success"
-            v-if="!showItemMenu"
-            @click="showItemMenu = true"
-          >
+          <v-btn color="success" v-if="!showItemMenu" @click="showItemMenu = true">
             Add Item
           </v-btn>
           <div class="text-center">
-            <v-dialog
-              v-model="clearTabMenu"
-              scrollable
-              fullscreen
-              persistent
-              :overlay="true"
-              max-width="300px"
-              max-height="200px"
-              transition="dialog-transition"
-            >
+            <v-dialog v-model="clearTabMenu" scrollable fullscreen persistent :overlay="true" max-width="300px"
+              max-height="200px" transition="dialog-transition">
               <template v-slot:activator="{ props }">
                 <v-btn color="error" v-bind="props"> Clear All </v-btn>
               </template>
@@ -90,12 +65,7 @@
       <v-container grid-list-xs class="w-50" v-if="showItemMenu">
         <v-card class="pa-5">
           <v-card-title primary-title> Add Item </v-card-title>
-          <v-btn
-            color="success"
-            v-for="item in items.food"
-            :key="item"
-            @click="addItem(item)"
-          >
+          <v-btn color="success" v-for="item in items.food" :key="item" @click="addItem(item)">
             {{ item }}
           </v-btn>
         </v-card>
@@ -103,6 +73,7 @@
       <v-container>
         <v-row>
           <v-col>
+            <div> {{ test }} </div>
             <h4 class="text-center">History</h4>
             <v-table>
               <thead>
@@ -158,13 +129,21 @@ export default {
       showNewUserMenu: false,
       newUser: "",
       showGrid: false,
-      staff: null,
-      tab: null,
+      staff: [],
+      tab: [],
       currentUser: "",
       showItemMenu: false,
-      items: {},
+      items: [],
       total: {},
     };
+  },
+  computed: {
+    test() {
+      this.tab?.forEach((item) => {
+        this.total[item.name]++;
+      })
+      console.log(this.total)
+    }
   },
   methods: {
     async init() {
@@ -180,7 +159,10 @@ export default {
       });
       const docRef = doc(db, `items/food`);
       const docSnap = await getDoc(docRef);
-      this.items = docSnap.data();
+      this.items = docSnap.data().food;
+      this.items.forEach((item) => {
+        this.total[item] = 0;
+      })
     },
     async addUser(user) {
       this.newUser = "";
@@ -196,8 +178,9 @@ export default {
       let input = {
         name: item,
       };
+      this.tab.push(input)
       await updateDoc(docRef, {
-        tab: arrayUnion(input),
+        tab: this.tab,
       });
     },
     async getUser(user) {
@@ -208,7 +191,7 @@ export default {
         this.tab = doc.data().tab;
       });
     },
-    async clearTab(user) {
+    async clearTab() {
       this.clearTabMenu = false;
       const docRef = doc(db, `staff/${this.currentUser.id}`);
       await updateDoc(docRef, {
