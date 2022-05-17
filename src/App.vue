@@ -15,3 +15,9 @@ export default {
   }),
 };
 </script>
+
+<style>
+* {
+  text-decoration: none;
+}
+</style>
