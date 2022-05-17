@@ -13,8 +13,16 @@
         Add Item
       </v-btn>
       <div class="text-center">
-        <v-dialog v-model="clearTabMenu" scrollable fullscreen persistent :overlay="true" max-width="300px"
-          max-height="200px" transition="dialog-transition">
+        <v-dialog
+          v-model="clearTabMenu"
+          scrollable
+          fullscreen
+          persistent
+          :overlay="true"
+          max-width="300px"
+          max-height="200px"
+          transition="dialog-transition"
+        >
           <template v-slot:activator="{ props }">
             <v-btn color="error" v-bind="props"> Clear All </v-btn>
           </template>
@@ -37,7 +45,13 @@
   <v-container grid-list-xs class="w-50" v-if="showItemMenu">
     <v-card class="pa-5">
       <v-card-title primary-title> Add Item </v-card-title>
-      <v-btn color="success" v-for="item in items" :key="item" @click="addItem(item)" class="mx-1">
+      <v-btn
+        color="success"
+        v-for="item in items"
+        :key="item"
+        @click="addItem(item)"
+        class="mx-1"
+      >
         {{ item }}
       </v-btn>
     </v-card>
@@ -88,8 +102,6 @@ import {
   doc,
   addDoc,
   collection,
-  query,
-  where,
   updateDoc,
   getDoc,
   onSnapshot,
@@ -125,22 +137,12 @@ export default {
     async init() {
       this.tab = [];
       onSnapshot(doc(db, `staff/${this.$route.query.id}`), (doc) => {
-        this.currentUser = doc.data()
+        this.currentUser = doc.data();
         this.tab = doc.data().tab;
       });
       const docRef = doc(db, `items/food`);
       const docSnap = await getDoc(docRef);
       this.items = docSnap.data().food;
-    },
-    async addUser(user) {
-      this.newUser = "";
-      this.showNewUserMenu = false;
-      if (user != null) {
-        await addDoc(collection(db, "staff"), {
-          name: user,
-          tab: []
-        });
-      }
     },
     async addItem(item) {
       const docRef = doc(db, `staff/${this.currentUser.id}`);
@@ -177,12 +179,6 @@ export default {
       const dateTime = date + " " + time;
 
       return dateTime;
-    },
-    goTo(id) {
-      document.getElementById(id).scrollIntoView();
-    },
-    filterStaff(letter) {
-      return this.staff?.filter((person) => { return person.name?.split(' ')[1][0]?.toUpperCase() == letter[0].toUpperCase() })
     },
   },
   mounted() {
