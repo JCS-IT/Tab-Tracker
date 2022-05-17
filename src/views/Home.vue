@@ -1,5 +1,8 @@
 <template>
   <div class="container" id="home">
+    <router-link to="admin">
+      <v-btn color="info">Admin</v-btn>
+    </router-link>
     <v-container v-if="!showGrid" align="center">
       <v-navigation-drawer permanent>
         <v-btn color="info" class="ma-3" v-for="letter in list" :key="letter" @click="goTo(letter)">
@@ -31,8 +34,7 @@
       </v-row>
       <div v-for="letter in list" :key="letter" :id="letter">
         <h4>{{ letter.toUpperCase() }}</h4>
-        <v-row v-for="user in filterStaff(letter)" :key="user.name">
-          {{ user }}
+        <v-row v-for="user in  filterStaff(letter)" :key="user.name">
           <v-col>
             <v-btn width="200" color="secondary" @click="getUser(user)">
               {{ user.name }}
@@ -134,7 +136,6 @@ import {
   query,
   where,
   updateDoc,
-  arrayUnion,
   getDoc,
   onSnapshot,
 } from "firebase/firestore";
@@ -193,10 +194,6 @@ export default {
     },
   },
   methods: {
-    filterStaff(letter) {
-      console.log(letter.toUpperCase(), ": ", this.staff[0]?.name?.split(' ')[1][0] == letter[0].toUpperCase())
-      return this.staff?.filter((person) => { return person.name?.split(' ')[1][0].toUpperCase() == letter })
-    },
     async init() {
       const q = query(collection(db, "staff"), where("name", "!=", null));
       onSnapshot(q, (snapshot) => {
@@ -218,6 +215,7 @@ export default {
       if (user != null) {
         await addDoc(collection(db, "staff"), {
           name: user,
+          tab: []
         });
       }
     },
@@ -267,6 +265,9 @@ export default {
     },
     goTo(id) {
       document.getElementById(id).scrollIntoView();
+    },
+    filterStaff(letter) {
+      return this.staff?.filter((person) => { return person.name?.split(' ')[1][0].toUpperCase() == letter[0].toUpperCase() })
     },
   },
   mounted() {
