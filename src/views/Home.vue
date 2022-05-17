@@ -1,32 +1,68 @@
 <template>
-  <div class="container">
+  <div class="container" id="home">
     <v-container v-if="!showGrid" align="center">
+      <v-navigation-drawer permanent>
+        <v-btn
+          color="info"
+          class="ma-3"
+          v-for="letter in list"
+          :key="letter"
+          @click="goTo(letter)"
+        >
+          {{ letter }}
+        </v-btn>
+        <v-btn color="warning" @click="goTo('home')">Back to top</v-btn>
+      </v-navigation-drawer>
       <h1 class="pb-6">Welcome</h1>
       <v-row>
         <v-col>
-          <v-btn v-if="!showNewUserMenu" color="primary" @click="showNewUserMenu = true">
+          <v-btn
+            v-if="!showNewUserMenu"
+            color="primary"
+            @click="showNewUserMenu = true"
+          >
             Add User
           </v-btn>
-          <v-card class="newUser" width="300" color="white" v-if="showNewUserMenu">
+          <v-card
+            class="newUser"
+            width="300"
+            color="white"
+            v-if="showNewUserMenu"
+          >
             <v-card-title primary-title> Add New User </v-card-title>
             <v-form>
-              <v-text-field type="text" v-model="newUser" placeholder="Enter your name..." />
+              <v-text-field
+                type="text"
+                v-model="newUser"
+                placeholder="Enter your name..."
+              />
               <v-card-actions>
                 <v-btn color="success" @click="addUser(newUser)">
-                  Add User
+                  Confirm
                 </v-btn>
+                <v-btn
+                  color="error"
+                  @click="
+                    showNewUserMenu = false;
+                    newUser = '';
+                  "
+                  >Cancle</v-btn
+                >
               </v-card-actions>
             </v-form>
           </v-card>
         </v-col>
       </v-row>
-      <v-row v-for="user in staff" :key="user">
-        <v-col>
-          <v-btn width="200" color="secondary" @click="getUser(user)">
-            {{ user.name }}
-          </v-btn>
-        </v-col>
-      </v-row>
+      <div v-for="letter in list" :key="letter" :id="letter">
+        <h4>{{ letter.toUpperCase() }}</h4>
+        <v-row v-for="user in staff" :key="user">
+          <v-col>
+            <v-btn width="200" color="secondary" @click="getUser(user)">
+              {{ user.name }}
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
     </v-container>
     <div v-else>
       <v-container>
@@ -37,12 +73,24 @@
           <v-btn color="error" class="back" @click="showGrid = false">
             <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back
           </v-btn>
-          <v-btn color="success" v-if="!showItemMenu" @click="showItemMenu = true">
+          <v-btn
+            color="success"
+            v-if="!showItemMenu"
+            @click="showItemMenu = true"
+          >
             Add Item
           </v-btn>
           <div class="text-center">
-            <v-dialog v-model="clearTabMenu" scrollable fullscreen persistent :overlay="true" max-width="300px"
-              max-height="200px" transition="dialog-transition">
+            <v-dialog
+              v-model="clearTabMenu"
+              scrollable
+              fullscreen
+              persistent
+              :overlay="true"
+              max-width="300px"
+              max-height="200px"
+              transition="dialog-transition"
+            >
               <template v-slot:activator="{ props }">
                 <v-btn color="error" v-bind="props"> Clear All </v-btn>
               </template>
@@ -65,7 +113,13 @@
       <v-container grid-list-xs class="w-50" v-if="showItemMenu">
         <v-card class="pa-5">
           <v-card-title primary-title> Add Item </v-card-title>
-          <v-btn color="success" v-for="item in items" :key="item" @click="addItem(item)">
+          <v-btn
+            color="success"
+            v-for="item in items"
+            :key="item"
+            @click="addItem(item)"
+            class="mx-1"
+          >
             {{ item }}
           </v-btn>
         </v-card>
@@ -137,6 +191,34 @@ export default {
       currentUser: "",
       showItemMenu: false,
       items: [],
+      list: [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+      ],
     };
   },
   computed: {
@@ -144,12 +226,12 @@ export default {
       let total = {};
       this.items.forEach((item) => {
         total[item] = 0;
-      })
+      });
       this.tab?.forEach((item) => {
         total[item.name]++;
-      })
-      return total
-    }
+      });
+      return total;
+    },
   },
   methods: {
     async init() {
@@ -180,9 +262,9 @@ export default {
       const docRef = doc(db, `staff/${this.currentUser.id}`);
       let input = {
         name: item,
-        date: this.getDate()
+        date: this.getDate(),
       };
-      this.tab.push(input)
+      this.tab.push(input);
       await updateDoc(docRef, {
         tab: this.tab,
       });
@@ -191,7 +273,7 @@ export default {
       this.showGrid = true;
       this.currentUser = user;
       this.tab = null;
-      const unsub = onSnapshot(doc(db, `staff/${user.id}`), (doc) => {
+      onSnapshot(doc(db, `staff/${user.id}`), (doc) => {
         this.tab = doc.data().tab;
       });
     },
@@ -204,15 +286,35 @@ export default {
     },
     getDate() {
       const current = new Date();
-      const date = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
-      const time = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
-      const dateTime = date + ' ' + time;
+      const date =
+        current.getFullYear() +
+        "-" +
+        (current.getMonth() + 1) +
+        "-" +
+        current.getDate();
+      const time =
+        current.getHours() +
+        ":" +
+        current.getMinutes() +
+        ":" +
+        current.getSeconds();
+      const dateTime = date + " " + time;
 
       return dateTime;
-    }
+    },
+    goTo(id) {
+      document.getElementById(id).scrollIntoView();
+    },
   },
   mounted() {
     this.init();
   },
 };
 </script>
+
+<style>
+#nav {
+  position: sticky;
+  top: 0;
+}
+</style>
