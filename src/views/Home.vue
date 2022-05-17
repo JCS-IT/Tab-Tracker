@@ -5,7 +5,13 @@
     </router-link>
     <v-container align="center">
       <v-navigation-drawer permanent>
-        <v-btn color="info" class="ma-3" v-for="letter in list" :key="letter" @click="goTo(letter)">
+        <v-btn
+          :color="selected == letter ? 'red' : 'info'"
+          class="ma-3"
+          v-for="letter in list"
+          :key="letter"
+          @click="goTo(letter)"
+        >
           {{ letter }}
         </v-btn>
         <v-btn color="warning" @click="goTo('home')">Back to top</v-btn>
@@ -13,18 +19,37 @@
       <h1 class="pb-6">Welcome</h1>
       <v-row>
         <v-col>
-          <v-btn v-if="!showNewUserMenu" color="primary" @click="showNewUserMenu = true">
+          <v-btn
+            v-if="!showNewUserMenu"
+            color="primary"
+            @click="showNewUserMenu = true"
+          >
             Add User
           </v-btn>
-          <v-card class="newUser" width="300" color="white" v-if="showNewUserMenu">
+          <v-card
+            class="newUser"
+            width="300"
+            color="white"
+            v-if="showNewUserMenu"
+          >
             <v-card-title primary-title> Add New User </v-card-title>
             <v-form>
-              <v-text-field type="text" v-model="newUser" placeholder="Enter your name..." />
+              <v-text-field
+                type="text"
+                v-model="newUser"
+                placeholder="Enter your name..."
+              />
               <v-card-actions>
                 <v-btn color="success" @click="addUser(newUser)">
                   Confirm
                 </v-btn>
-                <v-btn color="error" @click="showNewUserMenu = false; newUser = '';">
+                <v-btn
+                  color="error"
+                  @click="
+                    showNewUserMenu = false;
+                    newUser = '';
+                  "
+                >
                   Cancle
                 </v-btn>
               </v-card-actions>
@@ -34,9 +59,9 @@
       </v-row>
       <div v-for="letter in list" :key="letter" :id="letter">
         <h4>{{ letter.toUpperCase() }}</h4>
-        <v-row v-for="user in  filterStaff(letter)" :key="user.name">
+        <v-row v-for="user in filterStaff(letter)" :key="user.name">
           <v-col>
-            <router-link :to='`user?id=${user.id}`'>
+            <router-link :to="`user?id=${user.id}`">
               <v-btn width="200" color="secondary">
                 {{ user.name }}
               </v-btn>
@@ -63,7 +88,9 @@ export default {
       showNewUserMenu: false,
       newUser: "",
       staff: [],
+      selected: "",
       currentUser: "",
+      input: [],
       list: [
         "a",
         "b",
@@ -95,15 +122,19 @@ export default {
     };
   },
   computed: {
-    total() {
-      let total = {};
-      this.items.forEach((item) => {
-        total[item] = 0;
-      });
-      this.tab?.forEach((item) => {
-        total[item.name]++;
-      });
-      return total;
+    checkAdmin() {
+      let temp = "";
+      if (this.input.length <= 5) {
+        this.input.forEach((i) => {
+          temp = temp + i;
+        });
+        if (temp == "admin") {
+          this.$router.push("/admin");
+        }
+      } else {
+        this.input = [];
+      }
+      return temp;
     },
   },
   methods: {
@@ -125,15 +156,22 @@ export default {
       if (user != null) {
         await addDoc(collection(db, "staff"), {
           name: user,
-          tab: []
+          tab: [],
         });
       }
     },
     goTo(id) {
+      this.input.push(id);
+      this.selected = id;
       document.getElementById(id).scrollIntoView();
     },
     filterStaff(letter) {
-      return this.staff?.filter((person) => { return person.name?.split(' ')[1][0]?.toUpperCase() == letter[0].toUpperCase() })
+      return this.staff?.filter((person) => {
+        return (
+          person.name?.split(" ")[1][0]?.toUpperCase() ==
+          letter[0].toUpperCase()
+        );
+      });
     },
   },
   mounted() {
