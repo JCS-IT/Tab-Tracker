@@ -51,13 +51,10 @@
 <script>
 import { db } from "../firebase";
 import {
-  doc,
   addDoc,
   collection,
   query,
   where,
-  updateDoc,
-  getDoc,
   onSnapshot,
 } from "firebase/firestore";
 export default {
