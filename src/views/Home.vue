@@ -267,7 +267,7 @@ export default {
       document.getElementById(id).scrollIntoView();
     },
     filterStaff(letter) {
-      return this.staff?.filter((person) => { return person.name?.split(' ')[1][0].toUpperCase() == letter[0].toUpperCase() })
+      return this.staff?.filter((person) => { return person.name?.split(' ')[1][0]?.toUpperCase() == letter[0].toUpperCase() })
     },
   },
   mounted() {
