@@ -2,13 +2,7 @@
   <div class="container" id="home">
     <v-container v-if="!showGrid" align="center">
       <v-navigation-drawer permanent>
-        <v-btn
-          color="info"
-          class="ma-3"
-          v-for="letter in list"
-          :key="letter"
-          @click="goTo(letter)"
-        >
+        <v-btn color="info" class="ma-3" v-for="letter in list" :key="letter" @click="goTo(letter)">
           {{ letter }}
         </v-btn>
         <v-btn color="warning" @click="goTo('home')">Back to top</v-btn>
@@ -16,38 +10,20 @@
       <h1 class="pb-6">Welcome</h1>
       <v-row>
         <v-col>
-          <v-btn
-            v-if="!showNewUserMenu"
-            color="primary"
-            @click="showNewUserMenu = true"
-          >
+          <v-btn v-if="!showNewUserMenu" color="primary" @click="showNewUserMenu = true">
             Add User
           </v-btn>
-          <v-card
-            class="newUser"
-            width="300"
-            color="white"
-            v-if="showNewUserMenu"
-          >
+          <v-card class="newUser" width="300" color="white" v-if="showNewUserMenu">
             <v-card-title primary-title> Add New User </v-card-title>
             <v-form>
-              <v-text-field
-                type="text"
-                v-model="newUser"
-                placeholder="Enter your name..."
-              />
+              <v-text-field type="text" v-model="newUser" placeholder="Enter your name..." />
               <v-card-actions>
                 <v-btn color="success" @click="addUser(newUser)">
                   Confirm
                 </v-btn>
-                <v-btn
-                  color="error"
-                  @click="
-                    showNewUserMenu = false;
-                    newUser = '';
-                  "
-                  >Cancle</v-btn
-                >
+                <v-btn color="error" @click="showNewUserMenu = false; newUser = '';">
+                  Cancle
+                </v-btn>
               </v-card-actions>
             </v-form>
           </v-card>
@@ -55,7 +31,8 @@
       </v-row>
       <div v-for="letter in list" :key="letter" :id="letter">
         <h4>{{ letter.toUpperCase() }}</h4>
-        <v-row v-for="user in staff" :key="user">
+        <v-row v-for="user in filterStaff(letter)" :key="user.name">
+          {{ user }}
           <v-col>
             <v-btn width="200" color="secondary" @click="getUser(user)">
               {{ user.name }}
@@ -73,24 +50,12 @@
           <v-btn color="error" class="back" @click="showGrid = false">
             <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back
           </v-btn>
-          <v-btn
-            color="success"
-            v-if="!showItemMenu"
-            @click="showItemMenu = true"
-          >
+          <v-btn color="success" v-if="!showItemMenu" @click="showItemMenu = true">
             Add Item
           </v-btn>
           <div class="text-center">
-            <v-dialog
-              v-model="clearTabMenu"
-              scrollable
-              fullscreen
-              persistent
-              :overlay="true"
-              max-width="300px"
-              max-height="200px"
-              transition="dialog-transition"
-            >
+            <v-dialog v-model="clearTabMenu" scrollable fullscreen persistent :overlay="true" max-width="300px"
+              max-height="200px" transition="dialog-transition">
               <template v-slot:activator="{ props }">
                 <v-btn color="error" v-bind="props"> Clear All </v-btn>
               </template>
@@ -113,13 +78,7 @@
       <v-container grid-list-xs class="w-50" v-if="showItemMenu">
         <v-card class="pa-5">
           <v-card-title primary-title> Add Item </v-card-title>
-          <v-btn
-            color="success"
-            v-for="item in items"
-            :key="item"
-            @click="addItem(item)"
-            class="mx-1"
-          >
+          <v-btn color="success" v-for="item in items" :key="item" @click="addItem(item)" class="mx-1">
             {{ item }}
           </v-btn>
         </v-card>
@@ -234,6 +193,10 @@ export default {
     },
   },
   methods: {
+    filterStaff(letter) {
+      console.log(letter.toUpperCase(), ": ", this.staff[0]?.name?.split(' ')[1][0] == letter[0].toUpperCase())
+      return this.staff?.filter((person) => { return person.name?.split(' ')[1][0].toUpperCase() == letter })
+    },
     async init() {
       const q = query(collection(db, "staff"), where("name", "!=", null));
       onSnapshot(q, (snapshot) => {
