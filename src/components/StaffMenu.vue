@@ -22,8 +22,9 @@
                 <v-text-field
                   v-model="first"
                   label="First Name"
-                  :rules="[(v) => !!v || 'First name is required']"
+                  :rules="rules.name"
                   shaped
+                  required
                 ></v-text-field>
               </v-col>
 
@@ -31,17 +32,14 @@
                 <v-text-field
                   v-model="last"
                   label="Last Name"
-                  :rules="[(v) => !!v || 'Last name is required']"
+                  :rules="rules.name"
                   shaped
+                  required
                 ></v-text-field>
               </v-col>
             </v-row>
             <v-card-actions>
-              <v-btn
-                color="success"
-                @click="addUser(first, last)"
-                :disabled="!valid"
-              >
+              <v-btn color="success" @click="addUser(first, last)">
                 Confirm
               </v-btn>
               <v-btn
@@ -133,6 +131,9 @@ export default {
   name: "staff menu",
   data() {
     return {
+      rules: {
+        name: (v) => !!v || "Required.",
+      },
       valid: false,
       first: "",
       last: "",
