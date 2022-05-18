@@ -1,18 +1,13 @@
 <template>
   <div class="container" id="home">
-    {{ checkAdmin }}
     <v-container align="center">
       <v-navigation-drawer permanent>
-        <v-btn
-          :color="selected == letter ? 'red' : 'info'"
-          class="ma-3"
-          v-for="letter in list"
-          :key="letter"
-          @click="goTo(letter)"
-        >
+        <v-btn :color="selected == letter ? 'red' : 'info'" class="ma-3" v-for="letter in list" :key="letter"
+          @click="goTo(letter), checkAdmin()">
           {{ letter }}
         </v-btn>
         <v-btn color="warning" @click="goTo('home')">Back to top</v-btn>
+        <v-btn class="mt-5" color="error" @click="clearInput()">Clear Input</v-btn>
       </v-navigation-drawer>
       <h1 class="pb-6">Welcome</h1>
       <div v-for="letter in list" :key="letter" :id="letter">
@@ -81,19 +76,6 @@ export default {
     };
   },
   computed: {
-    checkAdmin() {
-      let temp = "";
-      if (this.input.length <= 5) {
-        this.input.forEach((i) => {
-          temp = temp + i;
-        });
-        if (temp == "admin") {
-          this.$router.push("/admin");
-        }
-      } else {
-        this.input = [];
-      }
-    },
   },
   methods: {
     async init() {
@@ -131,6 +113,22 @@ export default {
         );
       });
     },
+    checkAdmin() {
+      if (this.input.length == 6) {
+        this.input.shift();
+        // this.input.forEach((i) => {
+        //   temp = temp + i;
+        // });
+        if (this.input.toString() == "a,d,m,i,n") {
+          this.$router.push("/admin");
+        }
+      }
+      console.log(this.input)
+    },
+    clearInput() {
+      this.input = [];
+      this.selected = "";
+    }
   },
   mounted() {
     this.init();
