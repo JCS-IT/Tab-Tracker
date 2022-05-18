@@ -5,21 +5,19 @@
   },
   "emulators": {
     "firestore": {
+      "host": "127.0.0.1",
       "port": 8080
     },
     "ui": {
       "enabled": true
     },
     "hosting": {
+      "host": "127.0.0.1",
       "port": 5000
     }
   },
   "hosting": {
     "public": "dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   }
 }
