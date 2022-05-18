@@ -1,8 +1,6 @@
 <template>
   <div class="container" id="home">
-    <router-link to="admin">
-      <v-btn color="info">Admin</v-btn>
-    </router-link>
+    {{ checkAdmin }}
     <v-container align="center">
       <v-navigation-drawer permanent>
         <v-btn
@@ -45,6 +43,7 @@ import {
 export default {
   data() {
     return {
+      show: false,
       showNewUserMenu: false,
       newUser: "",
       staff: [],
@@ -94,7 +93,6 @@ export default {
       } else {
         this.input = [];
       }
-      return temp;
     },
   },
   methods: {
