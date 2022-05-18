@@ -9,9 +9,37 @@
           <i class="fa fa-home" aria-hidden="true"></i> Home
         </v-btn>
       </router-link>
-      <v-btn color="success" v-if="!showItemMenu" @click="showItemMenu = true">
-        Add Item
-      </v-btn>
+      <div class="text-center">
+        <v-dialog
+          v-model="addItemMenu"
+          scrollable
+          fullscreen
+          persistent
+          :overlay="true"
+          max-width="300px"
+          max-height="200px"
+          transition="dialog-transition"
+        >
+          <template v-slot:activator="{ props }">
+            <v-btn color="success" v-bind="props"> Add Item </v-btn>
+          </template>
+          <v-card>
+            <v-card-title> Add Item </v-card-title>
+            <v-btn
+              color="success"
+              v-for="item in items"
+              :key="item"
+              @click="addItem(item)"
+              class="ma-1"
+            >
+              {{ item.name }}
+            </v-btn>
+            <v-card-actions>
+              <v-btn color="error" @click="addItemMenu = false">Cancel</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
       <div class="text-center">
         <v-dialog
           v-model="clearTabMenu"
@@ -42,20 +70,6 @@
       </div>
     </v-row>
   </v-container>
-  <v-container grid-list-xs class="w-50" v-if="showItemMenu">
-    <v-card class="pa-5">
-      <v-card-title primary-title> Add Item </v-card-title>
-      <v-btn
-        color="success"
-        v-for="item in items"
-        :key="item"
-        @click="addItem(item)"
-        class="mx-1"
-      >
-        {{ item }}
-      </v-btn>
-    </v-card>
-  </v-container>
   <v-container>
     <v-row>
       <v-col>
@@ -81,7 +95,7 @@
           <thead>
             <tr>
               <th v-for="item in items" :key="item">
-                {{ item }}
+                {{ item.name }}
               </th>
             </tr>
           </thead>
@@ -100,16 +114,17 @@
 import { db } from "../firebase";
 import {
   doc,
-  addDoc,
+  query,
+  where,
   collection,
   updateDoc,
-  getDoc,
   onSnapshot,
 } from "firebase/firestore";
 
 export default {
   data() {
     return {
+      addItemMenu: false,
       clearTabMenu: false,
       showNewUserMenu: false,
       newUser: "",
@@ -125,11 +140,14 @@ export default {
     total() {
       let total = {};
       this.items.forEach((item) => {
-        total[item] = 0;
+        total[item.name] = 0;
       });
       this.tab?.forEach((item) => {
+        console.log("Item Name: ", item.name);
         total[item.name]++;
       });
+      console.log("total: ", total);
+      console.log("Tab: ", this.tab);
       return total;
     },
   },
@@ -140,14 +158,22 @@ export default {
         this.currentUser = doc.data();
         this.tab = doc.data().tab;
       });
-      const docRef = doc(db, `items/food`);
-      const docSnap = await getDoc(docRef);
-      this.items = docSnap.data().food;
+      const q = query(collection(db, "items"), where("type", "==", "food"));
+      onSnapshot(q, (snapshot) => {
+        this.items = [];
+        snapshot.forEach((doc) => {
+          this.items.push({
+            id: doc.id,
+            name: doc.data().name,
+          });
+        });
+      });
     },
     async addItem(item) {
-      const docRef = doc(db, `staff/${this.currentUser.id}`);
+      this.addItemMenu = false;
+      const docRef = doc(db, `staff/${this.$route.query.id}`);
       let input = {
-        name: item,
+        name: item.name,
         date: this.getDate(),
       };
       this.tab.push(input);
@@ -157,7 +183,7 @@ export default {
     },
     async clearTab() {
       this.clearTabMenu = false;
-      const docRef = doc(db, `staff/${this.currentUser.id}`);
+      const docRef = doc(db, `staff/${this.$route.query.id}`);
       await updateDoc(docRef, {
         tab: [],
       });
