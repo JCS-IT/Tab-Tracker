@@ -17,46 +17,6 @@
         <v-btn color="warning" @click="goTo('home')">Back to top</v-btn>
       </v-navigation-drawer>
       <h1 class="pb-6">Welcome</h1>
-      <v-row>
-        <v-col>
-          <v-btn
-            v-if="!showNewUserMenu"
-            color="primary"
-            @click="showNewUserMenu = true"
-          >
-            Add User
-          </v-btn>
-          <v-card
-            class="newUser"
-            width="300"
-            color="white"
-            v-if="showNewUserMenu"
-          >
-            <v-card-title primary-title> Add New User </v-card-title>
-            <v-form>
-              <v-text-field
-                type="text"
-                v-model="newUser"
-                placeholder="Enter your name..."
-              />
-              <v-card-actions>
-                <v-btn color="success" @click="addUser(newUser)">
-                  Confirm
-                </v-btn>
-                <v-btn
-                  color="error"
-                  @click="
-                    showNewUserMenu = false;
-                    newUser = '';
-                  "
-                >
-                  Cancle
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card>
-        </v-col>
-      </v-row>
       <div v-for="letter in list" :key="letter" :id="letter">
         <h4>{{ letter.toUpperCase() }}</h4>
         <v-row v-for="user in filterStaff(letter)" :key="user.name">
