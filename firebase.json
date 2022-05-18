@@ -3,6 +3,7 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
+<<<<<<< HEAD
   "hosting": {
     "public": "dist",
     "ignore": [
@@ -27,5 +28,23 @@
     "ui": {
       "enabled": true
     }
+=======
+  "emulators": {
+    "firestore": {
+      "host": "127.0.0.1",
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true
+    },
+    "hosting": {
+      "host": "127.0.0.1",
+      "port": 5000
+    }
+  },
+  "hosting": {
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+>>>>>>> bf79d8a70e4e183f73143f1897818e1e3dff2f06
   }
 }
