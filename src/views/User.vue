@@ -5,9 +5,7 @@
     </div>
     <v-row justify="space-between" class="my-4">
       <router-link to="/">
-        <v-btn color="info">
-          <i class="fa fa-home" aria-hidden="true"></i> Home
-        </v-btn>
+        <v-btn color="info"> Home </v-btn>
       </router-link>
       <div class="text-center">
         <v-dialog

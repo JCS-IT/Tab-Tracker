@@ -4,9 +4,7 @@
       <v-row>
         <v-col>
           <router-link to="/">
-            <v-btn color="error"
-              ><i class="fa fa-arrow-circle-left" aria-hidden="true" /> Home
-            </v-btn>
+            <v-btn color="error"> Home </v-btn>
           </router-link>
         </v-col>
       </v-row>
@@ -15,8 +13,9 @@
           <v-btn
             :color="active == 'staff' ? 'success' : 'info'"
             @click="active = 'staff'"
-            >Staff Menu</v-btn
           >
+            Staff Menu
+          </v-btn>
         </v-col>
       </v-row>
       <v-row>
@@ -24,8 +23,9 @@
           <v-btn
             :color="active == 'item' ? 'success' : 'info'"
             @click="active = 'item'"
-            >Item Menu</v-btn
           >
+            Item Menu
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
