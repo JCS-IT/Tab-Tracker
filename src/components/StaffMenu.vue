@@ -11,19 +11,39 @@
         </v-btn>
         <v-card
           class="newUser"
-          width="300"
+          width="500"
           color="white"
           v-if="showNewUserMenu"
         >
           <v-card-title primary-title> Add New User </v-card-title>
           <v-form>
-            <v-text-field
-              type="text"
-              v-model="newUser"
-              placeholder="Enter the users name..."
-            />
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="first"
+                  label="First Name"
+                  :rules="[(v) => !!v || 'First name is required']"
+                  shaped
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="last"
+                  label="Last Name"
+                  :rules="[(v) => !!v || 'Last name is required']"
+                  shaped
+                ></v-text-field>
+              </v-col>
+            </v-row>
             <v-card-actions>
-              <v-btn color="success" @click="addUser(newUser)"> Confirm </v-btn>
+              <v-btn
+                color="success"
+                @click="addUser(first, last)"
+                :disabled="!valid"
+              >
+                Confirm
+              </v-btn>
               <v-btn
                 color="error"
                 @click="
@@ -113,10 +133,12 @@ export default {
   name: "staff menu",
   data() {
     return {
+      valid: false,
+      first: "",
+      last: "",
       props: null,
       deleteUserMenu: false,
       showNewUserMenu: false,
-      newUser: "",
       staffMenu: false,
       staff: [],
       tab: [],
@@ -177,12 +199,9 @@ export default {
           });
         });
       });
-      const docRef = doc(db, `items/food`);
-      const docSnap = await getDoc(docRef);
-      this.items = docSnap.data().food;
     },
-    async addUser(user) {
-      this.newUser = "";
+    async addUser(first, last) {
+      let user = first + " " + last;
       this.showNewUserMenu = false;
       if (user != null) {
         await addDoc(collection(db, "staff"), {
