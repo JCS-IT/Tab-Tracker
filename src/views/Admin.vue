@@ -10,20 +10,14 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-btn
-            :color="active == 'staff' ? 'success' : 'info'"
-            @click="active = 'staff'"
-          >
+          <v-btn :color="active == 'staff' ? 'success' : 'info'" @click="active = 'staff'">
             Staff Menu
           </v-btn>
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <v-btn
-            :color="active == 'item' ? 'success' : 'info'"
-            @click="active = 'item'"
-          >
+          <v-btn :color="active == 'item' ? 'success' : 'info'" @click="active = 'item'">
             Item Menu
           </v-btn>
         </v-col>

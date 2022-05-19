@@ -6,22 +6,21 @@
           @click="goTo(letter), checkAdmin()">
           {{ letter }}
         </v-btn>
-        <v-btn color="warning" @click="goTo('home')">Back to top</v-btn>
-        <v-btn class="mt-5" color="error" @click="clearInput()">Clear Input</v-btn>
+        <v-btn color="warning" @click="goTo('')">Back to top</v-btn>
       </v-navigation-drawer>
       <h1 class="pb-6">Welcome</h1>
-      <div v-for="letter in list" :key="letter" :id="letter">
-        <h4>{{ letter.toUpperCase() }}</h4>
-        <v-row v-for="user in filterStaff(letter)" :key="user.name">
-          <v-col>
-            <router-link :to="`user?id=${user.id}`">
-              <v-btn width="200" color="secondary">
-                {{ user.name }}
-              </v-btn>
-            </router-link>
-          </v-col>
-        </v-row>
-      </div>
+      <v-row justify="center">
+        <h4 v-if="selected != ''">Currently browsing: {{ selected?.toUpperCase() }}</h4>
+      </v-row>
+      <v-row justify="center">
+        <v-col v-for="user in filterStaff(selected)" :key="user.name">
+          <router-link :to="`user?id=${user.id}`">
+            <v-btn width="200" color="secondary">
+              {{ user.name.first }} {{ user.name.last }}
+            </v-btn>
+          </router-link>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -29,7 +28,6 @@
 <script>
 import { db } from "../firebase";
 import {
-  addDoc,
   collection,
   query,
   where,
@@ -90,55 +88,28 @@ export default {
         });
       });
     },
-    async addUser(user) {
-      this.newUser = "";
-      this.showNewUserMenu = false;
-      if (user != null) {
-        await addDoc(collection(db, "staff"), {
-          name: user,
-          tab: [],
-        });
-      }
-    },
     goTo(id) {
       this.input.push(id);
       this.selected = id;
-      document.getElementById(id).scrollIntoView();
     },
     filterStaff(letter) {
       return this.staff?.filter((person) => {
         return (
-          person.name?.split(" ")[1][0]?.toUpperCase() ==
-          letter[0].toUpperCase()
+          person.name?.last[0]?.toUpperCase() == letter?.toUpperCase()
         );
       });
     },
     checkAdmin() {
-      if (this.input.length == 6) {
-        this.input.shift();
-        // this.input.forEach((i) => {
-        //   temp = temp + i;
-        // });
+      if (this.input.length == 5) {
         if (this.input.toString() == "a,d,m,i,n") {
           this.$router.push("/admin");
         }
+        this.input.shift();
       }
-      console.log(this.input)
     },
-    clearInput() {
-      this.input = [];
-      this.selected = "";
-    }
   },
   mounted() {
     this.init();
   },
 };
 </script>
-
-<style>
-#nav {
-  position: sticky;
-  top: 0;
-}
-</style>

@@ -1,35 +1,21 @@
 <template>
   <v-container>
     <div style="display: flex; justify-content: center">
-      <h3>{{ currentUser.name }}'s Tab</h3>
+      <h3>{{ currentUser.name.first }}'s Tab</h3>
     </div>
     <v-row justify="space-between" class="my-4">
       <router-link to="/">
         <v-btn color="info"> Home </v-btn>
       </router-link>
       <div class="text-center">
-        <v-dialog
-          v-model="addItemMenu"
-          scrollable
-          fullscreen
-          persistent
-          :overlay="true"
-          max-width="300px"
-          max-height="200px"
-          transition="dialog-transition"
-        >
+        <v-dialog v-model="addItemMenu" scrollable fullscreen persistent :overlay="true" max-width="300px"
+          max-height="200px" transition="dialog-transition">
           <template v-slot:activator="{ props }">
             <v-btn color="success" v-bind="props"> Add Item </v-btn>
           </template>
           <v-card>
             <v-card-title> Add Item </v-card-title>
-            <v-btn
-              color="success"
-              v-for="item in items"
-              :key="item"
-              @click="addItem(item)"
-              class="ma-1"
-            >
+            <v-btn color="success" v-for="item in items" :key="item" @click="addItem(item)" class="ma-1">
               {{ item.name }}
             </v-btn>
             <v-card-actions>
@@ -39,16 +25,8 @@
         </v-dialog>
       </div>
       <div class="text-center">
-        <v-dialog
-          v-model="clearTabMenu"
-          scrollable
-          fullscreen
-          persistent
-          :overlay="true"
-          max-width="300px"
-          max-height="200px"
-          transition="dialog-transition"
-        >
+        <v-dialog v-model="clearTabMenu" scrollable fullscreen persistent :overlay="true" max-width="300px"
+          max-height="200px" transition="dialog-transition">
           <template v-slot:activator="{ props }">
             <v-btn color="error" v-bind="props"> Clear All </v-btn>
           </template>

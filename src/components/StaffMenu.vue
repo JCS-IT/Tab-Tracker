@@ -1,59 +1,30 @@
 <template>
   <v-container align="center">
-    <v-row id="generate new staff">
+    <v-row>
       <v-col>
-        <v-btn
-          v-if="!showNewUserMenu"
-          color="primary"
-          @click="showNewUserMenu = true"
-        >
-          Add User
-        </v-btn>
-        <v-card
-          class="newUser"
-          width="500"
-          color="white"
-          v-if="showNewUserMenu"
-        >
-          <v-card-title primary-title> Add New User </v-card-title>
-          <v-form>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  v-model="first"
-                  label="First Name"
-                  :rules="rules.name"
-                  shaped
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  v-model="last"
-                  label="Last Name"
-                  :rules="rules.name"
-                  shaped
-                  required
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-card-actions>
-              <v-btn color="success" @click="addUser(first, last)">
-                Confirm
-              </v-btn>
-              <v-btn
-                color="error"
-                @click="
-                  showNewUserMenu = false;
-                  newUser = '';
-                "
-              >
-                Cancle
-              </v-btn>
-            </v-card-actions>
-          </v-form>
-        </v-card>
+        <v-dialog v-model="showNewUserMenu" fullscreen persistent :overlay="true" max-width="350px" max-height="300px"
+          transition="dialog-transition">
+          <template v-slot:activator="{ props }">
+            <v-btn color="primary" v-bind="props"> Add User </v-btn>
+          </template>
+          <v-card class="newUser" color="white">
+            <v-card-title primary-title> Add New User </v-card-title>
+            <v-form ref="form" lazy-validation>
+              <v-text-field class="mx-5" v-model="first" label="First Name" :rules="nameRules" type="name" required
+                shaped />
+              <v-text-field class="mx-5" v-model="last" label="Last Name" :rules="nameRules" type="name" required
+                shaped />
+              <v-card-actions>
+                <v-btn color="success" @click="addUser(first, last)">
+                  Confirm
+                </v-btn>
+                <v-btn color="error" @click="showNewUserMenu = false; newUser = '';">
+                  Cancle
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
 
@@ -67,22 +38,14 @@
             <v-menu>
               <template v-slot:activator="{ props }">
                 <v-btn color="info" v-bind="props">
-                  {{ user.name }}
+                  {{ user.name.first }} {{ user.name.last }}
                 </v-btn>
               </template>
               <v-list>
                 <v-list-item>
                   <div class="text-center">
-                    <v-dialog
-                      v-model="deleteUserMenu"
-                      scrollable
-                      fullscreen
-                      persistent
-                      :overlay="true"
-                      max-width="300px"
-                      max-height="200px"
-                      transition="dialog-transition"
-                    >
+                    <v-dialog v-model="deleteUserMenu" fullscreen persistent :overlay="true" max-width="300px"
+                      max-height="220px" transition="dialog-transition">
                       <template v-slot:activator="{ props }">
                         <v-btn color="error" v-bind="props"> Delete </v-btn>
                       </template>
@@ -97,9 +60,7 @@
                           <v-btn color="success" @click="deleteUser(user.id)">
                             Yes
                           </v-btn>
-                          <v-btn color="error" @click="deleteUserMenu = false"
-                            >No</v-btn
-                          >
+                          <v-btn color="error" @click="deleteUserMenu = false">No</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -131,12 +92,11 @@ export default {
   name: "staff menu",
   data() {
     return {
-      rules: {
-        name: (v) => !!v || "Required.",
-      },
-      valid: false,
       first: "",
       last: "",
+      nameRules: [
+        v => !!v || 'Name is required',
+      ],
       props: null,
       deleteUserMenu: false,
       showNewUserMenu: false,
@@ -202,16 +162,25 @@ export default {
       });
     },
     async addUser(first, last) {
-      let user = first + " " + last;
-      this.showNewUserMenu = false;
-      if (user != null) {
+      let temp = await this.$refs.form.validate()
+      if (temp.valid) {
+        console.log("this form is valid")
+        this.first = "";
+        this.last = "";
+        this.showNewUserMenu = false;
         await addDoc(collection(db, "staff"), {
-          name: user,
+          name: {
+            first: first,
+            last: last
+          },
           tab: [],
         });
+      } else {
+        console.log("something went wrong")
       }
     },
     async deleteUser(user) {
+      this.deleteUserMenu = false
       await deleteDoc(doc(db, `staff/${user}`));
     },
     async addItem(item) {
@@ -258,13 +227,10 @@ export default {
 
       return dateTime;
     },
-    goTo(id) {
-      document.getElementById(id).scrollIntoView();
-    },
     filterStaff(letter) {
       return this.staff?.filter((person) => {
         return (
-          person.name?.split(" ")[1][0].toUpperCase() == letter[0].toUpperCase()
+          person.name?.last[0]?.toUpperCase() == letter?.toUpperCase()
         );
       });
     },
