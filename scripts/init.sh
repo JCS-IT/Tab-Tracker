@@ -1,4 +1,5 @@
 cd ..
-nohup firebase emulators:start --import=../firestore --export-on-exit &
+cd docker
+docker-compose up -d
 sleep 5s
 firefox --kiosk http://localhost:5000
