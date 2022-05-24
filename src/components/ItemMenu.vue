@@ -19,7 +19,7 @@
             <v-form ref="newFood" lazy-validation>
               <v-text-field
                 class="mx-5"
-                v-model="first"
+                v-model="newItem"
                 label="Item Name"
                 :rules="nameRules"
                 type="name"
