@@ -2,7 +2,8 @@
   "name": "tabs",
   "version": "0.0.0",
   "scripts": {
-    "serve": "vite preview",
+    "fire": "firebase emulators:start --import=./firestore/ --export-on-exit",
+    "serve": "firebase serve --only='firestore'",
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview --port 5050"
