@@ -1,3 +1,3 @@
 #!/bin/bash
 
-firebase emulators:export /config/firestore
+firebase emulators:export /config/firestore -f 
