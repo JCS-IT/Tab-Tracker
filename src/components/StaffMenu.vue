@@ -2,23 +2,50 @@
   <v-container align="center">
     <v-row>
       <v-col>
-        <v-dialog v-model="showNewUserMenu" fullscreen persistent :overlay="true" max-width="350px" max-height="300px"
-          transition="dialog-transition">
+        <v-dialog
+          v-model="showNewUserMenu"
+          fullscreen
+          persistent
+          :overlay="true"
+          max-width="350px"
+          max-height="300px"
+          transition="dialog-transition"
+        >
           <template v-slot:activator="{ props }">
             <v-btn color="primary" v-bind="props"> Add User </v-btn>
           </template>
           <v-card class="newUser" color="white">
             <v-card-title primary-title> Add New User </v-card-title>
             <v-form ref="form" lazy-validation>
-              <v-text-field class="mx-5" v-model="first" label="First Name" :rules="nameRules" type="name" required
-                shaped />
-              <v-text-field class="mx-5" v-model="last" label="Last Name" :rules="nameRules" type="name" required
-                shaped />
+              <v-text-field
+                class="mx-5"
+                v-model="first"
+                label="First Name"
+                :rules="nameRules"
+                type="name"
+                required
+                shaped
+              />
+              <v-text-field
+                class="mx-5"
+                v-model="last"
+                label="Last Name"
+                :rules="nameRules"
+                type="name"
+                required
+                shaped
+              />
               <v-card-actions>
                 <v-btn color="success" @click="addUser(first, last)">
                   Confirm
                 </v-btn>
-                <v-btn color="error" @click="showNewUserMenu = false; newUser = '';">
+                <v-btn
+                  color="error"
+                  @click="
+                    showNewUserMenu = false;
+                    newUser = '';
+                  "
+                >
                   Cancle
                 </v-btn>
               </v-card-actions>
@@ -44,8 +71,15 @@
               <v-list>
                 <v-list-item>
                   <div class="text-center">
-                    <v-dialog v-model="deleteUserMenu" fullscreen persistent :overlay="true" max-width="300px"
-                      max-height="220px" transition="dialog-transition">
+                    <v-dialog
+                      v-model="deleteUserMenu"
+                      fullscreen
+                      persistent
+                      :overlay="true"
+                      max-width="300px"
+                      max-height="220px"
+                      transition="dialog-transition"
+                    >
                       <template v-slot:activator="{ props }">
                         <v-btn color="error" v-bind="props"> Delete </v-btn>
                       </template>
@@ -60,7 +94,9 @@
                           <v-btn color="success" @click="deleteUser(user.id)">
                             Yes
                           </v-btn>
-                          <v-btn color="error" @click="deleteUserMenu = false">No</v-btn>
+                          <v-btn color="error" @click="deleteUserMenu = false"
+                            >No</v-btn
+                          >
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -94,9 +130,7 @@ export default {
     return {
       first: "",
       last: "",
-      nameRules: [
-        v => !!v || 'Name is required',
-      ],
+      nameRules: [(v) => !!v || "Name is required"],
       props: null,
       deleteUserMenu: false,
       showNewUserMenu: false,
@@ -162,25 +196,25 @@ export default {
       });
     },
     async addUser(first, last) {
-      let temp = await this.$refs.form.validate()
+      let temp = await this.$refs.form.validate();
       if (temp.valid) {
-        console.log("this form is valid")
+        console.log("this form is valid");
         this.first = "";
         this.last = "";
         this.showNewUserMenu = false;
         await addDoc(collection(db, "staff"), {
           name: {
             first: first,
-            last: last
+            last: last,
           },
           tab: [],
         });
       } else {
-        console.log("something went wrong")
+        console.log("something went wrong");
       }
     },
     async deleteUser(user) {
-      this.deleteUserMenu = false
+      this.deleteUserMenu = false;
       await deleteDoc(doc(db, `staff/${user}`));
     },
     async addItem(item) {
@@ -229,9 +263,7 @@ export default {
     },
     filterStaff(letter) {
       return this.staff?.filter((person) => {
-        return (
-          person.name?.last[0]?.toUpperCase() == letter?.toUpperCase()
-        );
+        return person.name?.last[0]?.toUpperCase() == letter?.toUpperCase();
       });
     },
   },
