@@ -2,15 +2,22 @@
   <div class="container" id="home">
     <v-container align="center">
       <v-navigation-drawer permanent>
-        <v-btn :color="selected == letter ? 'red' : 'info'" class="ma-3" v-for="letter in list" :key="letter"
-          @click="goTo(letter), checkAdmin()">
+        <v-btn
+          :color="selected == letter ? 'red' : 'info'"
+          class="ma-3"
+          v-for="letter in list"
+          :key="letter"
+          @click="goTo(letter), checkAdmin()"
+        >
           {{ letter }}
         </v-btn>
         <v-btn color="warning" @click="goTo('')">Back to top</v-btn>
       </v-navigation-drawer>
       <h1 class="pb-6">Welcome</h1>
       <v-row justify="center">
-        <h4 v-if="selected != ''">Currently browsing: {{ selected?.toUpperCase() }}</h4>
+        <h4 v-if="selected != ''">
+          Currently browsing: {{ selected?.toUpperCase() }}
+        </h4>
       </v-row>
       <v-row justify="center">
         <v-col v-for="user in filterStaff(selected)" :key="user.name">
@@ -27,12 +34,7 @@
 
 <script>
 import { db } from "../firebase";
-import {
-  collection,
-  query,
-  where,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 export default {
   data() {
     return {
@@ -73,8 +75,7 @@ export default {
       ],
     };
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     async init() {
       const q = query(collection(db, "staff"), where("name", "!=", null));
@@ -94,9 +95,7 @@ export default {
     },
     filterStaff(letter) {
       return this.staff?.filter((person) => {
-        return (
-          person.name?.last[0]?.toUpperCase() == letter?.toUpperCase()
-        );
+        return person.name?.last[0]?.toUpperCase() == letter?.toUpperCase();
       });
     },
     checkAdmin() {
