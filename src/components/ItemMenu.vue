@@ -62,7 +62,7 @@
                   persistent
                   :overlay="true"
                   max-width="300px"
-                  max-height="250px"
+                  max-height="220px"
                   transition="dialog-transition"
                 >
                   <template v-slot:activator="{ props }">
@@ -131,7 +131,7 @@ export default {
       });
     },
     async deleteItem(item) {
-      console.log(item);
+      this.deleteItemMenu = false;
       await deleteDoc(doc(db, `items/${item.id}`));
     },
     async addItem(item) {

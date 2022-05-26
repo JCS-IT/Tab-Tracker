@@ -1,5 +1,4 @@
 cd ..
-cd docker
 docker-compose up -d
-sleep 5s
-firefox --kiosk http://localhost:5000
+sleep 7s
+chromium-browser --kiosk http://localhost:5000
