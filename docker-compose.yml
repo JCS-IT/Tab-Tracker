@@ -3,7 +3,7 @@ services:
   firebase:
     container_name: jcstab
     build: .
-    image: jcstab
+    image: jcstab/alpine
     volumes:
       - /mnt/c/projects/sites/JCSTabs:/config
     ports:
@@ -14,3 +14,4 @@ services:
       - 8001:8001
       - 8080:8080
       - 9000:9000
+    command: firebase emulators:start --import=/config/firestore --export-on-exit
