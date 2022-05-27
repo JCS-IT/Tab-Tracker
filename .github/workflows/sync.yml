@@ -11,3 +11,9 @@ name: Git Sync Action
     destination_repo: https://github.com/JCS-Computer-Science/cs20-project-module-2-eric-singer
     # Branch name to sync to
     destination_branch: main
+    # SSH key used to authenticate with source and destination ssh urls provided (optional if public or https url with authentication)
+    ssh_private_key: # optional
+    # SSH key used to authenticate with source ssh url provided (optional if public or https url with authentication)
+    source_ssh_private_key: # optional
+    # SSH key used to authenticate with destination ssh url provided (optional if public or https url with authentication)
+    destination_ssh_private_key: # optional
