@@ -1,0 +1,19 @@
+name: Git Sync Action
+  # You may pin to the exact commit or the version.
+  # uses: wei/git-sync@55c6b63b4f21607da0e9877ca9b4d11a29fc6d83
+  uses: wei/git-sync@v3.0.0
+  with:
+    # GitHub repo slug or full url
+    source_repo: https://github.com/LeaderbotX400/JCSTabs
+    # Branch name to sync from
+    source_branch: main
+    # GitHub repo slug or full url
+    destination_repo: https://github.com/JCS-Computer-Science/cs20-project-module-2-eric-singer
+    # Branch name to sync to
+    destination_branch: main
+    # SSH key used to authenticate with source and destination ssh urls provided (optional if public or https url with authentication)
+    ssh_private_key: # optional
+    # SSH key used to authenticate with source ssh url provided (optional if public or https url with authentication)
+    source_ssh_private_key: # optional
+    # SSH key used to authenticate with destination ssh url provided (optional if public or https url with authentication)
+    destination_ssh_private_key: # optional
