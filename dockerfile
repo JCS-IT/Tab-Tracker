@@ -10,6 +10,7 @@ WORKDIR /config
 RUN crontab scripts/firebase
 
 # Install NPM packages then build the site
+RUN npm i -g npm
 RUN npm i
 RUN npm run build
 
@@ -18,6 +19,7 @@ RUN apk add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/com
 
 # Install firebase-tools
 RUN npm i -g firebase-tools
+RUN npm audit fix
 
 EXPOSE  4400 4500 5000 5001 8001 8080 8085 9000
 HEALTHCHECK --start-period=1ms CMD curl --fail http://localhost:8080 || exit 1
