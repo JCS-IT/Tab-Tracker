@@ -10,7 +10,7 @@ WORKDIR /config
 RUN crontab scripts/firebase
 
 # Install NPM packages then build the site
-RUN npm i -g npm
+RUN npm i --location=global npm
 RUN npm i
 RUN npm run build
 
