@@ -18,7 +18,7 @@ RUN npm run build
 RUN apk add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 
 # Install firebase-tools
-RUN npm i -g firebase-tools
+RUN npm i --location=global firebase-tools
 RUN npm audit fix
 
 EXPOSE  4400 4500 5000 5001 8001 8080 8085 9000

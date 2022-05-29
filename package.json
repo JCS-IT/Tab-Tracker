@@ -12,6 +12,7 @@
     "@mdi/font": "5.9.55",
     "@revolist/revogrid": "^3.1.6",
     "firebase": "^9.8.1",
+    "npm": "^8.11.0",
     "roboto-fontface": "*",
     "sass": "^1.51.0",
     "vue": "^3.2.33",
