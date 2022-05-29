@@ -3,7 +3,7 @@ services:
   firebase:
     container_name: jcstab
     build: .
-    image: jcstab:alpine
+    image: jcstab
     volumes:
       - ./:/config
     ports:
