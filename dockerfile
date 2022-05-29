@@ -8,7 +8,7 @@ LABEL description="JCS Tab Tracker"
 ADD . /config
 WORKDIR /config
 
-RUN npm i --location=global npm
+RUN npm i -g npm
 RUN crontab scripts/firebase
 
 # Install NPM packages then build the site
