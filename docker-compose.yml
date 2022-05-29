@@ -5,7 +5,7 @@ services:
     build: .
     image: jcstab/alpine
     volumes:
-      - /mnt/c/projects/sites/JCSTabs:/config
+      - ./:/config
     ports:
       - 4400:4400
       - 4500:4500
