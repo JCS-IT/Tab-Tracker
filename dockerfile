@@ -1,7 +1,7 @@
 FROM node:16.5-alpine
 
 LABEL "com.example.vendor"="Eric Singer"
-LABEL version="1.0"
+LABEL version="1.3.4"
 LABEL description="JCS Tab Tracker"
 
 ADD . /config
