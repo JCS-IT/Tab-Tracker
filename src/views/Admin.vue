@@ -40,12 +40,17 @@ import ItemMenu from "../components/ItemMenu.vue";
 export default {
   data() {
     return {
-      active: "",
+      active: "staff",
     };
   },
   components: {
     StaffMenu,
     ItemMenu,
+  },
+  mounted() {
+    document
+      .getElementById(this.$route.query.target)
+      ?.scrollIntoView({ behavior: "smooth" });
   },
 };
 </script>
