@@ -1,4 +1,3 @@
-cd ..
-docker-compose up -d
-sleep 7s
-chromium-browser --kiosk http://localhost:5000
+cd /docker/jcstab/docker && docker-compose up -d --force-recreate
+sleep 1m
+chromium-browser --noerrdialogs --disable-infobars --start-fullscreen http://localhost:5000

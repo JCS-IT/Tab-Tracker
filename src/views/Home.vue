@@ -2,6 +2,11 @@
   <div class="container" id="home">
     <v-container align="center">
       <v-navigation-drawer permanent>
+        <div id="top"></div>
+        <v-btn color="warning" @click="goTo('')" class="mt-7 top">
+          Back to top
+        </v-btn>
+        <br />
         <v-btn
           :color="selected == letter ? 'red' : 'info'"
           class="ma-3"
@@ -11,7 +16,6 @@
         >
           {{ letter }}
         </v-btn>
-        <v-btn color="warning" @click="goTo('')">Back to top</v-btn>
       </v-navigation-drawer>
       <h1 class="pb-6">Welcome</h1>
       <v-row justify="center">
@@ -92,6 +96,11 @@ export default {
     goTo(id) {
       this.input.push(id);
       this.selected = id;
+      if (id == "") {
+        document.getElementById("top").scrollIntoView({
+          behavior: "smooth",
+        });
+      }
     },
     filterStaff(letter) {
       return this.staff?.filter((person) => {
@@ -112,3 +121,11 @@ export default {
   },
 };
 </script>
+
+<style>
+.top {
+  position: sticky !important;
+  top: 7px;
+  z-index: 99999;
+}
+</style>

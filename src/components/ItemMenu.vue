@@ -3,12 +3,10 @@
     <v-row>
       <v-col align="center">
         <v-dialog
-          v-model="newItemMenu"
+          v-model="inputMenu"
           fullscreen
           persistent
           :overlay="true"
-          max-width="350px"
-          max-height="200px"
           transition="dialog-transition"
         >
           <template v-slot:activator="{ props }">
@@ -18,26 +16,30 @@
             <v-card-title primary-title> Add New Item </v-card-title>
             <v-form ref="newFood" lazy-validation>
               <v-text-field
-                class="mx-5"
-                v-model="newItem"
+                class="mx-5 input"
+                v-model="input"
+                :model-value="input"
                 label="Item Name"
                 :rules="nameRules"
                 type="name"
                 required
                 shaped
               />
+              <Keyboard
+                @onChange="onChange"
+                @onKeyPress="onKeyPress"
+                :input="input"
+              />
               <v-card-actions>
-                <v-btn color="success" @click="addItem(newItem)">
-                  Confirm
-                </v-btn>
+                <v-btn color="success" @click="addItem(input)"> Confirm </v-btn>
                 <v-btn
                   color="error"
                   @click="
-                    newItemMenu = false;
-                    newItem = '';
+                    inputMenu = false;
+                    input = '';
                   "
                 >
-                  Cancle
+                  cancel
                 </v-btn>
               </v-card-actions>
             </v-form>
@@ -105,17 +107,21 @@ import {
   collection,
   deleteDoc,
 } from "firebase/firestore";
+import Keyboard from "./keyboard.vue";
 
 export default {
   data() {
     return {
       food: [],
-      newItem: "",
+      input: "",
       props: false,
       nameRules: [(v) => !!v || "Name is required"],
-      newItemMenu: false,
+      inputMenu: false,
       deleteItemMenu: false,
     };
+  },
+  components: {
+    Keyboard,
   },
   methods: {
     async init() {
@@ -137,13 +143,22 @@ export default {
     async addItem(item) {
       let temp = await this.$refs.newFood.validate();
       if (temp.valid) {
-        this.newItem = "";
-        this.newItemMenu = false;
+        this.input = "";
+        this.inputMenu = false;
         await addDoc(collection(db, "items"), {
           name: item,
           type: "food",
         });
       }
+    },
+    onChange(input) {
+      this.input = input;
+    },
+    onKeyPress(button) {
+      console.log("button", button);
+    },
+    onInputChange(input) {
+      this.input = input.target.value;
     },
   },
   mounted() {

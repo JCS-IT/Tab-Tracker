@@ -7,8 +7,6 @@
           fullscreen
           persistent
           :overlay="true"
-          max-width="350px"
-          max-height="300px"
           transition="dialog-transition"
         >
           <template v-slot:activator="{ props }">
@@ -19,26 +17,36 @@
             <v-form ref="form" lazy-validation>
               <v-text-field
                 class="mx-5"
-                v-model="first"
+                id="first"
+                v-model="inputs.first"
                 label="First Name"
+                :model-value="inputs.first"
                 :rules="nameRules"
                 type="name"
+                @focus="onInputFocus"
                 required
                 shaped
               />
               <v-text-field
                 class="mx-5"
-                v-model="last"
+                id="last"
+                v-model="inputs.last"
                 label="Last Name"
+                :model-value="inputs.last"
                 :rules="nameRules"
                 type="name"
+                @focus="onInputFocus"
                 required
                 shaped
               />
+              <keyboard
+                @onChange="onChange"
+                @onKeyPress="onKeyPress"
+                :input="inputs[inputName]"
+                :inputName="inputName"
+              />
               <v-card-actions>
-                <v-btn color="success" @click="addUser(first, last)">
-                  Confirm
-                </v-btn>
+                <v-btn color="success" @click="addUser"> Confirm </v-btn>
                 <v-btn
                   color="error"
                   @click="
@@ -46,7 +54,7 @@
                     newUser = '';
                   "
                 >
-                  Cancle
+                  cancel
                 </v-btn>
               </v-card-actions>
             </v-form>
@@ -69,6 +77,13 @@
                 </v-btn>
               </template>
               <v-list>
+                <v-list-item>
+                  <router-link
+                    :to="`user?id=${user.id}&ref=admin&local=${letter}`"
+                  >
+                    <v-btn color="success" class="px-5">Go to</v-btn>
+                  </router-link>
+                </v-list-item>
                 <v-list-item>
                   <div class="text-center">
                     <v-dialog
@@ -119,17 +134,20 @@ import {
   collection,
   query,
   where,
-  updateDoc,
   deleteDoc,
-  getDoc,
   onSnapshot,
 } from "firebase/firestore";
+import keyboard from "./keyboard.vue";
 export default {
   name: "staff menu",
   data() {
     return {
-      first: "",
-      last: "",
+      inputs: {
+        first: "",
+        last: "",
+      },
+      input: "",
+      inputName: "",
       nameRules: [(v) => !!v || "Name is required"],
       props: null,
       deleteUserMenu: false,
@@ -170,6 +188,9 @@ export default {
       ],
     };
   },
+  components: {
+    keyboard,
+  },
   computed: {
     total() {
       let total = {};
@@ -195,20 +216,22 @@ export default {
         });
       });
     },
-    async addUser(first, last) {
+    async addUser() {
       let temp = await this.$refs.form.validate();
       if (temp.valid) {
         console.log("this form is valid");
-        this.first = "";
-        this.last = "";
         this.showNewUserMenu = false;
         await addDoc(collection(db, "staff"), {
           name: {
-            first: first,
-            last: last,
+            first: this.inputs.first,
+            last: this.inputs.last,
           },
           tab: [],
         });
+        this.inputs = {
+          first: "",
+          last: "",
+        };
       } else {
         console.log("something went wrong");
       }
@@ -217,54 +240,24 @@ export default {
       this.deleteUserMenu = false;
       await deleteDoc(doc(db, `staff/${user}`));
     },
-    async addItem(item) {
-      const docRef = doc(db, `staff/${this.currentUser.id}`);
-      let input = {
-        name: item,
-        date: this.getDate(),
-      };
-      this.tab.push(input);
-      await updateDoc(docRef, {
-        tab: this.tab,
-      });
-    },
-    async getUser(user) {
-      this.showGrid = true;
-      this.currentUser = user;
-      this.tab = null;
-      onSnapshot(doc(db, `staff/${user.id}`), (doc) => {
-        this.tab = doc.data().tab;
-      });
-    },
-    async clearTab() {
-      this.deleteUserMenu = false;
-      const docRef = doc(db, `staff/${this.currentUser.id}`);
-      await updateDoc(docRef, {
-        tab: [],
-      });
-    },
-    getDate() {
-      const current = new Date();
-      const date =
-        current.getFullYear() +
-        "-" +
-        (current.getMonth() + 1) +
-        "-" +
-        current.getDate();
-      const time =
-        current.getHours() +
-        ":" +
-        current.getMinutes() +
-        ":" +
-        current.getSeconds();
-      const dateTime = date + " " + time;
-
-      return dateTime;
-    },
     filterStaff(letter) {
       return this.staff?.filter((person) => {
         return person.name?.last[0]?.toUpperCase() == letter?.toUpperCase();
       });
+    },
+    onChange(input) {
+      this.inputs[this.inputName] = input;
+    },
+    onKeyPress(button) {
+      console.log("button", button);
+    },
+    onInputChange(input) {
+      console.log("Input changed directly:", input.target.id);
+      this.inputs[input.target.id] = input.target.value;
+    },
+    onInputFocus(input) {
+      console.log("Focused input:", input.target.id);
+      this.inputName = input.target.id;
     },
   },
   mounted() {

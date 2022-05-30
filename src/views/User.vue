@@ -3,9 +3,49 @@
     <div style="display: flex; justify-content: center">
       <h3>{{ currentUser.name?.first }}'s Tab</h3>
     </div>
-    <v-row justify="space-between" class="my-4">
+    <v-row
+      v-if="$route.query.ref == 'admin'"
+      justify="space-between"
+      class="my-4"
+    >
+      <router-link
+        :to="`/admin?target=${$route.query.letter}`"
+        v-if="$route.query.ref == 'admin'"
+      >
+        <v-btn color="primary" class="px-5">Back to admin</v-btn>
+      </router-link>
+      <div class="text-center">
+        <v-dialog
+          v-model="clearTabMenu"
+          scrollable
+          fullscreen
+          persistent
+          :overlay="true"
+          max-width="300px"
+          max-height="200px"
+          transition="dialog-transition"
+        >
+          <template v-slot:activator="{ props }">
+            <v-btn color="error" v-bind="props"> Clear All </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              Are you sure you want to clear the tab?
+            </v-card-title>
+            <v-card-text> Note: This action can not be undone </v-card-text>
+            <v-card-actions>
+              <v-btn color="success" @click="clearTab(currentUser)">
+                Yes
+              </v-btn>
+              <v-btn color="error" @click="clearTabMenu = false">No</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+    </v-row>
+    <v-row v-else justify="space-between" class="my-4">
       <router-link to="/">
-        <v-btn color="info"> Home </v-btn>
+        <v-btn color="info">Home</v-btn>
       </router-link>
       <div class="text-center">
         <v-dialog
@@ -38,34 +78,6 @@
           </v-card>
         </v-dialog>
       </div>
-      <div class="text-center">
-        <v-dialog
-          v-model="clearTabMenu"
-          scrollable
-          fullscreen
-          persistent
-          :overlay="true"
-          max-width="300px"
-          max-height="200px"
-          transition="dialog-transition"
-        >
-          <template v-slot:activator="{ props }">
-            <v-btn color="error" v-bind="props"> Clear All </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              Are you sure you want to clear the tab?
-            </v-card-title>
-            <v-card-text> Note: This action can not be undone </v-card-text>
-            <v-card-actions>
-              <v-btn color="success" @click="clearTab(currentUser)">
-                Yes
-              </v-btn>
-              <v-btn color="error" @click="clearTabMenu = false">No</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
     </v-row>
   </v-container>
   <v-container>
@@ -92,7 +104,7 @@
         <v-table>
           <thead>
             <tr>
-              <th v-for="item in items" :key="item">{{ item.name }}'s</th>
+              <th v-for="item in items" :key="item">{{ item.name }}s</th>
             </tr>
           </thead>
           <tbody>
