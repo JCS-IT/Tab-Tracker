@@ -28,3 +28,8 @@ coverage
 # Generated files
 firestore
 firebase-export*
+Dockerfile
+docker-compose.yml
+.dockerignore
+.gitignore
+.git
