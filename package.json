@@ -1,6 +1,6 @@
 {
   "name": "tabs",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "scripts": {
     "fire": "firebase emulators:start --import=./firestore/ --export-on-exit",
     "serve": "firebase serve --only='firestore'",
