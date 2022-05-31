@@ -1,1 +1,1 @@
-cd /config && firebase emulators:export /config/firestore -f
+cd /config && firebase emulators:export /config/firestore/export -f
