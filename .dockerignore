@@ -28,4 +28,5 @@ coverage
 *.sw?
 
 # custom
-/firestore
+firestore
+firebase-export-*
