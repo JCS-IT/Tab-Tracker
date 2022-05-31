@@ -1,27 +1,28 @@
 FROM node:16.5-alpine
 
 LABEL "com.example.vendor"="Eric Singer"
-LABEL version="1.3.4"
+LABEL version="1.3.7"
 LABEL description="JCS Tab Tracker"
-
 
 ADD . /config
 WORKDIR /config
 
-RUN npm i -g npm
-RUN crontab scripts/firebase
+COPY package*.json ./
 
-# Install NPM packages then build the site
-RUN npm i
+RUN npm install -g npm
+
+RUN npm install
+
+COPY . .
+
 RUN npm run build
 
-# Install OpenJDK-11
+RUN crontab scripts/firebase
+
 RUN apk add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 
-# Install firebase-tools
-RUN npm i --location=global firebase-tools
+RUN npm install --location=global firebase-tools
 
-# update all npm packages
 RUN npm update
 
 EXPOSE  4400 4500 5000 5001 8001 8080 8085 9000
