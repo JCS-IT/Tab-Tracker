@@ -47,10 +47,5 @@ export default {
     StaffMenu,
     ItemMenu,
   },
-  mounted() {
-    document
-      .getElementById(this.$route.query.target)
-      ?.scrollIntoView({ behavior: "smooth" });
-  },
 };
 </script>

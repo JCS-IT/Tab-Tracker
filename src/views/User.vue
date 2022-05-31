@@ -8,10 +8,7 @@
       justify="space-between"
       class="my-4"
     >
-      <router-link
-        :to="`/admin?target=${$route.query.letter}`"
-        v-if="$route.query.ref == 'admin'"
-      >
+      <router-link :to="`/admin`">
         <v-btn color="primary" class="px-5">Back to admin</v-btn>
       </router-link>
       <div class="text-center">
