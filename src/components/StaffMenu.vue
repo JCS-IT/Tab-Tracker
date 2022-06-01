@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <v-dialog
-          v-model="showNewUserMenu"
+          v-model="newUserMenu"
           fullscreen
           persistent
           :overlay="true"
@@ -39,36 +39,27 @@
                     :model-value="inputs.last"
                     :rules="nameRules"
                     type="name"
-                    @focus="onInputFocus"
+                    @focus="onInputFocus()"
                     required
                     shaped
                   />
                 </v-col>
               </v-row>
               <keyboard
-                @onChange="onChange"
-                @onKeyPress="onKeyPress"
+                @onChange="onChange()"
+                @onKeyPress="onKeyPress()"
                 :input="inputs[inputName]"
                 :inputName="inputName"
               />
               <v-card-actions>
-                <v-btn color="success" @click="addUser"> Confirm </v-btn>
-                <v-btn
-                  color="error"
-                  @click="
-                    showNewUserMenu = false;
-                    newUser = '';
-                  "
-                >
-                  cancel
-                </v-btn>
+                <v-btn color="success" @click="addUser()"> Confirm </v-btn>
+                <v-btn color="error" @click="cancel()"> cancel </v-btn>
               </v-card-actions>
             </v-form>
           </v-card>
         </v-dialog>
       </v-col>
     </v-row>
-
     <div v-for="letter in list" :key="letter" :id="letter">
       <v-card>
         <v-card-title primary-title>
@@ -84,11 +75,78 @@
               </template>
               <v-list>
                 <v-list-item>
-                  <router-link
-                    :to="`user?id=${user.id}&ref=admin&local=${letter}`"
-                  >
+                  <router-link :to="`user?id=${user.id}&ref=admin`">
                     <v-btn color="success" class="px-5">Go to</v-btn>
                   </router-link>
+                </v-list-item>
+                <v-list-item>
+                  <v-dialog
+                    v-model="editUserMenu"
+                    fullscreen
+                    persistent
+                    :overlay="true"
+                    transition="dialog-transition"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        color="primary"
+                        v-bind="props"
+                        class="px-7"
+                        @click="edit(user)"
+                      >
+                        Edit
+                      </v-btn>
+                    </template>
+                    <v-card class="newUser" color="white">
+                      <v-card-title primary-title> Edit User </v-card-title>
+                      <v-form ref="form" lazy-validation>
+                        <v-row>
+                          <v-col cols="12" sm="6">
+                            <v-text-field
+                              class="mx-5"
+                              id="first"
+                              v-model="inputs.first"
+                              label="First Name"
+                              :model-value="inputs.first"
+                              :rules="nameRules"
+                              type="name"
+                              @focus="onInputFocus()"
+                              required
+                              shaped
+                            />
+                          </v-col>
+                          <v-col cols="12" sm="6">
+                            <v-text-field
+                              class="mx-5"
+                              id="last"
+                              v-model="inputs.last"
+                              label="Last Name"
+                              :model-value="inputs.last"
+                              :rules="nameRules"
+                              type="name"
+                              @focus="onInputFocus()"
+                              required
+                              shaped
+                            />
+                          </v-col>
+                        </v-row>
+                        <keyboard
+                          @onChange="onChange()"
+                          @onKeyPress="onKeyPress()"
+                          :input="inputs[inputName]"
+                          :inputName="inputName"
+                        />
+                        <v-card-actions>
+                          <v-btn color="success" @click="editUser(user)">
+                            Confirm
+                          </v-btn>
+                          <v-btn color="error" @click="cancel()">
+                            cancel
+                          </v-btn>
+                        </v-card-actions>
+                      </v-form>
+                    </v-card>
+                  </v-dialog>
                 </v-list-item>
                 <v-list-item>
                   <div class="text-center">
@@ -115,9 +173,7 @@
                           <v-btn color="success" @click="deleteUser(user.id)">
                             Yes
                           </v-btn>
-                          <v-btn color="error" @click="deleteUserMenu = false"
-                            >No</v-btn
-                          >
+                          <v-btn color="error" @click="cancel"> No </v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -141,6 +197,7 @@ import {
   query,
   where,
   deleteDoc,
+  updateDoc,
   onSnapshot,
 } from "firebase/firestore";
 import keyboard from "./keyboard.vue";
@@ -157,13 +214,10 @@ export default {
       nameRules: [(v) => !!v || "Name is required"],
       props: null,
       deleteUserMenu: false,
-      showNewUserMenu: false,
+      newUserMenu: false,
+      editUserMenu: false,
       staffMenu: false,
       staff: [],
-      tab: [],
-      currentUser: "",
-      showItemMenu: false,
-      items: [],
       list: [
         "a",
         "b",
@@ -197,18 +251,6 @@ export default {
   components: {
     keyboard,
   },
-  computed: {
-    total() {
-      let total = {};
-      this.items.forEach((item) => {
-        total[item] = 0;
-      });
-      this.tab?.forEach((item) => {
-        total[item.name]++;
-      });
-      return total;
-    },
-  },
   methods: {
     async init() {
       const q = query(collection(db, "staff"), where("name", "!=", null));
@@ -225,7 +267,7 @@ export default {
     async addUser() {
       let temp = await this.$refs.form.validate();
       if (temp.valid) {
-        this.showNewUserMenu = false;
+        this.newUserMenu = false;
         await addDoc(collection(db, "staff"), {
           name: {
             first: this.inputs.first,
@@ -241,9 +283,34 @@ export default {
         console.log("something went wrong");
       }
     },
+    async editUser(user) {
+      let temp = await this.$refs.form[0].validate();
+      if (temp.valid) {
+        this.editUserMenu = false;
+        let input = {
+          first: this.inputs.first,
+          last: this.inputs.last,
+        };
+        await updateDoc(doc(db, `staff/${user.id}`), {
+          name: input,
+        });
+        this.inputs = {
+          first: "",
+          last: "",
+        };
+      } else {
+        console.log("something went wrong");
+      }
+    },
     async deleteUser(user) {
       this.deleteUserMenu = false;
       await deleteDoc(doc(db, `staff/${user}`));
+    },
+    edit(user) {
+      this.inputs = {
+        first: user.name.first,
+        last: user.name.last,
+      };
     },
     filterStaff(letter) {
       return this.staff?.filter((person) => {
@@ -259,6 +326,15 @@ export default {
     },
     onInputFocus(input) {
       this.inputName = input.target.id;
+    },
+    cancel() {
+      this.newUserMenu = false;
+      this.deleteUserMenu = false;
+      this.editUserMenu = false;
+      this.inputs = {
+        first: "",
+        last: "",
+      };
     },
   },
   mounted() {
