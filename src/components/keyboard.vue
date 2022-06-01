@@ -53,15 +53,9 @@ export default {
   },
   watch: {
     inputName(inputName) {
-      console.log("SimpleKeyboard: inputName updated", inputName);
       this.keyboard.setOptions({ inputName });
     },
     input(input) {
-      console.log(
-        "SimpleKeyboard: input Updated",
-        this.keyboard.options.inputName,
-        input
-      );
       this.keyboard.setInput(input);
     },
   },
