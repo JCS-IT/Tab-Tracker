@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent>
+  <v-navigation-drawer permanent touchless>
     <v-container grid-list-xs align="space-between">
       <v-row>
         <v-col>

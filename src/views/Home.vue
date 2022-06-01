@@ -1,7 +1,7 @@
 <template>
   <div class="container" id="home">
     <v-container align="center">
-      <v-navigation-drawer permanent>
+      <v-navigation-drawer permanent touchless>
         <div id="top"></div>
         <v-btn color="warning" @click="goTo('')" class="mt-7 top">
           Back to top
