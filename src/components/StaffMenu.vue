@@ -15,30 +15,36 @@
           <v-card class="newUser" color="white">
             <v-card-title primary-title> Add New User </v-card-title>
             <v-form ref="form" lazy-validation>
-              <v-text-field
-                class="mx-5"
-                id="first"
-                v-model="inputs.first"
-                label="First Name"
-                :model-value="inputs.first"
-                :rules="nameRules"
-                type="name"
-                @focus="onInputFocus"
-                required
-                shaped
-              />
-              <v-text-field
-                class="mx-5"
-                id="last"
-                v-model="inputs.last"
-                label="Last Name"
-                :model-value="inputs.last"
-                :rules="nameRules"
-                type="name"
-                @focus="onInputFocus"
-                required
-                shaped
-              />
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    class="mx-5"
+                    id="first"
+                    v-model="inputs.first"
+                    label="First Name"
+                    :model-value="inputs.first"
+                    :rules="nameRules"
+                    type="name"
+                    @focus="onInputFocus"
+                    required
+                    shaped
+                  />
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    class="mx-5"
+                    id="last"
+                    v-model="inputs.last"
+                    label="Last Name"
+                    :model-value="inputs.last"
+                    :rules="nameRules"
+                    type="name"
+                    @focus="onInputFocus"
+                    required
+                    shaped
+                  />
+                </v-col>
+              </v-row>
               <keyboard
                 @onChange="onChange"
                 @onKeyPress="onKeyPress"
@@ -219,7 +225,6 @@ export default {
     async addUser() {
       let temp = await this.$refs.form.validate();
       if (temp.valid) {
-        console.log("this form is valid");
         this.showNewUserMenu = false;
         await addDoc(collection(db, "staff"), {
           name: {
@@ -248,15 +253,11 @@ export default {
     onChange(input) {
       this.inputs[this.inputName] = input;
     },
-    onKeyPress(button) {
-      console.log("button", button);
-    },
+    onKeyPress() {},
     onInputChange(input) {
-      console.log("Input changed directly:", input.target.id);
       this.inputs[input.target.id] = input.target.value;
     },
     onInputFocus(input) {
-      console.log("Focused input:", input.target.id);
       this.inputName = input.target.id;
     },
   },
