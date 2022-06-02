@@ -30,7 +30,7 @@
             @click="active = 'item'"
             width="140"
           >
-            <v-icon>mdi-food</v-icon>
+            <v-icon class="mr-2">mdi-food</v-icon>
             Item Menu
           </v-btn>
         </v-col>
