@@ -1,1 +1,1 @@
-0 * * * * /bin/sh /config/scripts/export.sh > /cron.log
+0 * * * * docker exec -it jcstab firebase emulators:export /config/firestore -f
