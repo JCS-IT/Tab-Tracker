@@ -67,7 +67,7 @@
         <v-card-title primary-title>
           {{ letter.toUpperCase() }}
         </v-card-title>
-        <v-row class="ma-10">
+        <v-row class="my-10">
           <v-col v-for="user in filterStaff(letter)" :key="user.name">
             <v-menu>
               <template v-slot:activator="{ props }">
@@ -79,7 +79,7 @@
                 <v-list-item>
                   <router-link :to="`user?id=${user.id}&ref=admin`">
                     <v-btn color="success" width="107px">
-                      <v-icon class="ml-n2 mr-1">mdi-account-hard-hat</v-icon>
+                      <v-icon class="ml-n5 mr-1">mdi-account-hard-hat</v-icon>
                       Go to
                     </v-btn>
                   </router-link>
@@ -99,7 +99,7 @@
                         @click="edit(user)"
                         width="107px"
                       >
-                        <v-icon class="ml-n4 mr-1">mdi-account-edit</v-icon>
+                        <v-icon class="ml-n8 mr-1">mdi-account-edit</v-icon>
                         Edit
                       </v-btn>
                     </template>
@@ -167,7 +167,7 @@
                     >
                       <template v-slot:activator="{ props }">
                         <v-btn color="error" v-bind="props" width="107px">
-                          <v-icon>mdi-nuke</v-icon>
+                          <v-icon class="ml-n2 mr-1">mdi-nuke</v-icon>
                           Delete
                         </v-btn>
                       </template>
