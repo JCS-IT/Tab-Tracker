@@ -56,7 +56,7 @@
           persistent
           :overlay="true"
           max-width="300px"
-          max-height="200px"
+          max-height="90%"
           transition="dialog-transition"
         >
           <template v-slot:activator="{ props }">
