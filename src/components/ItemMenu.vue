@@ -68,7 +68,9 @@
                   transition="dialog-transition"
                 >
                   <template v-slot:activator="{ props }">
-                    <v-btn color="error" v-bind="props"> Delete </v-btn>
+                    <v-btn color="error" v-bind="props">
+                      <v-icon>mdi-delete</v-icon> Delete
+                    </v-btn>
                   </template>
                   <v-card>
                     <v-card-title>

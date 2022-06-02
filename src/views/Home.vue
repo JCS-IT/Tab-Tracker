@@ -4,7 +4,7 @@
       <v-navigation-drawer permanent touchless>
         <div id="top"></div>
         <v-btn color="warning" @click="goTo('')" class="mt-7 top">
-          Back to top
+          <v-icon>mdi-arrow-up</v-icon> Back to top
         </v-btn>
         <br />
         <v-btn

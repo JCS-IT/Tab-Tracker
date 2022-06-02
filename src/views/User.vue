@@ -9,7 +9,9 @@
       class="my-4"
     >
       <router-link :to="`/admin`" v-if="$route.query.ref == 'admin'">
-        <v-btn color="primary" class="px-5">Back to admin</v-btn>
+        <v-btn color="primary" class="px-5">
+          <v-icon>mdi-shield-account</v-icon> Back to admin
+        </v-btn>
       </router-link>
       <div class="text-center">
         <v-dialog
@@ -23,7 +25,9 @@
           transition="dialog-transition"
         >
           <template v-slot:activator="{ props }">
-            <v-btn color="error" v-bind="props"> Clear All </v-btn>
+            <v-btn color="error" v-bind="props">
+              <v-icon>mdi-close-circle</v-icon> Clear All
+            </v-btn>
           </template>
           <v-card>
             <v-card-title>

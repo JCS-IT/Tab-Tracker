@@ -1,10 +1,12 @@
 <template>
-  <v-navigation-drawer permanent touchless>
+  <v-navigation-drawer permanent touchless width="190">
     <v-container grid-list-xs align="space-between">
       <v-row>
         <v-col>
           <router-link to="/">
-            <v-btn color="error"> Home </v-btn>
+            <v-btn color="error" width="140" class="mb-5">
+              <v-icon>mdi-home</v-icon> Home
+            </v-btn>
           </router-link>
         </v-col>
       </v-row>
@@ -13,7 +15,10 @@
           <v-btn
             :color="active == 'staff' ? 'success' : 'info'"
             @click="active = 'staff'"
+            width="140"
+            class="mb-5"
           >
+            <v-icon>mdi-account</v-icon>
             Staff Menu
           </v-btn>
         </v-col>
@@ -23,7 +28,9 @@
           <v-btn
             :color="active == 'item' ? 'success' : 'info'"
             @click="active = 'item'"
+            width="140"
           >
+            <v-icon>mdi-food</v-icon>
             Item Menu
           </v-btn>
         </v-col>

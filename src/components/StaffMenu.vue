@@ -10,7 +10,9 @@
           transition="dialog-transition"
         >
           <template v-slot:activator="{ props }">
-            <v-btn color="primary" v-bind="props"> Add User </v-btn>
+            <v-btn color="primary" v-bind="props">
+              <v-icon class="mr-2">mdi-account-plus</v-icon> Add User
+            </v-btn>
           </template>
           <v-card class="newUser" color="white">
             <v-card-title primary-title> Add New User </v-card-title>
@@ -76,7 +78,10 @@
               <v-list>
                 <v-list-item>
                   <router-link :to="`user?id=${user.id}&ref=admin`">
-                    <v-btn color="success" class="px-5">Go to</v-btn>
+                    <v-btn color="success" width="107px">
+                      <v-icon class="ml-n2 mr-1">mdi-account-hard-hat</v-icon>
+                      Go to
+                    </v-btn>
                   </router-link>
                 </v-list-item>
                 <v-list-item>
@@ -91,9 +96,10 @@
                       <v-btn
                         color="primary"
                         v-bind="props"
-                        class="px-7"
                         @click="edit(user)"
+                        width="107px"
                       >
+                        <v-icon class="ml-n4 mr-1">mdi-account-edit</v-icon>
                         Edit
                       </v-btn>
                     </template>
@@ -160,7 +166,10 @@
                       transition="dialog-transition"
                     >
                       <template v-slot:activator="{ props }">
-                        <v-btn color="error" v-bind="props"> Delete </v-btn>
+                        <v-btn color="error" v-bind="props" width="107px">
+                          <v-icon>mdi-nuke</v-icon>
+                          Delete
+                        </v-btn>
                       </template>
                       <v-card>
                         <v-card-title>
