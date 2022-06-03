@@ -45,7 +45,7 @@
       </div>
     </v-row>
     <v-row v-else justify="space-between" class="my-4">
-      <router-link to="/">
+      <router-link to="/?ref=home">
         <v-btn color="info">Home</v-btn>
       </router-link>
       <div class="text-center">
@@ -129,8 +129,13 @@ import {
   updateDoc,
   onSnapshot,
 } from "firebase/firestore";
+import { useCookies } from "vue3-cookies";
 
 export default {
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
   data() {
     return {
       addItemMenu: false,
@@ -214,6 +219,9 @@ export default {
     },
   },
   mounted() {
+    if (!this.cookies.get("id") && this.$route.query.id !== "admin") {
+      this.cookies.set("id", this.$route.query.id);
+    }
     this.init();
   },
 };

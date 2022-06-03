@@ -41,7 +41,13 @@
 <script>
 import { db } from "../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { useCookies } from "vue3-cookies";
+
 export default {
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
   data() {
     return {
       show: false,
@@ -115,7 +121,11 @@ export default {
     },
   },
   mounted() {
-    this.init();
+    if (this.cookies.get("id") && this.$route.query.ref != "home") {
+      this.$router.push(`/user?id=${this.cookies.get("id")}`);
+    } else {
+      this.init();
+    }
   },
 };
 </script>
