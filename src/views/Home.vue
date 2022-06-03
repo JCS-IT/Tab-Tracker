@@ -1,12 +1,9 @@
 <template>
   <div class="container" id="home">
     <v-app-bar color="primary" prominent>
-      <v-app-bar-nav-icon
-        variant="text"
-        @click.stop="drawer = !drawer"
-      ></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" />
       <v-toolbar-title>JCS Tabs</v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-spacer />
     </v-app-bar>
     <v-container align="center">
       <v-navigation-drawer v-model="drawer" bottom temporary>
