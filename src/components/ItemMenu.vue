@@ -25,11 +25,6 @@
                 required
                 shaped
               />
-              <Keyboard
-                @onChange="onChange"
-                @onKeyPress="onKeyPress"
-                :input="input"
-              />
               <v-card-actions>
                 <v-btn color="success" @click="addItem(input)"> Confirm </v-btn>
                 <v-btn
@@ -83,9 +78,9 @@
                       <v-btn color="success" @click="deleteItem(item)">
                         Yes
                       </v-btn>
-                      <v-btn color="error" @click="deleteItemMenu = false"
-                        >No</v-btn
-                      >
+                      <v-btn color="error" @click="deleteItemMenu = false">
+                        No
+                      </v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -109,7 +104,6 @@ import {
   collection,
   deleteDoc,
 } from "firebase/firestore";
-import Keyboard from "./keyboard.vue";
 
 export default {
   data() {
@@ -121,9 +115,6 @@ export default {
       inputMenu: false,
       deleteItemMenu: false,
     };
-  },
-  components: {
-    Keyboard,
   },
   methods: {
     async init() {
@@ -152,15 +143,6 @@ export default {
           type: "food",
         });
       }
-    },
-    onChange(input) {
-      this.input = input;
-    },
-    onKeyPress(button) {
-      console.log("button", button);
-    },
-    onInputChange(input) {
-      this.input = input.target.value;
     },
   },
   mounted() {

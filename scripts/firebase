@@ -1,1 +1,0 @@
-0 * * * * docker exec -it jcstab firebase emulators:export /config/firestore -f

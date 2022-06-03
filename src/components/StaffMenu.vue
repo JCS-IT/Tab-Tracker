@@ -27,7 +27,6 @@
                     :model-value="inputs.first"
                     :rules="nameRules"
                     type="name"
-                    @focus="onInputFocus"
                     required
                     shaped
                   />
@@ -41,18 +40,11 @@
                     :model-value="inputs.last"
                     :rules="nameRules"
                     type="name"
-                    @focus="onInputFocus()"
                     required
                     shaped
                   />
                 </v-col>
               </v-row>
-              <keyboard
-                @onChange="onChange()"
-                @onKeyPress="onKeyPress()"
-                :input="inputs[inputName]"
-                :inputName="inputName"
-              />
               <v-card-actions>
                 <v-btn color="success" @click="addUser()"> Confirm </v-btn>
                 <v-btn color="error" @click="cancel()"> cancel </v-btn>
@@ -116,7 +108,6 @@
                               :model-value="inputs.first"
                               :rules="nameRules"
                               type="name"
-                              @focus="onInputFocus()"
                               required
                               shaped
                             />
@@ -130,18 +121,11 @@
                               :model-value="inputs.last"
                               :rules="nameRules"
                               type="name"
-                              @focus="onInputFocus()"
                               required
                               shaped
                             />
                           </v-col>
                         </v-row>
-                        <keyboard
-                          @onChange="onChange()"
-                          @onKeyPress="onKeyPress()"
-                          :input="inputs[inputName]"
-                          :inputName="inputName"
-                        />
                         <v-card-actions>
                           <v-btn color="success" @click="editUser(user)">
                             Confirm
@@ -182,7 +166,7 @@
                           <v-btn color="success" @click="deleteUser(user.id)">
                             Yes
                           </v-btn>
-                          <v-btn color="error" @click="cancel"> No </v-btn>
+                          <v-btn color="error" @click="cancel()"> No </v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -209,7 +193,6 @@ import {
   updateDoc,
   onSnapshot,
 } from "firebase/firestore";
-import keyboard from "./keyboard.vue";
 export default {
   name: "staff menu",
   data() {
@@ -256,9 +239,6 @@ export default {
         "z",
       ],
     };
-  },
-  components: {
-    keyboard,
   },
   methods: {
     async init() {
@@ -325,16 +305,6 @@ export default {
       return this.staff?.filter((person) => {
         return person.name?.last[0]?.toUpperCase() == letter?.toUpperCase();
       });
-    },
-    onChange(input) {
-      this.inputs[this.inputName] = input;
-    },
-    onKeyPress() {},
-    onInputChange(input) {
-      this.inputs[input.target.id] = input.target.value;
-    },
-    onInputFocus(input) {
-      this.inputName = input.target.id;
     },
     cancel() {
       this.newUserMenu = false;

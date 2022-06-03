@@ -84,6 +84,21 @@
   <v-container>
     <v-row>
       <v-col>
+        <h4 class="text-center">Total</h4>
+        <v-table>
+          <thead>
+            <tr>
+              <th v-for="item in items" :key="item">{{ item.name }}s</th>
+            </tr>
+          </thead>
+          <tbody>
+            <td v-for="item in total" :key="item">
+              {{ item }}
+            </td>
+          </tbody>
+        </v-table>
+      </v-col>
+      <v-col>
         <h4 class="text-center">History</h4>
         <v-table>
           <thead>
@@ -97,21 +112,6 @@
               <td>{{ item.name }}</td>
               <td>{{ item.date }}</td>
             </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-      <v-col>
-        <h4 class="text-center">Total</h4>
-        <v-table>
-          <thead>
-            <tr>
-              <th v-for="item in items" :key="item">{{ item.name }}s</th>
-            </tr>
-          </thead>
-          <tbody>
-            <td v-for="item in total" :key="item">
-              {{ item }}
-            </td>
           </tbody>
         </v-table>
       </v-col>

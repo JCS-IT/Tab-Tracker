@@ -1,7 +1,15 @@
 <template>
   <div class="container" id="home">
+    <v-app-bar color="primary" prominent>
+      <v-app-bar-nav-icon
+        variant="text"
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
+      <v-toolbar-title>Welcome</v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-app-bar>
     <v-container align="center">
-      <v-navigation-drawer permanent touchless>
+      <v-navigation-drawer v-model="drawer" bottom temporary>
         <div id="top"></div>
         <v-btn color="warning" @click="goTo('')" class="mt-7 top">
           <v-icon>mdi-arrow-up</v-icon> Back to top
@@ -17,7 +25,6 @@
           {{ letter }}
         </v-btn>
       </v-navigation-drawer>
-      <h1 class="pb-6">Welcome</h1>
       <v-row justify="center">
         <h4 v-if="selected != ''">
           Currently browsing: {{ selected?.toUpperCase() }}
@@ -44,6 +51,7 @@ export default {
     return {
       show: false,
       showNewUserMenu: false,
+      drawer: false,
       newUser: "",
       staff: [],
       selected: "",
