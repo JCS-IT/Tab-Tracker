@@ -5,16 +5,11 @@
         variant="text"
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>
-      <v-toolbar-title>Welcome</v-toolbar-title>
+      <v-toolbar-title>JCS Tabs</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
     <v-container align="center">
       <v-navigation-drawer v-model="drawer" bottom temporary>
-        <div id="top"></div>
-        <v-btn color="warning" @click="goTo('')" class="mt-7 top">
-          <v-icon>mdi-arrow-up</v-icon> Back to top
-        </v-btn>
-        <br />
         <v-btn
           :color="selected == letter ? 'red' : 'info'"
           class="ma-3"
@@ -104,11 +99,6 @@ export default {
     goTo(id) {
       this.input.push(id);
       this.selected = id;
-      if (id == "") {
-        document.getElementById("top").scrollIntoView({
-          behavior: "smooth",
-        });
-      }
     },
     filterStaff(letter) {
       return this.staff?.filter((person) => {
