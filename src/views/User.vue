@@ -98,6 +98,8 @@
           </tbody>
         </v-table>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col>
         <h4 class="text-center">History</h4>
         <v-table>
@@ -123,6 +125,7 @@
 import { db } from "../firebase";
 import {
   doc,
+  getDoc,
   query,
   where,
   collection,
@@ -167,7 +170,7 @@ export default {
       this.tab = [];
       onSnapshot(doc(db, `staff/${this.$route.query.id}`), (doc) => {
         this.currentUser = doc.data();
-        this.tab = doc.data().tab;
+        this.tab = this.currentUser.tab;
       });
       const q = query(collection(db, "items"), where("type", "==", "food"));
       onSnapshot(q, (snapshot) => {
@@ -218,11 +221,17 @@ export default {
       return dateTime;
     },
   },
-  mounted() {
-    if (!this.cookies.get("id") && this.$route.query.id !== "admin") {
-      this.cookies.set("id", this.$route.query.id);
+  async mounted() {
+    let temp = await getDoc(doc(db, `staff/${this.$route.query.id}`));
+    if (temp.exists()) {
+      if (!this.cookies.get("id") && this.$route.query.id !== "admin") {
+        this.cookies.set("id", this.$route.query.id);
+      }
+      this.init();
+    } else {
+      this.cookies.remove("id");
+      this.$router.push("/");
     }
-    this.init();
   },
 };
 </script>
