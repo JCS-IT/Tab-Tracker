@@ -45,7 +45,7 @@
       </div>
     </v-row>
     <v-row v-else justify="space-between" class="my-4">
-      <router-link to="/">
+      <router-link to="/?ref=home">
         <v-btn color="info">Home</v-btn>
       </router-link>
       <div class="text-center">
@@ -84,6 +84,21 @@
   <v-container>
     <v-row>
       <v-col>
+        <h4 class="text-center">Total</h4>
+        <v-table>
+          <thead>
+            <tr>
+              <th v-for="item in items" :key="item">{{ item.name }}s</th>
+            </tr>
+          </thead>
+          <tbody>
+            <td v-for="item in total" :key="item">
+              {{ item }}
+            </td>
+          </tbody>
+        </v-table>
+      </v-col>
+      <v-col>
         <h4 class="text-center">History</h4>
         <v-table>
           <thead>
@@ -97,21 +112,6 @@
               <td>{{ item.name }}</td>
               <td>{{ item.date }}</td>
             </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-      <v-col>
-        <h4 class="text-center">Total</h4>
-        <v-table>
-          <thead>
-            <tr>
-              <th v-for="item in items" :key="item">{{ item.name }}s</th>
-            </tr>
-          </thead>
-          <tbody>
-            <td v-for="item in total" :key="item">
-              {{ item }}
-            </td>
           </tbody>
         </v-table>
       </v-col>
@@ -129,8 +129,13 @@ import {
   updateDoc,
   onSnapshot,
 } from "firebase/firestore";
+import { useCookies } from "vue3-cookies";
 
 export default {
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
   data() {
     return {
       addItemMenu: false,
@@ -214,6 +219,9 @@ export default {
     },
   },
   mounted() {
+    if (!this.cookies.get("id") && this.$route.query.id !== "admin") {
+      this.cookies.set("id", this.$route.query.id);
+    }
     this.init();
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent touchless width="190">
+  <v-navigation-drawer permanent width="190">
     <v-container grid-list-xs align="space-between">
       <v-row>
         <v-col>
@@ -53,11 +53,6 @@ export default {
   components: {
     StaffMenu,
     ItemMenu,
-  },
-  mounted() {
-    document
-      .getElementById(this.$route.query.target)
-      ?.scrollIntoView({ behavior: "smooth" });
   },
 };
 </script>
