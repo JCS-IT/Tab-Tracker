@@ -25,6 +25,8 @@ export default defineConfig({
       manifest: {
         name: "JCS Tab Tracker",
         short_name: "JCS Tabs",
+        start_url: ".",
+        display: "standalone",
         description: "Helps staff keep track of their tab",
         theme_color: "#ffffff",
         icons: [
