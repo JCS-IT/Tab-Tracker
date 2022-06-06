@@ -4,7 +4,7 @@
       <v-toolbar-title>JCS Tabs</v-toolbar-title>
       <v-spacer />
       <div id="firebaseui-auth-container"></div>
-      <v-btn color="info" v-if="!loggedIn" @click="showAuthMenu"> Login </v-btn>
+      <v-btn color="info" @click="showAuthMenu" v-if="!loggedIn"> Login </v-btn>
       <v-btn v-else @click="logout">Logout</v-btn>
     </v-app-bar>
     <v-main>
@@ -22,7 +22,7 @@ export default {
   name: "App",
   data() {
     return {
-      props: {},
+      loginMenu: false,
       loggedIn: false,
     };
   },
@@ -47,10 +47,11 @@ export default {
       };
       setTimeout(() => {
         ui.start("#firebaseui-auth-container", uiConfig);
-      }, 4);
+      }, 10);
     },
     logout() {
       auth.signOut();
+      this.loggedIn = false;
     },
   },
   mounted() {
