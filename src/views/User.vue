@@ -94,8 +94,8 @@
             </tr>
           </thead>
           <tbody>
-            <td v-for="item in total" :key="item">
-              {{ item }}
+            <td v-for="total in total" :key="total">
+              {{ total }}
             </td>
           </tbody>
         </v-table>
@@ -112,7 +112,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in tab" :key="item.name">
+            <tr v-for="item in tab" :key="item">
               <td>{{ item.name }}</td>
               <td>{{ item.date }}</td>
             </tr>
@@ -163,9 +163,9 @@ export default {
       this.tab = [];
       onSnapshot(doc(db, `staff/${this.$route.query.id}`), (doc) => {
         if (doc.exists) {
-          this.name = doc.data().name;
-          this.tab = doc.data().tab;
-          this.isAdmin = doc.data().isAdmin;
+          this.name = doc.data()?.name;
+          this.tab = doc.data()?.tab;
+          this.isAdmin = doc.data()?.isAdmin;
         }
       });
       const q = query(collection(db, "items"), where("type", "==", "food"));

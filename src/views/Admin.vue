@@ -57,21 +57,17 @@ export default {
     StaffMenu,
     ItemMenu,
   },
-  methods: {
-    async init() {
-
-
-      },
-  },
-  async mounted() {
-    auth.onAuthStateChanged((user) => {
+  methods: {},
+  mounted() {
+    auth.onAuthStateChanged(async (user) => {
       if (user) {
         const docRef = doc(db, `staff/${user.uid}`);
         const docSnap = await getDoc(docRef);
-        console.log(docSnap.data().isAdmin);
-        this.init();
+        if (!docSnap.data().isAdmin) {
+          this.$route.push("/");
+        }
       } else {
-        // this.$route.push("/")
+        this.$route.push("/");
       }
     });
   },
