@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
+import { auth, db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
+
 const routes = [
   {
     path: "/Home",
@@ -14,13 +16,31 @@ const routes = [
     path: "/admin",
     name: "Admin",
     component: () => import("../views/Admin.vue"),
+    beforeEnter: loginRequired && checkAdmin,
   },
   {
     path: "/user",
     name: "User",
     component: () => import("../views/User.vue"),
+    beforeEnter: loginRequired,
   },
 ];
+
+function loginRequired(to, from, next) {
+  if (auth.currentUser) {
+    next();
+  } else {
+    next("/");
+  }
+}
+
+async function checkAdmin() {
+  const docRef = doc(db, `staff/${auth.currentUser.uid}`);
+  const docSnap = await getDoc(docRef);
+  if (!docSnap.data().isAdmin) {
+    this.$router.push("/");
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(),
