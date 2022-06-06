@@ -1,70 +1,16 @@
 <template>
   <v-container align="center">
-    <v-row>
-      <v-col>
-        <v-dialog
-          v-model="newUserMenu"
-          fullscreen
-          persistent
-          :overlay="true"
-          transition="dialog-transition"
-        >
-          <template v-slot:activator="{ props }">
-            <v-btn color="primary" v-bind="props">
-              <v-icon class="mr-2">mdi-account-plus</v-icon> Add User
-            </v-btn>
-          </template>
-          <v-card class="newUser" color="white">
-            <v-card-title primary-title> Add New User </v-card-title>
-            <v-form ref="form" lazy-validation>
-              <v-row>
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    class="mx-5"
-                    id="first"
-                    v-model="inputs.first"
-                    label="First Name"
-                    :model-value="inputs.first"
-                    :rules="nameRules"
-                    type="name"
-                    required
-                    shaped
-                  />
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    class="mx-5"
-                    id="last"
-                    v-model="inputs.last"
-                    label="Last Name"
-                    :model-value="inputs.last"
-                    :rules="nameRules"
-                    type="name"
-                    required
-                    shaped
-                  />
-                </v-col>
-              </v-row>
-              <v-card-actions>
-                <v-btn color="success" @click="addUser()"> Confirm </v-btn>
-                <v-btn color="error" @click="cancel()"> cancel </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card>
-        </v-dialog>
-      </v-col>
-    </v-row>
     <div v-for="letter in list" :key="letter" :id="letter">
       <v-card>
         <v-card-title primary-title>
           {{ letter.toUpperCase() }}
         </v-card-title>
         <v-row class="my-10">
-          <v-col v-for="user in filterStaff(letter)" :key="user.name">
+          <v-col v-for="user in filterStaff(letter)" :key="user.displayName">
             <v-menu>
               <template v-slot:activator="{ props }">
                 <v-btn color="info" v-bind="props">
-                  {{ user.name.first }} {{ user.name.last }}
+                  {{ user.name }}
                 </v-btn>
               </template>
               <v-list>
@@ -75,68 +21,6 @@
                       Go to
                     </v-btn>
                   </router-link>
-                </v-list-item>
-                <v-list-item>
-                  <v-dialog
-                    v-model="editUserMenu"
-                    fullscreen
-                    persistent
-                    :overlay="true"
-                    transition="dialog-transition"
-                  >
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        color="primary"
-                        v-bind="props"
-                        @click="edit(user)"
-                        width="107px"
-                      >
-                        <v-icon class="ml-n8 mr-1">mdi-account-edit</v-icon>
-                        Edit
-                      </v-btn>
-                    </template>
-                    <v-card class="newUser" color="white">
-                      <v-card-title primary-title> Edit User </v-card-title>
-                      <v-form ref="form" lazy-validation>
-                        <v-row>
-                          <v-col cols="12" sm="6">
-                            <v-text-field
-                              class="mx-5"
-                              id="first"
-                              v-model="inputs.first"
-                              label="First Name"
-                              :model-value="inputs.first"
-                              :rules="nameRules"
-                              type="name"
-                              required
-                              shaped
-                            />
-                          </v-col>
-                          <v-col cols="12" sm="6">
-                            <v-text-field
-                              class="mx-5"
-                              id="last"
-                              v-model="inputs.last"
-                              label="Last Name"
-                              :model-value="inputs.last"
-                              :rules="nameRules"
-                              type="name"
-                              required
-                              shaped
-                            />
-                          </v-col>
-                        </v-row>
-                        <v-card-actions>
-                          <v-btn color="success" @click="editUser(user)">
-                            Confirm
-                          </v-btn>
-                          <v-btn color="error" @click="cancel()">
-                            cancel
-                          </v-btn>
-                        </v-card-actions>
-                      </v-form>
-                    </v-card>
-                  </v-dialog>
                 </v-list-item>
                 <v-list-item>
                   <div class="text-center">
@@ -185,29 +69,18 @@
 import { db } from "../firebase";
 import {
   doc,
-  addDoc,
   collection,
   query,
   where,
   deleteDoc,
-  updateDoc,
   onSnapshot,
 } from "firebase/firestore";
 export default {
   name: "staff menu",
   data() {
     return {
-      inputs: {
-        first: "",
-        last: "",
-      },
-      input: "",
-      inputName: "",
-      nameRules: [(v) => !!v || "Name is required"],
       props: null,
       deleteUserMenu: false,
-      newUserMenu: false,
-      editUserMenu: false,
       staffMenu: false,
       staff: [],
       list: [
@@ -253,67 +126,20 @@ export default {
         });
       });
     },
-    async addUser() {
-      let temp = await this.$refs.form.validate();
-      if (temp.valid) {
-        this.newUserMenu = false;
-        await addDoc(collection(db, "staff"), {
-          name: {
-            first: this.inputs.first,
-            last: this.inputs.last,
-          },
-          tab: [],
-        });
-        this.inputs = {
-          first: "",
-          last: "",
-        };
-      } else {
-        console.log("something went wrong");
-      }
-    },
-    async editUser(user) {
-      let temp = await this.$refs.form[0].validate();
-      if (temp.valid) {
-        this.editUserMenu = false;
-        let input = {
-          first: this.inputs.first,
-          last: this.inputs.last,
-        };
-        await updateDoc(doc(db, `staff/${user.id}`), {
-          name: input,
-        });
-        this.inputs = {
-          first: "",
-          last: "",
-        };
-      } else {
-        console.log("something went wrong");
-      }
-    },
     async deleteUser(user) {
       this.deleteUserMenu = false;
       await deleteDoc(doc(db, `staff/${user}`));
     },
-    edit(user) {
-      this.inputs = {
-        first: user.name.first,
-        last: user.name.last,
-      };
-    },
     filterStaff(letter) {
       return this.staff?.filter((person) => {
-        return person.name?.last[0]?.toUpperCase() == letter?.toUpperCase();
+        return person.name
+          .split(" ")[1]
+          ?.toUpperCase()
+          .startsWith(letter.toUpperCase());
       });
     },
     cancel() {
-      this.newUserMenu = false;
       this.deleteUserMenu = false;
-      this.editUserMenu = false;
-      this.inputs = {
-        first: "",
-        last: "",
-      };
     },
   },
   mounted() {
