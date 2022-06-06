@@ -16,7 +16,7 @@ globalCookiesConfig({
   path: "/",
   domain: "",
   secure: true,
-  sameSite: "None",
+  sameSite: "Strict",
 });
 
 loadFonts();
