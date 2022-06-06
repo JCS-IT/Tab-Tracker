@@ -2,8 +2,6 @@
   "name": "tabs",
   "version": "1.3.6",
   "scripts": {
-    "fire": "firebase emulators:start --import=./firestore/ --export-on-exit",
-    "serve": "firebase serve --only='firestore'",
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview --port 5050"
@@ -28,6 +26,9 @@
     "sass": "^1.38.0",
     "sass-loader": "^10.0.0",
     "vite": "^2.9.9",
+    "vite-plugin-html-purgecss": "^0.1.1",
+    "vite-plugin-mkcert": "^1.6.4",
+    "vite-plugin-pwa": "^0.12.0",
     "vue-cli-plugin-vuetify": "~2.4.8",
     "vuetify-loader": "^2.0.0-alpha.0"
   }
