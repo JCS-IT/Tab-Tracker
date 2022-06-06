@@ -42,8 +42,11 @@
 </template>
 
 <script>
+import { auth, db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
 import StaffMenu from "../components/StaffMenu.vue";
 import ItemMenu from "../components/ItemMenu.vue";
+
 export default {
   data() {
     return {
@@ -53,6 +56,24 @@ export default {
   components: {
     StaffMenu,
     ItemMenu,
+  },
+  methods: {
+    async init() {
+
+
+      },
+  },
+  async mounted() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const docRef = doc(db, `staff/${user.uid}`);
+        const docSnap = await getDoc(docRef);
+        console.log(docSnap.data().isAdmin);
+        this.init();
+      } else {
+        // this.$route.push("/")
+      }
+    });
   },
 };
 </script>

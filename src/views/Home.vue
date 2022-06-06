@@ -1,136 +1,71 @@
 <template>
-  <div class="container" id="home">
-    <v-app-bar color="primary" prominent>
-      <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" />
-      <v-toolbar-title>JCS Tabs</v-toolbar-title>
-      <v-spacer />
-    </v-app-bar>
-    <v-container align="center">
-      <v-navigation-drawer v-model="drawer" bottom temporary>
-        <v-btn
-          :color="selected == letter ? 'red' : 'info'"
-          class="ma-3"
-          v-for="letter in list"
-          :key="letter"
-          @click="goTo(letter), checkAdmin()"
-        >
-          {{ letter }}
-        </v-btn>
-      </v-navigation-drawer>
-      <v-row justify="center">
-        <h4 v-if="selected != ''">
-          Currently browsing: {{ selected?.toUpperCase() }}
-        </h4>
+  <v-container>
+    <v-row v-if="!loggedIn">
+      <v-col align="center">
+        <h1>Please login to use this app</h1>
+      </v-col>
+    </v-row>
+    <v-container v-if="isAdmin">
+      <v-row>
+        <v-col align="center">
+          <router-link :to="`/user?id=${userID}`">
+            <v-btn color="success" width="100px">Tab</v-btn>
+          </router-link>
+        </v-col>
       </v-row>
-      <v-row justify="center">
-        <v-col v-for="user in filterStaff(selected)" :key="user.name">
-          <router-link :to="`user?id=${user.id}`">
-            <v-btn width="200" color="secondary">
-              {{ user.name.first }} {{ user.name.last }}
-            </v-btn>
+      <v-row>
+        <v-col align="center">
+          <router-link to="/admin">
+            <v-btn color="error" width="100px">Admin</v-btn>
           </router-link>
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </v-container>
 </template>
 
 <script>
-import { db } from "../firebase";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { useCookies } from "vue3-cookies";
+import { auth, db } from "../firebase/index.js";
+import { doc, setDoc, getDoc } from "@firebase/firestore";
 
 export default {
-  setup() {
-    const { cookies } = useCookies();
-    return { cookies };
-  },
   data() {
     return {
-      show: false,
-      showNewUserMenu: false,
-      drawer: false,
-      newUser: "",
-      staff: [],
-      selected: "",
-      currentUser: "",
-      input: [],
-      list: [
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "f",
-        "g",
-        "h",
-        "i",
-        "j",
-        "k",
-        "l",
-        "m",
-        "n",
-        "o",
-        "p",
-        "q",
-        "r",
-        "s",
-        "t",
-        "u",
-        "v",
-        "w",
-        "x",
-        "y",
-        "z",
-      ],
+      loggedIn: false,
+      isAdmin: false,
+      userID: "",
     };
   },
-  computed: {},
   methods: {
-    async init() {
-      const q = query(collection(db, "staff"), where("name", "!=", null));
-      onSnapshot(q, (snapshot) => {
-        this.staff = [];
-        snapshot.forEach((doc) => {
-          this.staff.push({
-            id: doc.id,
-            name: doc.data().name,
-          });
-        });
-      });
-    },
-    goTo(id) {
-      this.input.push(id);
-      this.selected = id;
-    },
-    filterStaff(letter) {
-      return this.staff?.filter((person) => {
-        return person.name?.last[0]?.toUpperCase() == letter?.toUpperCase();
-      });
-    },
-    checkAdmin() {
-      if (this.input.length == 5) {
-        if (this.input.toString() == "a,d,m,i,n") {
-          this.$router.push("/admin");
+    async init(user) {
+      const docRef = doc(db, `staff/${user.uid}`);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        if (docSnap.data().isAdmin) {
+          this.userID = user.uid;
+          this.isAdmin = true;
+        } else {
+          this.$router.push(`/user?id=${user.uid}`);
         }
-        this.input.shift();
+      } else {
+        await setDoc(docRef, {
+          name: user.displayName,
+          tab: [],
+          isAdmin: false,
+        });
       }
     },
   },
-  mounted() {
-    if (this.cookies.get("id") && this.$route.query.ref != "home") {
-      this.$router.push(`/user?id=${this.cookies.get("id")}`);
-    } else {
-      this.init();
-    }
+  async mounted() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.loggedIn = true;
+        this.init(user);
+      } else {
+        this.loggedIn = false;
+      }
+    });
   },
 };
 </script>
-
-<style>
-.top {
-  position: sticky !important;
-  top: 7px;
-  z-index: 99999;
-}
-</style>

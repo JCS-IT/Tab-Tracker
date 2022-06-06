@@ -1,14 +1,14 @@
 <template>
   <v-container>
     <div style="display: flex; justify-content: center">
-      <h3>{{ currentUser.name?.first }}'s Tab</h3>
+      <h3>{{ name }}'s Tab</h3>
     </div>
     <v-row
       v-if="$route.query.ref == 'admin'"
       justify="space-between"
       class="my-4"
     >
-      <router-link :to="`/admin`" v-if="$route.query.ref == 'admin'">
+      <router-link :to="`/admin`">
         <v-btn color="primary" class="px-5">
           <v-icon>mdi-shield-account</v-icon> Back to admin
         </v-btn>
@@ -35,50 +35,52 @@
             </v-card-title>
             <v-card-text> Note: This action can not be undone </v-card-text>
             <v-card-actions>
-              <v-btn color="success" @click="clearTab(currentUser)">
-                Yes
-              </v-btn>
+              <v-btn color="success" @click="clearTab()"> Yes </v-btn>
               <v-btn color="error" @click="clearTabMenu = false">No</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </div>
     </v-row>
-    <v-row v-else justify="space-between" class="my-4">
-      <router-link to="/?ref=home">
-        <v-btn color="info">Home</v-btn>
-      </router-link>
-      <div class="text-center">
-        <v-dialog
-          v-model="addItemMenu"
-          scrollable
-          fullscreen
-          persistent
-          :overlay="true"
-          max-width="300px"
-          max-height="90%"
-          transition="dialog-transition"
-        >
-          <template v-slot:activator="{ props }">
-            <v-btn color="success" v-bind="props"> Add Item </v-btn>
-          </template>
-          <v-card>
-            <v-card-title> Add Item </v-card-title>
-            <v-btn
-              color="success"
-              v-for="item in items"
-              :key="item"
-              @click="addItem(item)"
-              class="ma-1"
-            >
-              {{ item.name }}
-            </v-btn>
-            <v-card-actions>
-              <v-btn color="error" @click="addItemMenu = false">Cancel</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
+    <v-row v-else class="my-4">
+      <v-col v-if="isAdmin">
+        <router-link to="/">
+          <v-btn color="info">Home</v-btn>
+        </router-link>
+      </v-col>
+      <v-col>
+        <div class="text-center">
+          <v-dialog
+            v-model="addItemMenu"
+            scrollable
+            fullscreen
+            persistent
+            :overlay="true"
+            max-width="300px"
+            max-height="90%"
+            transition="dialog-transition"
+          >
+            <template v-slot:activator="{ props }">
+              <v-btn color="success" v-bind="props"> Add Item </v-btn>
+            </template>
+            <v-card>
+              <v-card-title> Add Item </v-card-title>
+              <v-btn
+                color="success"
+                v-for="item in items"
+                :key="item"
+                @click="addItem(item)"
+                class="ma-1"
+              >
+                {{ item.name }}
+              </v-btn>
+              <v-card-actions>
+                <v-btn color="error" @click="addItemMenu = false">Cancel</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+      </v-col>
     </v-row>
   </v-container>
   <v-container>
@@ -122,35 +124,26 @@
 </template>
 
 <script>
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import {
   doc,
-  getDoc,
   query,
   where,
   collection,
   updateDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { useCookies } from "vue3-cookies";
 
 export default {
-  setup() {
-    const { cookies } = useCookies();
-    return { cookies };
-  },
   data() {
     return {
+      tab: [],
+      name: "",
+      items: [],
+      isAdmin: false,
+      showGrid: false,
       addItemMenu: false,
       clearTabMenu: false,
-      showNewUserMenu: false,
-      newUser: "",
-      showGrid: false,
-      staff: [],
-      tab: [],
-      currentUser: "",
-      showItemMenu: false,
-      items: [],
     };
   },
   computed: {
@@ -169,8 +162,11 @@ export default {
     async init() {
       this.tab = [];
       onSnapshot(doc(db, `staff/${this.$route.query.id}`), (doc) => {
-        this.currentUser = doc.data();
-        this.tab = this.currentUser.tab;
+        if (doc.exists) {
+          this.name = doc.data().name;
+          this.tab = doc.data().tab;
+          this.isAdmin = doc.data().isAdmin;
+        }
       });
       const q = query(collection(db, "items"), where("type", "==", "food"));
       onSnapshot(q, (snapshot) => {
@@ -222,16 +218,13 @@ export default {
     },
   },
   async mounted() {
-    let temp = await getDoc(doc(db, `staff/${this.$route.query.id}`));
-    if (temp.exists()) {
-      if (!this.cookies.get("id") && this.$route.query.id !== "admin") {
-        this.cookies.set("id", this.$route.query.id);
+    auth.onAuthStateChanged((user) => {
+      if (user || this.$route.query.ref == "admin") {
+        this.init();
+      } else {
+        this.$router.push("/");
       }
-      this.init();
-    } else {
-      this.cookies.remove("id");
-      this.$router.push("/");
-    }
+    });
   },
 };
 </script>
