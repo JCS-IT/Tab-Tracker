@@ -51,6 +51,7 @@ export default {
     },
     logout() {
       auth.signOut();
+      this.$router.push("/");
       this.loggedIn = false;
     },
   },

@@ -57,19 +57,5 @@ export default {
     StaffMenu,
     ItemMenu,
   },
-  methods: {},
-  mounted() {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const docRef = doc(db, `staff/${user.uid}`);
-        const docSnap = await getDoc(docRef);
-        if (!docSnap.data().isAdmin) {
-          this.$route.push("/");
-        }
-      } else {
-        this.$route.push("/");
-      }
-    });
-  },
 };
 </script>
