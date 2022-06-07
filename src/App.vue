@@ -3,11 +3,11 @@
     <v-app-bar color="primary" prominent>
       <v-toolbar-title>JCS Tabs</v-toolbar-title>
       <v-spacer />
-      <div id="firebaseui-auth-container"></div>
       <v-btn color="info" @click="showAuthMenu" v-if="!loggedIn"> Login </v-btn>
       <v-btn v-else @click="logout">Logout</v-btn>
     </v-app-bar>
     <v-main>
+      <div id="firebaseui-auth-container"></div>
       <router-view />
     </v-main>
   </v-app>
