@@ -36,14 +36,20 @@
         </v-col>
       </v-row>
     </v-container>
+    <template v-slot:append>
+      <div class="pa-2">
+        <v-btn color="success" @click="source">
+          <v-icon class="mr-4">mdi-github</v-icon>
+          <span>Source Code</span>
+        </v-btn>
+      </div>
+    </template>
   </v-navigation-drawer>
   <StaffMenu v-if="active == 'staff'" />
   <ItemMenu v-if="active == 'item'" />
 </template>
 
 <script>
-import { auth, db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
 import StaffMenu from "../components/StaffMenu.vue";
 import ItemMenu from "../components/ItemMenu.vue";
 
@@ -56,6 +62,11 @@ export default {
   components: {
     StaffMenu,
     ItemMenu,
+  },
+  methods: {
+    source() {
+      window.open("https://github.com/LeaderbotX400/JCSTabs", "_blank");
+    },
   },
 };
 </script>

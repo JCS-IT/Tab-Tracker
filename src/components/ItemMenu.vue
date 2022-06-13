@@ -6,6 +6,8 @@
           v-model="inputMenu"
           fullscreen
           persistent
+          max-width="500px"
+          max-height="220px"
           :overlay="true"
           transition="dialog-transition"
         >
@@ -14,16 +16,16 @@
           </template>
           <v-card color="white">
             <v-card-title primary-title> Add New Item </v-card-title>
-            <v-form ref="newFood" lazy-validation>
+            <v-form ref="newFood" lazy-validation @submit.prevent>
               <v-text-field
                 class="mx-5 input"
                 v-model="input"
-                :model-value="input"
                 label="Item Name"
                 :rules="nameRules"
                 type="name"
                 required
                 shaped
+                @keyup.enter="addItem(input)"
               />
               <v-card-actions>
                 <v-btn color="success" @click="addItem(input)"> Confirm </v-btn>
@@ -57,9 +59,9 @@
                   v-model="deleteItemMenu"
                   fullscreen
                   persistent
+                  width="300px"
+                  height="220px"
                   :overlay="true"
-                  max-width="300px"
-                  max-height="220px"
                   transition="dialog-transition"
                 >
                   <template v-slot:activator="{ props }">
@@ -136,8 +138,8 @@ export default {
     async addItem(item) {
       let temp = await this.$refs.newFood.validate();
       if (temp.valid) {
-        this.input = "";
         this.inputMenu = false;
+        this.input = "";
         await addDoc(collection(db, "items"), {
           name: item,
           type: "food",
