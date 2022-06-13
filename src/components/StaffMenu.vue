@@ -115,8 +115,7 @@ export default {
   },
   methods: {
     async init() {
-      const q = query(collection(db, "staff"), where("name", "!=", null));
-      onSnapshot(q, (snapshot) => {
+      onSnapshot(collection(db, "staff"), (snapshot) => {
         this.staff = [];
         snapshot.forEach((doc) => {
           this.staff.push({
