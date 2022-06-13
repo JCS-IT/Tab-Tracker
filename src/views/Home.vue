@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { auth, db } from "../firebase/index.js";
+import { auth, db } from "../firebase";
 import { doc, setDoc, getDoc } from "@firebase/firestore";
 
 export default {
@@ -54,6 +54,7 @@ export default {
           tab: [],
           isAdmin: false,
         });
+        this.$router.push(`/user?id=${user.uid}`);
       }
     },
   },

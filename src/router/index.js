@@ -12,13 +12,13 @@ const routes = [
     path: "/admin",
     name: "Admin",
     component: () => import("../views/Admin.vue"),
-    // beforeEnter: loginRequired && checkAdmin,
+    beforeEnter: loginRequired && checkAdmin,
   },
   {
     path: "/user",
     name: "User",
     component: () => import("../views/User.vue"),
-    // beforeEnter: loginRequired,
+    beforeEnter: loginRequired,
   },
 ];
 
