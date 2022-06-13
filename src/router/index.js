@@ -4,10 +4,6 @@ import { doc, getDoc } from "firebase/firestore";
 
 const routes = [
   {
-    path: "/Home",
-    redirect: "/",
-  },
-  {
     path: "/",
     name: "Home",
     component: () => import("../views/Home.vue"),
@@ -16,13 +12,13 @@ const routes = [
     path: "/admin",
     name: "Admin",
     component: () => import("../views/Admin.vue"),
-    beforeEnter: loginRequired && checkAdmin,
+    // beforeEnter: loginRequired && checkAdmin,
   },
   {
     path: "/user",
     name: "User",
     component: () => import("../views/User.vue"),
-    beforeEnter: loginRequired,
+    // beforeEnter: loginRequired,
   },
 ];
 
@@ -34,11 +30,13 @@ function loginRequired(to, from, next) {
   }
 }
 
-async function checkAdmin() {
-  const docRef = doc(db, `staff/${auth.currentUser.uid}`);
+async function checkAdmin(to, from, next) {
+  const docRef = doc(db, `staff/${auth?.currentUser?.uid}`);
   const docSnap = await getDoc(docRef);
-  if (!docSnap.data().isAdmin) {
-    this.$router.push("/");
+  if (docSnap.data()?.isAdmin) {
+    next();
+  } else {
+    next("/");
   }
 }
 

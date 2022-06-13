@@ -5,7 +5,7 @@
         <h1>Please login to use this app</h1>
       </v-col>
     </v-row>
-    <v-container v-if="isAdmin">
+    <v-container v-if="isAdmin && loggedIn">
       <v-row>
         <v-col align="center">
           <router-link :to="`/user?id=${userID}`">
@@ -64,6 +64,7 @@ export default {
         this.init(user);
       } else {
         this.loggedIn = false;
+        this.isAdmin = false;
       }
     });
   },
