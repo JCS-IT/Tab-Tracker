@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import vuetify from "@vuetify/vite-plugin";
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from 'vite-plugin-mkcert'
+import { terser } from 'rollup-plugin-terser';
 
 const path = require("path");
 
@@ -56,11 +57,31 @@ export default defineConfig({
       },
     }),
     mkcert(),
+    terser({
+      compress: {
+        defaults: false,
+        drop_console: true
+      },
+      mangle: {
+        eval: true,
+        module: true,
+        toplevel: true,
+        safari10: true,
+        properties: false
+      },
+      output: {
+        comments: false,
+        ecma: '2020'
+      }
+    }),
   ],
   define: { "process.env": {} },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
+  },
+  build: {
+    chunkSizeWarningLimit: 1600,
   },
 });
