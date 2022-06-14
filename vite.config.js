@@ -59,20 +59,15 @@ export default defineConfig({
     mkcert(),
     terser({
       compress: {
-        defaults: false,
-        drop_console: true
+        drop_console: true,
+        unsafe_arrows: true,
+        unsafe_comps: true,
+        passes: 2,
       },
-      mangle: {
-        eval: true,
-        module: true,
-        toplevel: true,
-        safari10: true,
-        properties: false
-      },
-      output: {
+      format: {
         comments: false,
-        ecma: '2020'
-      }
+        ecma: '2020',
+      },
     }),
   ],
   define: { "process.env": {} },
