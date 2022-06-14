@@ -5,7 +5,6 @@
         <v-dialog
           v-model="inputMenu"
           fullscreen
-          persistent
           max-width="500px"
           max-height="220px"
           :overlay="true"
@@ -58,7 +57,6 @@
                 <v-dialog
                   v-model="deleteItemMenu"
                   fullscreen
-                  persistent
                   width="300px"
                   height="220px"
                   :overlay="true"

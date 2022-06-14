@@ -18,7 +18,6 @@
           v-model="clearTabMenu"
           scrollable
           fullscreen
-          persistent
           :overlay="true"
           max-width="300px"
           max-height="220px"
