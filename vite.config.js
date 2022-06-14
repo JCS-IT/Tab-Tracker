@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vuetify from "@vuetify/vite-plugin";
 import { VitePWA } from "vite-plugin-pwa";
-import eslint from 'vite-plugin-eslint'
+import mkcert from 'vite-plugin-mkcert'
 
 const path = require("path");
 
@@ -55,7 +55,7 @@ export default defineConfig({
         type: "module",
       },
     }),
-    eslint(),
+    mkcert(),
   ],
   define: { "process.env": {} },
   resolve: {
