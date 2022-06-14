@@ -3,9 +3,6 @@
     <v-app-bar color="primary" prominent>
       <v-toolbar-title>JCS Tabs</v-toolbar-title>
       <v-spacer />
-      <a href="https://github.com/LeaderbotX400/JCSTabs">
-        <v-icon>mdi-github</v-icon>
-      </a>
       <v-btn color="info" @click="showAuthMenu" v-if="!loggedIn"> Login </v-btn>
       <v-btn v-else @click="logout" color="white">Logout</v-btn>
     </v-app-bar>

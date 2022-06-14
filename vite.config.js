@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vuetify from "@vuetify/vite-plugin";
 import { VitePWA } from "vite-plugin-pwa";
-import mkcert from "vite-plugin-mkcert";
+import mkcert from 'vite-plugin-mkcert'
 
 const path = require("path");
 
@@ -13,7 +13,6 @@ export default defineConfig({
     vuetify({
       autoImport: true,
     }),
-    mkcert(),
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: [
@@ -56,6 +55,7 @@ export default defineConfig({
         type: "module",
       },
     }),
+    mkcert(),
   ],
   define: { "process.env": {} },
   resolve: {
