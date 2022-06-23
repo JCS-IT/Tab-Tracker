@@ -9,14 +9,14 @@
       <v-row>
         <v-col align="center">
           <router-link :to="`/user?id=${userID}`">
-            <v-btn color="success" width="100px">Tab</v-btn>
+            <v-btn color="success" width="110px">Your Tab</v-btn>
           </router-link>
         </v-col>
       </v-row>
       <v-row>
         <v-col align="center">
           <router-link to="/admin">
-            <v-btn color="error" width="100px">Admin</v-btn>
+            <v-btn color="error" width="110px">Admin Page</v-btn>
           </router-link>
         </v-col>
       </v-row>
