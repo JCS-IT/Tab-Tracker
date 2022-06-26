@@ -1,12 +1,18 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /staff/{userId} {
-      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
-      allow create: if request.auth != null && exists(/databases/$(database)/documents/staff/$(request.auth.uid));
+    function getAdmin() {
+      return request.auth != null && get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.admin
     }
-    match /items {
-      allow read, write: if request.auth != null && get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.admin == true
+    match /staff/{userId} {
+      allow read: if request.auth.uid == userId || getAdmin();
+      allow create: if request.auth.uid == userId;
+      allow update: if (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['tab']));
+      allow delete: if getAdmin();
+    }
+    match /items/{item} {
+      allow read: if true;
+      allow write: if request.auth != null && getAdmin();
     }
   }
 }
