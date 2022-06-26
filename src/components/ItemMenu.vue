@@ -2,45 +2,7 @@
   <v-container grid-list-xs>
     <v-row>
       <v-col align="center">
-        <v-dialog
-          v-model="inputMenu"
-          fullscreen
-          max-width="500px"
-          max-height="220px"
-          :overlay="true"
-          transition="dialog-transition"
-        >
-          <template v-slot:activator="{ props }">
-            <v-btn color="primary" v-bind="props"> Add Item </v-btn>
-          </template>
-          <v-card color="white">
-            <v-card-title primary-title> Add New Item </v-card-title>
-            <v-form ref="newFood" lazy-validation @submit.prevent>
-              <v-text-field
-                class="mx-5 input"
-                v-model="input"
-                label="Item Name"
-                :rules="nameRules"
-                type="name"
-                required
-                shaped
-                @keyup.enter="addItem(input)"
-              />
-              <v-card-actions>
-                <v-btn color="success" @click="addItem(input)"> Confirm </v-btn>
-                <v-btn
-                  color="error"
-                  @click="
-                    inputMenu = false;
-                    input = '';
-                  "
-                >
-                  cancel
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card>
-        </v-dialog>
+        <AddItem></AddItem>
       </v-col>
     </v-row>
     <v-row>
@@ -53,38 +15,7 @@
           </template>
           <v-list>
             <v-list-item>
-              <div class="text-center">
-                <v-dialog
-                  v-model="deleteItemMenu"
-                  fullscreen
-                  width="300px"
-                  height="220px"
-                  :overlay="true"
-                  transition="dialog-transition"
-                >
-                  <template v-slot:activator="{ props }">
-                    <v-btn color="error" v-bind="props">
-                      <v-icon>mdi-delete</v-icon> Delete
-                    </v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title>
-                      Are you sure you want to delete this Item?
-                    </v-card-title>
-                    <v-card-text>
-                      Note: This action can not be undone
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn color="success" @click="deleteItem(item)">
-                        Yes
-                      </v-btn>
-                      <v-btn color="error" @click="deleteItemMenu = false">
-                        No
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </div>
+              <DeleteItem :item="item"></DeleteItem>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -94,18 +25,18 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from "vue";
 import { db } from "../firebase";
-import {
-  query,
-  where,
-  doc,
-  onSnapshot,
-  addDoc,
-  collection,
-  deleteDoc,
-} from "firebase/firestore";
+import { query, where, onSnapshot, collection } from "firebase/firestore";
 
 export default {
+  name: "ItemMenu",
+  components: {
+    AddItem: defineAsyncComponent(() => import("@prompts/admin/AddItem.vue")),
+    DeleteItem: defineAsyncComponent(() =>
+      import("@prompts/admin/DeleteItem.vue")
+    ),
+  },
   data() {
     return {
       food: [],
@@ -128,21 +59,6 @@ export default {
           });
         });
       });
-    },
-    async deleteItem(item) {
-      this.deleteItemMenu = false;
-      await deleteDoc(doc(db, `items/${item.id}`));
-    },
-    async addItem(item) {
-      let temp = await this.$refs.newFood.validate();
-      if (temp.valid) {
-        this.inputMenu = false;
-        this.input = "";
-        await addDoc(collection(db, "items"), {
-          name: item,
-          type: "food",
-        });
-      }
     },
   },
   mounted() {

@@ -4,7 +4,7 @@
       <h3>{{ name }}'s Tab</h3>
     </div>
     <v-row
-      v-if="$route.query.ref == 'admin'"
+      v-if="$route.params.from == 'admin'"
       justify="space-between"
       class="my-4"
     >
@@ -13,71 +13,18 @@
           <v-icon>mdi-shield-account</v-icon> Back to admin
         </v-btn>
       </router-link>
-      <div class="text-center">
-        <v-dialog
-          v-model="clearTabMenu"
-          scrollable
-          fullscreen
-          :overlay="true"
-          max-width="300px"
-          max-height="220px"
-          transition="dialog-transition"
-        >
-          <template v-slot:activator="{ props }">
-            <v-btn color="error" v-bind="props">
-              <v-icon>mdi-close-circle</v-icon> Clear All
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              Are you sure you want to clear the tab?
-            </v-card-title>
-            <v-card-text> Note: This action can not be undone </v-card-text>
-            <v-card-actions>
-              <v-btn color="success" @click="clearTab()"> Yes </v-btn>
-              <v-btn color="error" @click="clearTabMenu = false">No</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
+      <ClearTab></ClearTab>
     </v-row>
     <v-row v-else class="my-4">
       <v-col v-if="isAdmin">
-        <router-link to="/">
-          <v-btn color="info">Home</v-btn>
+        <router-link to="/admin">
+          <v-btn color="info"
+            ><v-icon>mdi-shield-account</v-icon> Admin Menu</v-btn
+          >
         </router-link>
       </v-col>
       <v-col>
-        <div class="text-center">
-          <v-dialog
-            v-model="addItemMenu"
-            scrollable
-            fullscreen
-            :overlay="true"
-            max-width="300px"
-            max-height="90%"
-            transition="dialog-transition"
-          >
-            <template v-slot:activator="{ props }">
-              <v-btn color="success" v-bind="props"> Add Item </v-btn>
-            </template>
-            <v-card>
-              <v-card-title> Add Item </v-card-title>
-              <v-btn
-                color="success"
-                v-for="item in items"
-                :key="item"
-                @click="addItem(item)"
-                class="ma-1"
-              >
-                {{ item.name }}
-              </v-btn>
-              <v-card-actions>
-                <v-btn color="error" @click="addItemMenu = false">Cancel</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
+        <AddItem :items="items" :tab="tab"></AddItem>
       </v-col>
     </v-row>
   </v-container>
@@ -88,12 +35,12 @@
         <v-table>
           <thead>
             <tr>
-              <th v-for="item in items" :key="item">{{ item.name }}s</th>
+              <th v-for="index in items" :key="item">{{ index.name }}s</th>
             </tr>
           </thead>
           <tbody>
-            <td v-for="total in total" :key="total">
-              {{ total }}
+            <td v-for="index in total" :key="index">
+              {{ index }}
             </td>
           </tbody>
         </v-table>
@@ -105,14 +52,22 @@
         <v-table>
           <thead>
             <tr>
-              <th class="text-left">Item</th>
-              <th class="text-left">Date</th>
+              <th class="text-center">Item</th>
+              <th class="text-center">Date</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in tab" :key="item">
-              <td>{{ item.name }}</td>
-              <td>{{ item.date }}</td>
+              <td class="text-center">{{ item.name }}</td>
+              <td class="text-center">{{ item.date }}</td>
+              <td v-if="isCurrentDate(item.date) && !$route.query.ref">
+                <DeleteItem
+                  :input="item"
+                  :tab="tab"
+                  :uid="this.$route.params.id"
+                ></DeleteItem>
+              </td>
             </tr>
           </tbody>
         </v-table>
@@ -122,27 +77,29 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from "vue";
+import { date } from "@utils/date";
 import { auth, db } from "../firebase";
-import {
-  doc,
-  query,
-  where,
-  collection,
-  updateDoc,
-  onSnapshot,
-} from "firebase/firestore";
-
+import { doc, query, where, collection, onSnapshot } from "firebase/firestore";
 export default {
   data() {
     return {
       tab: [],
       name: "",
+      item: "",
       items: [],
       isAdmin: false,
       showGrid: false,
       addItemMenu: false,
       clearTabMenu: false,
     };
+  },
+  components: {
+    AddItem: defineAsyncComponent(() => import("@prompts/items/AddItem.vue")),
+    DeleteItem: defineAsyncComponent(() =>
+      import("@prompts/items/DeleteItem.vue")
+    ),
+    ClearTab: defineAsyncComponent(() => import("@prompts/items/ClearTab.vue")),
   },
   computed: {
     total() {
@@ -159,8 +116,8 @@ export default {
   methods: {
     async init() {
       this.tab = [];
-      onSnapshot(doc(db, `staff/${this.$route.query.id}`), (doc) => {
-        if (doc.exists) {
+      onSnapshot(doc(db, `staff/${this.$route.params.id}`), (doc) => {
+        if (doc.exists()) {
           this.name = doc.data()?.name;
           this.tab = doc.data()?.tab;
           this.isAdmin = doc.data()?.isAdmin;
@@ -177,42 +134,8 @@ export default {
         });
       });
     },
-    async addItem(item) {
-      this.addItemMenu = false;
-      const docRef = doc(db, `staff/${this.$route.query.id}`);
-      let input = {
-        name: item.name,
-        date: this.getDate(),
-      };
-      this.tab.push(input);
-      await updateDoc(docRef, {
-        tab: this.tab,
-      });
-    },
-    async clearTab() {
-      this.clearTabMenu = false;
-      const docRef = doc(db, `staff/${this.$route.query.id}`);
-      await updateDoc(docRef, {
-        tab: [],
-      });
-    },
-    getDate() {
-      const current = new Date();
-      const date =
-        current.getFullYear() +
-        "-" +
-        (current.getMonth() + 1) +
-        "-" +
-        current.getDate();
-      const time =
-        current.getHours() +
-        ":" +
-        current.getMinutes() +
-        ":" +
-        current.getSeconds();
-      const dateTime = date + " " + time;
-
-      return dateTime;
+    isCurrentDate(input) {
+      return date.split(" ")[0] === input.split(" ")[0];
     },
   },
   async mounted() {

@@ -3,9 +3,9 @@
     <v-container grid-list-xs align="space-between">
       <v-row>
         <v-col>
-          <router-link to="/">
+          <router-link :to="`/user/${userID}`">
             <v-btn color="error" width="140" class="mb-5">
-              <v-icon>mdi-home</v-icon> Home
+              <v-icon>mdi-home</v-icon> Your Tab
             </v-btn>
           </router-link>
         </v-col>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { auth } from "../firebase";
 import StaffMenu from "../components/StaffMenu.vue";
 import ItemMenu from "../components/ItemMenu.vue";
 
@@ -49,6 +50,7 @@ export default {
   data() {
     return {
       active: "staff",
+      userID: auth.currentUser.uid,
     };
   },
   components: {
