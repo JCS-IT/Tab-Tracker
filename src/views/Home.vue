@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       loggedIn: false,
-      isAdmin: false,
+      admin: false,
       userID: "",
     };
   },
@@ -31,7 +31,7 @@ export default {
         await setDoc(docRef, {
           name: user.displayName,
           tab: [],
-          isAdmin: false,
+          admin: false,
         });
         this.$router.push(`/user/${user.uid}`);
       }
@@ -44,7 +44,7 @@ export default {
         this.init(user);
       } else {
         this.loggedIn = false;
-        this.isAdmin = false;
+        this.admin = false;
       }
     });
   },

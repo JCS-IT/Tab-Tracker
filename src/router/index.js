@@ -33,7 +33,7 @@ function loginRequired(to, from, next) {
 async function checkAdmin(to, from, next) {
   const docRef = doc(db, `staff/${auth?.currentUser?.uid}`);
   const docSnap = await getDoc(docRef);
-  if (docSnap.data()?.isAdmin) {
+  if (docSnap.data()?.admin) {
     next();
   } else {
     next("/");
