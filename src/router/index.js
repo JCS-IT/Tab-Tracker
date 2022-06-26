@@ -23,17 +23,12 @@ const routes = [
 ];
 
 function loginRequired(to, from, next) {
-  if (auth.currentUser) {
-    next();
-  } else {
-    next("/");
-  }
+  auth.currentUser ? next() : next("/");
 }
 
 async function checkAdmin(to, from, next) {
-  const docRef = doc(db, `staff/${auth?.currentUser?.uid}`);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.data()?.admin) {
+  const docSnap = await getDoc(doc(db, `staff/${auth.currentUser.uid}`));
+  if (docSnap.exists() && docSnap.data().admin) {
     next();
   } else {
     next("/");
