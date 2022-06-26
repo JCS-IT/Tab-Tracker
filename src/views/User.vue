@@ -99,7 +99,7 @@ export default {
     DeleteItem: defineAsyncComponent(() =>
       import("@prompts/items/DeleteItem.vue")
     ),
-    ClearTab: defineAsyncComponent(() => import("@prompts/items/ClearTab.vue")),
+    ClearTab: defineAsyncComponent(() => import("@prompts/admin/ClearTab.vue")),
   },
   computed: {
     total() {
