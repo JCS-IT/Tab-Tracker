@@ -16,7 +16,7 @@
       <ClearTab></ClearTab>
     </v-row>
     <v-row v-else class="my-4">
-      <v-col v-if="isAdmin">
+      <v-col v-if="admin">
         <router-link to="/admin">
           <v-btn color="info"
             ><v-icon>mdi-shield-account</v-icon> Admin Menu</v-btn
@@ -88,7 +88,7 @@ export default {
       name: "",
       item: "",
       items: [],
-      isAdmin: false,
+      admin: false,
       showGrid: false,
       addItemMenu: false,
       clearTabMenu: false,
@@ -120,7 +120,7 @@ export default {
         if (doc.exists()) {
           this.name = doc.data()?.name;
           this.tab = doc.data()?.tab;
-          this.isAdmin = doc.data()?.isAdmin;
+          this.admin = doc.data()?.admin;
         }
       });
       const q = query(collection(db, "items"), where("type", "==", "food"));
