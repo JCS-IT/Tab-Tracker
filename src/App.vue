@@ -45,9 +45,7 @@ export default {
           },
         ],
       };
-      setTimeout(() => {
-        ui.start("#firebaseui-auth-container", uiConfig);
-      }, 10);
+      ui.start("#firebaseui-auth-container", uiConfig);
     },
     logout() {
       auth.signOut();

@@ -6,18 +6,18 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import("../views/Home.vue"),
+    component: () => import("@views/Home.vue"),
   },
   {
     path: "/admin",
     name: "Admin",
-    component: () => import("../views/Admin.vue"),
+    component: () => import("@views/Admin.vue"),
     beforeEnter: loginRequired && checkAdmin,
   },
   {
-    path: "/user",
+    path: "/:from?/user/:id",
     name: "User",
-    component: () => import("../views/User.vue"),
+    component: () => import("@views/User.vue"),
     beforeEnter: loginRequired,
   },
 ];
