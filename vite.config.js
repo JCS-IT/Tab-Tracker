@@ -74,6 +74,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
+      "@prompts": path.resolve(__dirname, "src/components/prompts"),
+      "@utils": path.resolve(__dirname, "src/utils"),
+      "@views": path.resolve(__dirname, "src/views"),
     },
   },
   build: {
