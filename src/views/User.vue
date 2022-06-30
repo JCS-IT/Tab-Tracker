@@ -35,12 +35,12 @@
         <v-table>
           <thead>
             <tr>
-              <th v-for="index in items" :key="item">{{ index.name }}s</th>
+              <th v-for="index in items" :key="item">{{ index }}s</th>
             </tr>
           </thead>
           <tbody>
-            <td v-for="index in total" :key="index">
-              {{ index }}
+            <td v-for="(item, index) in total" :key="index">
+              {{ item }}
             </td>
           </tbody>
         </v-table>
@@ -60,8 +60,12 @@
           <tbody>
             <tr v-for="item in tab" :key="item">
               <td class="text-center">{{ item.name }}</td>
-              <td class="text-center">{{ item.date }}</td>
-              <td v-if="isCurrentDate(item.date) && !$route.query.ref">
+              <td class="text-center">
+                {{ item.date.toDate() }}
+              </td>
+              <td
+                v-if="isCurrentDate(item.date) && $route.params.from != 'admin'"
+              >
                 <DeleteItem
                   :input="item"
                   :tab="tab"
@@ -78,9 +82,8 @@
 
 <script>
 import { defineAsyncComponent } from "vue";
-import { date } from "@utils/date";
 import { auth, db } from "../firebase";
-import { doc, query, where, collection, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, Timestamp } from "firebase/firestore";
 export default {
   data() {
     return {
@@ -105,7 +108,7 @@ export default {
     total() {
       let total = {};
       this.items.forEach((item) => {
-        total[item.name] = 0;
+        total[item] = 0;
       });
       this.tab?.forEach((item) => {
         total[item.name]++;
@@ -118,29 +121,24 @@ export default {
       this.tab = [];
       onSnapshot(doc(db, `staff/${this.$route.params.id}`), (doc) => {
         if (doc.exists()) {
-          this.name = doc.data()?.name;
-          this.tab = doc.data()?.tab;
-          this.admin = doc.data()?.admin;
+          this.name = doc.data().name;
+          this.tab = doc.data().tab;
+          this.admin = doc.data().admin;
         }
       });
-      const q = query(collection(db, "items"), where("type", "==", "food"));
-      onSnapshot(q, (snapshot) => {
-        this.items = [];
-        snapshot.forEach((doc) => {
-          this.items.push({
-            id: doc.id,
-            name: doc.data().name,
-          });
-        });
-      });
+      const docSnap = await getDoc(doc(db, "items/foods"));
+      this.items = docSnap.data()?.items;
     },
     isCurrentDate(input) {
-      return date.split(" ")[0] === input.split(" ")[0];
+      return (
+        Timestamp.now().toDate().toDateString() ===
+        input.toDate().toDateString()
+      );
     },
   },
   async mounted() {
     auth.onAuthStateChanged((user) => {
-      if (user || this.$route.query.ref == "admin") {
+      if (user || this.$route.params.from === "admin") {
         this.init();
       } else {
         this.$router.push("/");

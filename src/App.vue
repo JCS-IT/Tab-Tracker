@@ -17,6 +17,7 @@
 import { auth } from "./firebase";
 import { GoogleAuthProvider } from "@firebase/auth";
 import "firebaseui";
+import { Timestamp } from "@firebase/firestore";
 
 export default {
   name: "App",
@@ -61,6 +62,7 @@ export default {
         this.loggedIn = false;
       }
     });
+    console.log(Timestamp.now().toDate().getFullYear());
   },
 };
 </script>

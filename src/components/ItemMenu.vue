@@ -2,20 +2,20 @@
   <v-container grid-list-xs>
     <v-row>
       <v-col align="center">
-        <AddItem></AddItem>
+        <AddItem :items="items"></AddItem>
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="item in food" :key="item">
+      <v-col v-for="item in items" :key="item">
         <v-menu>
           <template v-slot:activator="{ props }">
             <v-btn color="info" v-bind="props">
-              {{ item.name }}
+              {{ item }}
             </v-btn>
           </template>
           <v-list>
             <v-list-item>
-              <DeleteItem :item="item"></DeleteItem>
+              <DeleteItem :item="item" :items="items"></DeleteItem>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -27,7 +27,7 @@
 <script>
 import { defineAsyncComponent } from "vue";
 import { db } from "../firebase";
-import { query, where, onSnapshot, collection } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 export default {
   name: "ItemMenu",
@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      food: [],
+      items: [],
       input: "",
       props: false,
       nameRules: [(v) => !!v || "Name is required"],
@@ -49,15 +49,8 @@ export default {
   },
   methods: {
     async init() {
-      const q = query(collection(db, "items"), where("type", "==", "food"));
-      onSnapshot(q, (snapshot) => {
-        this.food = [];
-        snapshot.forEach((doc) => {
-          this.food.push({
-            id: doc.id,
-            name: doc.data().name,
-          });
-        });
+      onSnapshot(doc(db, "items/foods"), (snapshot) => {
+        this.items = snapshot.data().items;
       });
     },
   },

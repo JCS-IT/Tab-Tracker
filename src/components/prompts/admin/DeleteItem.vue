@@ -29,12 +29,13 @@
 
 <script>
 import { db } from "@/firebase";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 export default {
   name: "DeleteItem",
   props: {
-    item: Object,
+    items: Array,
+    item: String,
   },
   data() {
     return {
@@ -44,7 +45,9 @@ export default {
   methods: {
     async deleteItem(item) {
       this.deleteItemMenu = false;
-      await deleteDoc(doc(db, `items/${item.id}`));
+      await updateDoc(doc(db, "items/foods"), {
+        items: this.items.filter((i) => i !== item),
+      });
     },
   },
 };
