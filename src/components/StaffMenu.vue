@@ -1,5 +1,33 @@
 <template>
   <v-container align="center">
+    <v-row>
+      <v-col>
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-text-field v-model="search" placeholder="Search" v-bind="props">
+            </v-text-field>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(user, index) in searchForUser"
+              :key="index"
+              :value="index"
+            >
+              <v-list-item-title
+                @click="
+                  $router.push({
+                    name: 'User',
+                    params: { id: user.id, from: 'admin' },
+                  })
+                "
+              >
+                {{ user.name }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-col>
+    </v-row>
     <div v-for="letter in list" :key="letter" :id="letter">
       <v-card>
         <v-card-title primary-title>
@@ -9,7 +37,11 @@
           <v-col v-for="user in filterStaff(letter)" :key="user.displayName">
             <v-menu>
               <template v-slot:activator="{ props }">
-                <v-btn color="info" v-bind="props">
+                <v-btn
+                  color="info"
+                  v-bind="props"
+                  :id="user.name.split(' ')[1]"
+                >
                   {{ user.name }}
                 </v-btn>
               </template>
@@ -43,6 +75,7 @@ export default {
   data() {
     return {
       props: null,
+      search: "",
       deleteUserMenu: false,
       staffMenu: false,
       staff: [],
@@ -76,6 +109,21 @@ export default {
       ],
     };
   },
+  computed: {
+    searchForUser() {
+      let filter = [];
+      if (this.search.length > 0) {
+        this.staff.forEach((user) => {
+          if (user.name.toLowerCase().includes(this.search.toLowerCase())) {
+            filter.push(user);
+          }
+        });
+      } else {
+        filter = this.staff;
+      }
+      return filter;
+    },
+  },
   components: {
     DeleteUser: defineAsyncComponent(() =>
       import("@prompts/admin/DeleteUser.vue")
@@ -108,7 +156,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 * {
   text-decoration: none;
 }
