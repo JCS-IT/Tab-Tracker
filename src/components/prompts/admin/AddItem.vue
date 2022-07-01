@@ -42,17 +42,19 @@
 
 <script>
 import { db } from "@/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 export default {
   data() {
     return {
-      food: [],
       input: "",
       props: false,
       nameRules: [(v) => !!v || "Name is required"],
       inputMenu: false,
     };
+  },
+  props: {
+    items: Array,
   },
   methods: {
     async addItem(item) {
@@ -60,9 +62,8 @@ export default {
       if (temp.valid) {
         this.inputMenu = false;
         this.input = "";
-        await addDoc(collection(db, "items"), {
-          name: item,
-          type: "food",
+        await updateDoc(doc(db, "items/foods"), {
+          items: [...this.items, item],
         });
       }
     },

@@ -8,6 +8,7 @@
     </v-app-bar>
     <v-main>
       <router-view />
+
       <div id="firebaseui-auth-container"></div>
     </v-main>
   </v-app>
@@ -33,17 +34,16 @@ export default {
         ui = new firebaseui.auth.AuthUI(auth);
       }
       const uiConfig = {
-        callbacks: {
-          signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-            return false;
-          },
-        },
-        signInFlow: "popup",
+        signinFlow: "popup",
+        signInSuccessUrl: "/",
         signInOptions: [
           {
             provider: GoogleAuthProvider.PROVIDER_ID,
+            clientId:
+              "557593235569-a0jimberq7k4j3s90klgju18msi1fel0.apps.googleusercontent.com",
           },
         ],
+        credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
       };
       ui.start("#firebaseui-auth-container", uiConfig);
     },
@@ -59,6 +59,7 @@ export default {
         this.loggedIn = true;
       } else {
         this.loggedIn = false;
+        this.showAuthMenu();
       }
     });
   },

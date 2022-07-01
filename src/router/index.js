@@ -27,9 +27,13 @@ function loginRequired(to, from, next) {
 }
 
 async function checkAdmin(to, from, next) {
-  const docSnap = await getDoc(doc(db, `staff/${auth.currentUser.uid}`));
-  if (docSnap.exists() && docSnap.data().admin) {
-    next();
+  if (auth.currentUser) {
+    const docSnap = await getDoc(doc(db, `staff/${auth.currentUser.uid}`));
+    if (docSnap.exists() && docSnap.data().admin) {
+      next();
+    } else {
+      next("/");
+    }
   } else {
     next("/");
   }
