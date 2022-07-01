@@ -117,18 +117,6 @@ export default {
     },
   },
   methods: {
-    async init() {
-      this.tab = [];
-      onSnapshot(doc(db, `staff/${this.$route.params.id}`), (doc) => {
-        if (doc.exists()) {
-          this.name = doc.data().name;
-          this.tab = doc.data().tab;
-          this.admin = doc.data().admin;
-        }
-      });
-      const docSnap = await getDoc(doc(db, "items/foods"));
-      this.items = docSnap.data()?.items;
-    },
     isCurrentDate(input) {
       return (
         Timestamp.now().toDate().toDateString() ===
@@ -137,10 +125,24 @@ export default {
     },
   },
   async mounted() {
-    auth.onAuthStateChanged((user) => {
+    let unsubscribe = () => {};
+    auth.onAuthStateChanged(async (user) => {
       if (user || this.$route.params.from === "admin") {
-        this.init();
+        this.tab = [];
+        unsubscribe = onSnapshot(
+          doc(db, `staff/${this.$route.params.id}`),
+          (doc) => {
+            if (doc.exists()) {
+              this.name = doc.data().name;
+              this.tab = doc.data().tab;
+              this.admin = doc.data().admin;
+            }
+          }
+        );
+        const docSnap = await getDoc(doc(db, "items/foods"));
+        this.items = docSnap.data()?.items;
       } else {
+        unsubscribe();
         this.$router.push("/");
       }
     });
