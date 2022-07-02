@@ -1,7 +1,7 @@
 <template>
-  <v-container grid-list-xs>
+  <v-container grid-list-xs align="center">
     <v-row>
-      <v-col align="center">
+      <v-col>
         <AddItem :items="items"></AddItem>
       </v-col>
     </v-row>
