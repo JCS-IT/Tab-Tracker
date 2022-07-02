@@ -4,7 +4,7 @@
       <h3>{{ name }}'s Tab</h3>
     </div>
     <v-row
-      v-if="$route.params.from == 'admin'"
+      v-if="$route.params.from == 'admin' && admin"
       class="my-4"
       justify="space-between"
     >
@@ -121,8 +121,8 @@ export default {
     },
   },
   async mounted() {
+    let unsubscribe = () => {};
     auth.onAuthStateChanged(async (user) => {
-      let unsubscribe;
       if (user || this.$route.params.from === "admin") {
         this.tab = [];
         unsubscribe = onSnapshot(
