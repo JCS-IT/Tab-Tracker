@@ -40,6 +40,8 @@ export default {
         signInOptions: [
           {
             provider: GoogleAuthProvider.PROVIDER_ID,
+            clientID:
+              "557593235569-a0jimberq7k4j3s90klgju18msi1fel0.apps.googleusercontent.com",
           },
         ],
         credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,

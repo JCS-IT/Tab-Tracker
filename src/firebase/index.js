@@ -5,13 +5,13 @@ import { getAnalytics } from "firebase/analytics";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDhX5eDsEEpRbZXZ72kPNw6xaA09XkaMZ4",
-  authDomain: "jcs-tab-tracking.firebaseapp.com",
-  projectId: "jcs-tab-tracking",
-  storageBucket: "jcs-tab-tracking.appspot.com",
-  messagingSenderId: "906180988740",
-  appId: "1:906180988740:web:988062a6c76cef2c1fd111",
-  measurementId: "G-GHCSVHRGHN"
+  apiKey: "AIzaSyAlFp1mxhtzaCy16eXFKX9glqWDAiyS_hg",
+  authDomain: "jcs-tab-tracker.firebaseapp.com",
+  projectId: "jcs-tab-tracker",
+  storageBucket: "jcs-tab-tracker.appspot.com",
+  messagingSenderId: "557593235569",
+  appId: "1:557593235569:web:f48c54248eae89d86f4bd0",
+  measurementId: "G-KXRF1B2ZEJ"
 };
 
 // Initialize Firebase
