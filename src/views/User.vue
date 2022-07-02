@@ -4,7 +4,7 @@
       <h3>{{ name }}'s Tab</h3>
     </div>
     <v-row
-      v-if="$route.params.from == 'admin'"
+      v-if="$route.params.from == 'admin' && admin"
       class="my-4"
       justify="space-between"
     >
@@ -133,6 +133,7 @@ export default {
               this.tab = doc.data().tab;
               this.admin = doc.data().admin;
             }
+            this.tab.reverse();
           }
         );
         const docSnap = await getDoc(doc(db, "items/foods"));

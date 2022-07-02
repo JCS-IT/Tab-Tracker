@@ -40,7 +40,7 @@ export default {
         signInOptions: [
           {
             provider: GoogleAuthProvider.PROVIDER_ID,
-            clientId:
+            clientID:
               "557593235569-a0jimberq7k4j3s90klgju18msi1fel0.apps.googleusercontent.com",
           },
         ],

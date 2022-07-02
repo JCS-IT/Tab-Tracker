@@ -3,11 +3,7 @@
     <template v-slot:activator="{ props }">
       <v-btn icon v-bind="props">
         <v-avatar>
-          <v-img
-            referrerpolicy="no-referrer"
-            :src="user.photoURL"
-            alt="Avatar"
-          />
+          <v-img :src="user.photoURL" alt="Avatar" />
         </v-avatar>
       </v-btn>
     </template>
@@ -20,7 +16,7 @@
           <h3>{{ user.displayName }}</h3>
           <p class="text-caption mt-1">{{ user.email }}</p>
           <v-divider class="my-3" />
-          <v-btn rounded variant="text" @click="this.$emit('logout')">
+          <v-btn rounded variant="text" @click="$emit('logout')">
             logout
           </v-btn>
         </div>
