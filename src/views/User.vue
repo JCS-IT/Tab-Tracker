@@ -121,8 +121,8 @@ export default {
     },
   },
   async mounted() {
-    let unsubscribe = () => {};
     auth.onAuthStateChanged(async (user) => {
+      let unsubscribe;
       if (user || this.$route.params.from === "admin") {
         this.tab = [];
         unsubscribe = onSnapshot(
@@ -133,6 +133,7 @@ export default {
               this.tab = doc.data().tab;
               this.admin = doc.data().admin;
             }
+            this.tab.reverse();
           }
         );
         const docSnap = await getDoc(doc(db, "items/foods"));
