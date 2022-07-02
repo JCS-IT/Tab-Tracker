@@ -43,8 +43,8 @@
 
 <script>
 import { auth } from "../firebase";
-import StaffMenu from "../components/StaffMenu.vue";
-import ItemMenu from "../components/ItemMenu.vue";
+import StaffMenu from "@/components/admin/StaffMenu.vue";
+import ItemMenu from "@/components/admin/ItemMenu.vue";
 
 export default {
   data() {

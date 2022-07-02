@@ -1,5 +1,5 @@
 <template>
-  <v-container align="center">
+  <v-container>
     <v-row>
       <v-col>
         <v-menu>
@@ -8,18 +8,9 @@
             </v-text-field>
           </template>
           <v-list>
-            <v-list-item
-              v-for="(user, index) in searchForUser"
-              :key="index"
-              :value="index"
-            >
+            <v-list-item v-for="(user, index) in searchForUser" :key="index">
               <v-list-item-title
-                @click="
-                  $router.push({
-                    name: 'User',
-                    params: { id: user.id, from: 'admin' },
-                  })
-                "
+                @click="$router.push(`/admin/user/${user.id}`)"
               >
                 {{ user.name }}
               </v-list-item-title>
@@ -28,13 +19,17 @@
         </v-menu>
       </v-col>
     </v-row>
-    <div v-for="letter in list" :key="letter" :id="letter">
+    <v-container v-for="letter in list" :key="letter" class="mb-3">
       <v-card>
         <v-card-title primary-title>
           {{ letter.toUpperCase() }}
         </v-card-title>
         <v-row class="my-10">
-          <v-col v-for="user in filterStaff(letter)" :key="user.displayName">
+          <v-col
+            v-for="user in filterStaff(letter)"
+            :key="user.displayName"
+            align="center"
+          >
             <v-menu>
               <template v-slot:activator="{ props }">
                 <v-btn
@@ -48,9 +43,12 @@
               <v-list>
                 <v-list-item>
                   <router-link :to="`/admin/user/${user.id}`">
-                    <v-btn color="success" width="107px">
-                      <v-icon class="ml-n5 mr-1">mdi-account-hard-hat</v-icon>
-                      Go to
+                    <v-btn
+                      color="success"
+                      width="107px"
+                      prepend-icon="mdi-account-hard-hat"
+                    >
+                      Go To
                     </v-btn>
                   </router-link>
                 </v-list-item>
@@ -62,13 +60,13 @@
           </v-col>
         </v-row>
       </v-card>
-    </div>
+    </v-container>
   </v-container>
 </template>
 
 <script>
 import { defineAsyncComponent } from "vue";
-import { db } from "../firebase";
+import { db } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 export default {
   name: "staff menu",
@@ -137,6 +135,8 @@ export default {
           this.staff.push({
             id: doc.id,
             name: doc.data().name,
+            admin: doc.data().admin,
+            developer: doc.data()?.developer,
           });
         });
       });

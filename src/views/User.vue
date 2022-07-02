@@ -5,27 +5,23 @@
     </div>
     <v-row
       v-if="$route.params.from == 'admin'"
-      justify="space-between"
       class="my-4"
+      justify="space-between"
     >
       <router-link :to="`/admin`">
-        <v-btn color="primary" class="px-5">
-          <v-icon>mdi-shield-account</v-icon> Back to admin
+        <v-btn color="primary" class="px-5" prepend-icon="mdi-shield-account">
+          Back to admin
         </v-btn>
       </router-link>
       <ClearTab></ClearTab>
     </v-row>
-    <v-row v-else class="my-4">
-      <v-col v-if="admin">
-        <router-link to="/admin">
-          <v-btn color="info"
-            ><v-icon>mdi-shield-account</v-icon> Admin Menu</v-btn
-          >
-        </router-link>
-      </v-col>
-      <v-col>
-        <AddItem :items="items" :tab="tab"></AddItem>
-      </v-col>
+    <v-row v-else class="my-4" justify="space-between">
+      <AddItem :items="items" :tab="tab"></AddItem>
+      <router-link to="/admin" v-if="admin">
+        <v-btn color="info" prepend-icon="mdi-shield-account">
+          Admin Menu
+        </v-btn>
+      </router-link>
     </v-row>
   </v-container>
   <v-container>

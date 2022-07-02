@@ -50,10 +50,62 @@ export default defineConfig({
       },
       workbox: {
         sourcemap: true,
-      },
-      devOptions: {
-        enabled: false,
-        type: "module",
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              },
+            }
+          },
+          // cache google profile images
+          {
+            urlPattern: /^https:\/\/www.googleapis.com\/plus\/v1\/people\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-profile-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/(.*\.googleusercontent\.com\/.*)/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-profile-images',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 30 // <== 1 month
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              },
+            }
+          }
+        ],
       },
     }),
     mkcert(),

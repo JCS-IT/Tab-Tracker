@@ -1,14 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" prominent>
+    <v-app-bar color="primary">
       <v-toolbar-title>JCS Tabs</v-toolbar-title>
       <v-spacer />
-      <v-btn color="info" @click="showAuthMenu" v-if="!loggedIn"> Login </v-btn>
-      <v-btn v-else @click="logout" color="white">Logout</v-btn>
+      <user-menu v-if="loggedIn" :user="user" @logout="logout()"></user-menu>
     </v-app-bar>
     <v-main>
       <router-view />
-
       <div id="firebaseui-auth-container"></div>
     </v-main>
   </v-app>
@@ -18,13 +16,16 @@
 import { auth } from "./firebase";
 import { GoogleAuthProvider } from "@firebase/auth";
 import "firebaseui";
+import UserMenu from "./components/UserMenu.vue";
 
 export default {
   name: "App",
+  components: { UserMenu },
   data() {
     return {
       loginMenu: false,
       loggedIn: false,
+      user: {},
     };
   },
   methods: {
@@ -57,6 +58,11 @@ export default {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.loggedIn = true;
+        this.user = {
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+        };
       } else {
         this.loggedIn = false;
         this.showAuthMenu();

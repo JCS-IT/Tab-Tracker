@@ -4,13 +4,18 @@
       v-model="deleteUserMenu"
       fullscreen
       :overlay="true"
-      max-width="300px"
-      max-height="220px"
+      max-width="450px"
+      max-height="320px"
       transition="dialog-transition"
     >
       <template v-slot:activator="{ props }">
-        <v-btn color="error" v-bind="props" width="107px">
-          <v-icon class="ml-n2 mr-1">mdi-nuke</v-icon>
+        <v-btn
+          color="error"
+          v-bind="props"
+          width="107px"
+          prepend-icon="mdi-nuke"
+          :disabled="user.admin"
+        >
           Delete
         </v-btn>
       </template>
@@ -18,6 +23,10 @@
         <v-card-title>
           Are you sure you want to delete this user?
         </v-card-title>
+        <v-card-text>
+          deleting this user will result in them not showing up in this list
+          until they remake their account
+        </v-card-text>
         <v-card-text> Note: This action can not be undone </v-card-text>
         <v-card-actions>
           <v-btn color="success" @click="deleteUser(user.id)"> Yes </v-btn>
