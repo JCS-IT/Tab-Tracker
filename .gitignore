@@ -31,3 +31,6 @@ coverage
 /firestore
 firebase-export-*
 .firebase
+
+# service worker dev
+/dev-dist

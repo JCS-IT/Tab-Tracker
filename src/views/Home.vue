@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { auth, db } from "../firebase";
+import { auth, db } from "@/firebase";
 import { doc, setDoc, getDoc } from "@firebase/firestore";
 
 export default {

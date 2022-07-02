@@ -26,7 +26,7 @@
 
 <script>
 import { defineAsyncComponent } from "vue";
-import { db } from "../firebase";
+import { db } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
 export default {
