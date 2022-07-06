@@ -8,8 +8,12 @@ import { registerSW } from "virtual:pwa-register";
 import { createPinia } from "pinia";
 
 const updateSW = registerSW({
-  onNeedRefresh() { },
-  onOfflineReady() { },
+  onNeedRefresh() {
+    window.location.reload();
+  },
+  onOfflineReady() {
+    console.log("SW: Offline ready");
+  },
 });
 
 loadFonts();
