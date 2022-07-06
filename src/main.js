@@ -7,8 +7,12 @@ import "firebaseui/dist/firebaseui.css";
 import { registerSW } from "virtual:pwa-register";
 
 const updateSW = registerSW({
-  onNeedRefresh() { },
-  onOfflineReady() { },
+  onNeedRefresh() {
+    window.location.reload();
+  },
+  onOfflineReady() {
+    console.log("SW: Offline ready");
+  },
 });
 
 loadFonts();
