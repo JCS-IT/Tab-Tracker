@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import vuetify from "@vuetify/vite-plugin";
+import vuetify from "vite-plugin-vuetify";
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from 'vite-plugin-mkcert'
 import { terser } from 'rollup-plugin-terser';

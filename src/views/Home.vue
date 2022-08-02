@@ -9,9 +9,11 @@
 </template>
 
 <script>
+import { useDataStore } from "../stores/tabs";
 import { auth, db } from "@/firebase";
 import { doc, setDoc, getDoc } from "@firebase/firestore";
 
+const store = useDataStore();
 export default {
   data() {
     return {
@@ -22,9 +24,6 @@ export default {
   },
   methods: {
     async init(user) {
-      const docRef = doc(db, `staff/${user.uid}`);
-      const docSnap = await getDoc(docRef);
-
       if (docSnap.exists()) {
         this.$router.push(`/user/${user.uid}`);
       } else {
