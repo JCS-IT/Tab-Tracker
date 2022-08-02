@@ -5,6 +5,7 @@ import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
 import "firebaseui/dist/firebaseui.css";
 import { registerSW } from "virtual:pwa-register";
+import { createPinia } from "pinia";
 
 const updateSW = registerSW({
   onNeedRefresh() { },
@@ -13,4 +14,8 @@ const updateSW = registerSW({
 
 loadFonts();
 
-createApp(App).use(router).use(vuetify).mount("#app");
+const app = createApp(App)
+app.use(router)
+app.use(vuetify)
+app.use(createPinia())
+app.mount("#app");
