@@ -3,7 +3,6 @@ import { useDataStore } from "./stores/tabs.vue";
 
 const store = useDataStore();
 </script>
-
 <template>
   <v-app>
     <v-app-bar color="primary">
