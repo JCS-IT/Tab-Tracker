@@ -23,3 +23,5 @@ app.use(router)
 app.use(vuetify)
 app.use(createPinia())
 app.mount("#app");
+
+console.log("current enviroment: ", process.env.NODE_ENV)
