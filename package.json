@@ -1,10 +1,11 @@
 {
   "name": "tabs",
-  "version": "1.3.6",
+  "version": "0.0.0",
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "preview": "vite preview --port 5050"
+    "preview": "vite preview --port 5050",
+    "emulators": "firebase emulators:start"
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
