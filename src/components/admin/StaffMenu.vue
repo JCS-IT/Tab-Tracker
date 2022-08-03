@@ -26,7 +26,7 @@
         </v-card-title>
         <v-row class="my-10">
           <v-col
-            v-for="user in filterStaff(letter)"
+            v-for="user in filterUsers(letter)"
             :key="user.displayName"
             align="center"
           >
@@ -69,14 +69,14 @@ import { defineAsyncComponent } from "vue";
 import { db } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 export default {
-  name: "staff menu",
+  name: "users menu",
   data() {
     return {
       props: null,
       search: "",
       deleteUserMenu: false,
-      staffMenu: false,
-      staff: [],
+      usersMenu: false,
+      users: [],
       list: [
         "a",
         "b",
@@ -111,13 +111,13 @@ export default {
     searchForUser() {
       let filter = [];
       if (this.search.length > 0) {
-        this.staff.forEach((user) => {
+        this.users.forEach((user) => {
           if (user.name.toLowerCase().includes(this.search.toLowerCase())) {
             filter.push(user);
           }
         });
       } else {
-        filter = this.staff;
+        filter = this.users;
       }
       return filter;
     },
@@ -129,10 +129,10 @@ export default {
   },
   methods: {
     async init() {
-      onSnapshot(collection(db, "staff"), (snapshot) => {
-        this.staff = [];
+      onSnapshot(collection(db, "users"), (snapshot) => {
+        this.users = [];
         snapshot.forEach((doc) => {
-          this.staff.push({
+          this.users.push({
             id: doc.id,
             name: doc.data().name,
             admin: doc.data().admin,
@@ -141,8 +141,8 @@ export default {
         });
       });
     },
-    filterStaff(letter) {
-      return this.staff?.filter((person) => {
+    filterUsers(letter) {
+      return this.users?.filter((person) => {
         return person.name
           .split(" ")[1]
           ?.toUpperCase()

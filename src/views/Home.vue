@@ -9,9 +9,8 @@
 </template>
 
 <script>
-import { useDataStore } from "../stores/tabs";
-import { auth, db } from "@/firebase";
-import { doc, setDoc, getDoc } from "@firebase/firestore";
+import { useDataStore } from "../stores/tabs.vue";
+import { auth } from "@/firebase";
 
 const store = useDataStore();
 export default {
@@ -19,32 +18,16 @@ export default {
     return {
       loggedIn: false,
       admin: false,
-      userID: "",
     };
-  },
-  methods: {
-    async init(user) {
-      if (docSnap.exists()) {
-        this.$router.push(`/user/${user.uid}`);
-      } else {
-        await setDoc(docRef, {
-          name: user.displayName,
-          tab: [],
-          admin: false,
-        });
-        this.$router.push(`/user/${user.uid}`);
-      }
-    },
   },
   async mounted() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.loggedIn = true;
-        this.init(user);
       } else {
         this.loggedIn = false;
-        this.admin = false;
       }
+      this.admin = auth.currentUser.admin;
     });
   },
 };

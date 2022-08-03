@@ -40,7 +40,7 @@ export default {
   methods: {
     async clearTab() {
       this.clearTabMenu = false;
-      const docRef = doc(db, `staff/${this.$route.params.id}`);
+      const docRef = doc(db, `users/${this.$route.params.id}`);
       await updateDoc(docRef, {
         tab: [],
       });

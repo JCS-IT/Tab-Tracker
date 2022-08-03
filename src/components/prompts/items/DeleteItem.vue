@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     async deleteItem() {
-      const docRef = doc(db, `staff/${this.$route.params.id}`);
+      const docRef = doc(db, `users/${this.$route.params.id}`);
       this.tab.indexOf(this.input) > -1
         ? this.tab.splice(this.tab.indexOf(this.input), 1)
         : null;
