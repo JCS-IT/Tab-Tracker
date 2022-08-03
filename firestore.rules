@@ -1,18 +1,27 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function getAdmin() {
-      return request.auth != null && get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.admin
+  	function checkEmail() {
+    	return request.auth.token.email.matches('.*@educbe[.]ca$') || request.auth.token.email.matches('leaderbotxlol@gmail.com')
     }
-    match /staff/{userId} {
-      allow read: if request.auth.uid == userId || getAdmin();
-      allow create: if request.auth.uid == userId;
-      allow update: if (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['tab']));
-      allow delete: if getAdmin();
+    function checkAdmin() {
+      return checkEmail() && request.auth != null && request.auth.token.admin
     }
-    match /items/{item} {
-      allow read: if true;
-      allow write: if request.auth != null && getAdmin();
+    match /users/{userId} {
+      allow read: if request.auth.uid == userId || checkAdmin();
+				// allow create: if request.auth.uid == userId &&
+				// checkEmail() &&
+				// request.resource.data.name is string &&
+				// request.resource.data.tab is list;
+      allow update: if
+      	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(['tab'])) &&
+      	request.resource.data.tab is list;
+      allow delete: if checkAdmin();
+    }
+    match /items/foods {
+      allow read: if request.auth != null;
+      allow update: if checkAdmin() &&
+        request.resource.data.items is list;
     }
   }
 }
