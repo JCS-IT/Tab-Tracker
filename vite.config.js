@@ -27,7 +27,7 @@ export default defineConfig({
         short_name: "JCS Tabs",
         start_url: ".",
         display: "standalone",
-        description: "Helps staff keep track of their tab",
+        description: "Helps users keep track of their tab",
         theme_color: "#ffffff",
         icons: [
           {
