@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { useDataStore } from "../stores/tabs.vue";
 import { defineAsyncComponent } from "vue";
 import { auth, db } from "../firebase";
 import { doc, getDoc, onSnapshot, Timestamp } from "firebase/firestore";
@@ -121,23 +122,23 @@ export default {
     },
   },
   async mounted() {
+    const dataStore = useDataStore();
+
     let unsubscribe = () => {};
     auth.onAuthStateChanged(async (user) => {
       if (user || this.$route.params.from === "admin") {
         this.tab = [];
         unsubscribe = onSnapshot(
-          doc(db, `staff/${this.$route.params.id}`),
+          doc(db, `users/${this.$route.params.id}`),
           (doc) => {
             if (doc.exists()) {
               this.name = doc.data().name;
               this.tab = doc.data().tab;
-              this.admin = doc.data().admin;
+              this.admin = auth.currentUser.admin;
             }
             this.tab.reverse();
           }
         );
-        const docSnap = await getDoc(doc(db, "items/foods"));
-        this.items = docSnap.data()?.items;
       } else {
         unsubscribe();
         this.$router.push("/");

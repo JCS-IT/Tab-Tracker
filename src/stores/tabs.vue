@@ -7,10 +7,7 @@ export const useDataStore = defineStore({
   id: "items",
   state: () => ({
     items: [],
-    user: {
-      name: "",
-      tab: "",
-    },
+    user: null,
   }),
   getters: {
     getItems() {
@@ -18,17 +15,23 @@ export const useDataStore = defineStore({
         this.items = snapshot.data().items;
       });
     },
-    getCurrentUser() {
-      onSnapshot(doc(db, "staff", auth.currentUser.uid), (snapshot) => {
-        if (snapshot.exists()) {
-        this.user.name = snapshot.data().name;
-        this.user.tab = snapshot.data().tab;
+    getUser() {
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          onSnapshot(doc(db, "users", user.uid), async (snapshot) => {
+            if (snapshot.exists()) {
+              console.log("User data: ", snapshot.data());
+              this.user = snapshot.data();
+            } else {
+              await setDoc(docRef, {
+                name: user.displayName,
+                tab: [],
+                admin: false,
+              });
+            }
+          });
         } else {
-          await setDoc(docRef, {
-          name: user.displayName,
-          tab: [],
-          admin: false,
-        });
+          this.user = null;
         }
       });
     },

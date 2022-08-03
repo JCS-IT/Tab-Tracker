@@ -53,7 +53,7 @@ export default {
   methods: {
     async deleteUser(id) {
       this.deleteUserMenu = false;
-      await deleteDoc(doc(db, `staff/${id}`));
+      await deleteDoc(doc(db, `users/${id}`));
     },
     cancel() {
       this.deleteUserMenu = false;

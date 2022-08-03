@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { auth, db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { auth } from "../firebase";
 
 const routes = [
   {
@@ -28,8 +27,7 @@ function loginRequired(to, from, next) {
 
 async function checkAdmin(to, from, next) {
   if (auth.currentUser) {
-    const docSnap = await getDoc(doc(db, `staff/${auth.currentUser.uid}`));
-    if (docSnap.exists() && docSnap.data().admin) {
+    if (auth.currentUser.admin) {
       next();
     } else {
       next("/");

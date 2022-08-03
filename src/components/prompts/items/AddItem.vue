@@ -48,7 +48,7 @@ export default {
   methods: {
     async addItem(item) {
       this.addItemMenu = false;
-      const docRef = doc(db, `staff/${this.$route.params.id}`);
+      const docRef = doc(db, `users/${this.$route.params.id}`);
       let input = {
         name: item,
         date: Timestamp.now(),
