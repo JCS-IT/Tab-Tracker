@@ -77,14 +77,10 @@
 </template>
 
 <script>
-<<<<<<< Updated upstream
-import { useDataStore } from "../stores/tabs.vue";
-import { defineAsyncComponent } from "vue";
-=======
 import { defineAsyncComponent, defineComponent } from "vue";
->>>>>>> Stashed changes
 import { auth, db } from "../firebase";
-import { doc, getDoc, onSnapshot, Timestamp } from "firebase/firestore";
+import { doc, onSnapshot, Timestamp } from "firebase/firestore";
+
 export default defineComponent({
   data() {
     return {
@@ -99,11 +95,15 @@ export default defineComponent({
     };
   },
   components: {
-    AddItem: defineAsyncComponent(() => import("@prompts/items/AddItem.vue")),
-    DeleteItem: defineAsyncComponent(() =>
-      import("@prompts/items/DeleteItem.vue")
+    AddItem: defineAsyncComponent(() =>
+      import("@/components/prompts/items/AddItem.vue")
     ),
-    ClearTab: defineAsyncComponent(() => import("@prompts/admin/ClearTab.vue")),
+    DeleteItem: defineAsyncComponent(() =>
+      import("@/components/prompts/items/DeleteItem.vue")
+    ),
+    ClearTab: defineAsyncComponent(() =>
+      import("@/components/prompts/admin/ClearTab.vue")
+    ),
   },
   computed: {
     total() {
@@ -126,8 +126,6 @@ export default defineComponent({
     },
   },
   async mounted() {
-    const dataStore = useDataStore();
-
     let unsubscribe = () => {};
     auth.onAuthStateChanged(async (user) => {
       if (user || this.$route.params.from === "admin") {
@@ -138,11 +136,13 @@ export default defineComponent({
             if (doc.exists()) {
               this.name = doc.data().name;
               this.tab = doc.data().tab;
-              this.admin = auth.currentUser.admin;
             }
             this.tab.reverse();
           }
         );
+        user.getIdTokenResult().then((idTokenResult) => {
+          this.admin = idTokenResult.claims.admin;
+        });
       } else {
         unsubscribe();
         this.$router.push("/");

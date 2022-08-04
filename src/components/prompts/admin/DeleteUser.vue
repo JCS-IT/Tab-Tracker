@@ -40,7 +40,8 @@
 <script>
 import { db } from "@/firebase";
 import { doc, deleteDoc } from "firebase/firestore";
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   name: "DeleteUser",
   props: {
     user: Object,
@@ -59,5 +60,5 @@ export default {
       this.deleteUserMenu = false;
     },
   },
-};
+});
 </script>

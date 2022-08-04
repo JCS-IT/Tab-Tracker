@@ -4,8 +4,8 @@ import vuetify from "vite-plugin-vuetify";
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from 'vite-plugin-mkcert'
 import { terser } from 'rollup-plugin-terser';
-import { htmlPurge } from 'vite-plugin-html-purgecss';
-import 'path'
+import htmlPurge from 'vite-plugin-html-purgecss';
+import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
   server: { https: true },
@@ -16,6 +16,7 @@ export default defineConfig({
     }),
     htmlPurge(),
     VitePWA({
+      injectRegister: 'auto',
       registerType: "autoUpdate",
       includeAssets: [
         "favicon.svg",
@@ -126,10 +127,7 @@ export default defineConfig({
   define: { "process.env": {} },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
-      "@prompts": path.resolve(__dirname, "src/components/prompts"),
-      "@utils": path.resolve(__dirname, "src/utils"),
-      "@views": path.resolve(__dirname, "src/views"),
+      "@": fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   build: {

@@ -1,8 +1,3 @@
-<script setup>
-import { useDataStore } from "./stores/tabs.vue";
-
-const store = useDataStore();
-</script>
 <template>
   <v-app>
     <v-app-bar color="primary">
@@ -11,7 +6,7 @@ const store = useDataStore();
       <user-menu v-if="loggedIn" :user="user" @logout="logout()"></user-menu>
     </v-app-bar>
     <v-main>
-      <!-- <router-view /> -->
+      <router-view />
       <div id="firebaseui-auth-container"></div>
     </v-main>
   </v-app>
@@ -21,7 +16,7 @@ const store = useDataStore();
 import { defineComponent } from "vue";
 import { auth } from "./firebase";
 import { GoogleAuthProvider } from "@firebase/auth";
-import "firebaseui";
+import * as firebaseui from "firebaseui";
 import UserMenu from "./components/UserMenu.vue";
 
 export default defineComponent({
