@@ -34,7 +34,8 @@
 <script>
 import { db } from "@/firebase";
 import { doc, Timestamp, updateDoc } from "firebase/firestore";
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   name: "AddItem",
   props: {
     items: Array,
@@ -59,5 +60,5 @@ export default {
       });
     },
   },
-};
+});
 </script>

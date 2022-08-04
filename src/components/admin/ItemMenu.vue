@@ -25,16 +25,18 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, defineComponent } from "vue";
 import { db } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
-export default {
+export default defineComponent({
   name: "ItemMenu",
   components: {
-    AddItem: defineAsyncComponent(() => import("@prompts/admin/AddItem.vue")),
+    AddItem: defineAsyncComponent(() =>
+      import("@/components/prompts/admin/AddItem.vue")
+    ),
     DeleteItem: defineAsyncComponent(() =>
-      import("@prompts/admin/DeleteItem.vue")
+      import("@/components/prompts/admin/DeleteItem.vue")
     ),
   },
   data() {
@@ -57,5 +59,5 @@ export default {
   mounted() {
     this.init();
   },
-};
+});
 </script>

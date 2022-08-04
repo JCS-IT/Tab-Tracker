@@ -30,8 +30,9 @@
 <script>
 import { db } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "DeleteItem",
   props: {
     input: Object,
@@ -55,5 +56,5 @@ export default {
       this.deleteItemMenu = false;
     },
   },
-};
+});
 </script>

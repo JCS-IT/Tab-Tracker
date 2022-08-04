@@ -13,13 +13,13 @@
       <v-row>
         <v-col>
           <v-btn
-            :color="active == 'users' ? 'success' : 'info'"
-            @click="active = 'users'"
+            :color="active == 'staff' ? 'success' : 'info'"
+            @click="active = 'staff'"
             width="140"
             class="mb-5"
           >
             <v-icon>mdi-account</v-icon>
-            Users Menu
+            Staff Menu
           </v-btn>
         </v-col>
       </v-row>
@@ -37,24 +37,24 @@
       </v-row>
     </v-container>
   </v-navigation-drawer>
-  <UsersMenu v-if="active == 'users'" />
+  <StaffMenu v-if="active == 'staff'" />
   <ItemMenu v-if="active == 'item'" />
 </template>
 
 <script>
 import { auth } from "../firebase";
-import UsersMenu from "@/components/admin/UsersMenu.vue";
+import StaffMenu from "/src/components/admin/StaffMenu.vue";
 import ItemMenu from "@/components/admin/ItemMenu.vue";
 
 export default {
   data() {
     return {
-      active: "users",
+      active: "staff",
       userID: auth.currentUser.uid,
     };
   },
   components: {
-    UsersMenu,
+    StaffMenu,
     ItemMenu,
   },
 };

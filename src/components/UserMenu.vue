@@ -26,7 +26,8 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   name: "UserMenu",
   props: {
     user: {
@@ -34,5 +35,5 @@ export default {
       required: true,
     },
   },
-};
+});
 </script>

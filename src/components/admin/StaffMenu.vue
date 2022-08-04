@@ -65,10 +65,11 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, defineComponent } from "vue";
 import { db } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
-export default {
+
+export default defineComponent({
   name: "users menu",
   data() {
     return {
@@ -124,7 +125,7 @@ export default {
   },
   components: {
     DeleteUser: defineAsyncComponent(() =>
-      import("@prompts/admin/DeleteUser.vue")
+      import("@/components/prompts/admin/DeleteUser.vue")
     ),
   },
   methods: {
@@ -153,7 +154,7 @@ export default {
   mounted() {
     this.init();
   },
-};
+});
 </script>
 
 <style lang="scss">

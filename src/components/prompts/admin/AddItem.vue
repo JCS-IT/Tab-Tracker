@@ -44,7 +44,8 @@
 import { db } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   data() {
     return {
       input: "",
@@ -68,5 +69,5 @@ export default {
       }
     },
   },
-};
+});
 </script>
