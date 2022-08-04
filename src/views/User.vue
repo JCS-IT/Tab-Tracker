@@ -77,11 +77,15 @@
 </template>
 
 <script>
+<<<<<<< Updated upstream
 import { useDataStore } from "../stores/tabs.vue";
 import { defineAsyncComponent } from "vue";
+=======
+import { defineAsyncComponent, defineComponent } from "vue";
+>>>>>>> Stashed changes
 import { auth, db } from "../firebase";
 import { doc, getDoc, onSnapshot, Timestamp } from "firebase/firestore";
-export default {
+export default defineComponent({
   data() {
     return {
       tab: [],
@@ -145,5 +149,5 @@ export default {
       }
     });
   },
-};
+});
 </script>

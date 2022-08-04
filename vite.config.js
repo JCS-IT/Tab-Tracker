@@ -4,8 +4,8 @@ import vuetify from "vite-plugin-vuetify";
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from 'vite-plugin-mkcert'
 import { terser } from 'rollup-plugin-terser';
-
-const path = require("path");
+import { htmlPurge } from 'vite-plugin-html-purgecss';
+import 'path'
 
 export default defineConfig({
   server: { https: true },
@@ -14,6 +14,7 @@ export default defineConfig({
     vuetify({
       autoImport: true,
     }),
+    htmlPurge(),
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: [

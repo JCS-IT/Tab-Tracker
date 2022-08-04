@@ -18,12 +18,13 @@ const store = useDataStore();
 </template>
 
 <script>
+import { defineComponent } from "vue";
 import { auth } from "./firebase";
 import { GoogleAuthProvider } from "@firebase/auth";
 import "firebaseui";
 import UserMenu from "./components/UserMenu.vue";
 
-export default {
+export default defineComponent({
   name: "App",
   components: { UserMenu },
   data() {
@@ -74,7 +75,7 @@ export default {
       }
     });
   },
-};
+});
 </script>
 
 <style>
