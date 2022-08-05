@@ -63,8 +63,8 @@ export default defineComponent({
       if (temp.valid) {
         this.inputMenu = false;
         this.input = "";
-        await updateDoc(doc(db, "items/foods"), {
-          items: [...this.items, item],
+        await updateDoc(doc(db, "admin/items"), {
+          food: [...this.items, item],
         });
       }
     },

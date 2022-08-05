@@ -46,8 +46,8 @@ export default defineComponent({
   methods: {
     async deleteItem(item) {
       this.deleteItemMenu = false;
-      await updateDoc(doc(db, "items/foods"), {
-        items: this.items.filter((i) => i !== item),
+      await updateDoc(doc(db, "admin/items"), {
+        food: this.items.filter((i) => i !== item),
       });
     },
   },

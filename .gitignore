@@ -36,3 +36,4 @@ firebase-export-*
 # service worker dev
 /dev-dist
 /package-lock.json
+/jcs-tab-tracker-*.json

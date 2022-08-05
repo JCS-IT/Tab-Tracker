@@ -42,7 +42,7 @@
               </template>
               <v-list>
                 <v-list-item>
-                  <router-link :to="`/admin/user/${user.id}`">
+                  <router-link :to="`/admin/user/${user.uid}`">
                     <v-btn
                       color="success"
                       width="107px"
@@ -66,8 +66,8 @@
 
 <script>
 import { defineAsyncComponent, defineComponent } from "vue";
-import { db } from "@/firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { auth, db } from "@/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
 
 export default defineComponent({
   name: "users menu",
@@ -129,19 +129,6 @@ export default defineComponent({
     ),
   },
   methods: {
-    async init() {
-      onSnapshot(collection(db, "users"), (snapshot) => {
-        this.users = [];
-        snapshot.forEach((doc) => {
-          this.users.push({
-            id: doc.id,
-            name: doc.data().name,
-            admin: doc.data().admin,
-            developer: doc.data()?.developer,
-          });
-        });
-      });
-    },
     filterUsers(letter) {
       return this.users?.filter((person) => {
         return person.name
@@ -151,8 +138,17 @@ export default defineComponent({
       });
     },
   },
-  mounted() {
-    this.init();
+  async mounted() {
+    let unsubscribe = () => {};
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        unsubscribe = onSnapshot(doc(db, "admin/users"), (doc) => {
+          this.users = doc.data().index;
+        });
+      } else {
+        unsubscribe();
+      }
+    });
   },
 });
 </script>

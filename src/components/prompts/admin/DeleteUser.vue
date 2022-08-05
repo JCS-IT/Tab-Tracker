@@ -29,7 +29,7 @@
         </v-card-text>
         <v-card-text> Note: This action can not be undone </v-card-text>
         <v-card-actions>
-          <v-btn color="success" @click="deleteUser(user.id)"> Yes </v-btn>
+          <v-btn color="success" @click="deleteUser(user.uid)"> Yes </v-btn>
           <v-btn color="error" @click="cancel()"> No </v-btn>
         </v-card-actions>
       </v-card>
@@ -38,8 +38,7 @@
 </template>
 
 <script>
-import { db } from "@/firebase";
-import { doc, deleteDoc } from "firebase/firestore";
+import { functions } from "@/firebase";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "DeleteUser",
@@ -52,9 +51,9 @@ export default defineComponent({
     };
   },
   methods: {
-    async deleteUser(id) {
+    async deleteUser(uid) {
       this.deleteUserMenu = false;
-      await deleteDoc(doc(db, `users/${id}`));
+      functions.httpsCallable("deleteUser")({ uid });
     },
     cancel() {
       this.deleteUserMenu = false;
