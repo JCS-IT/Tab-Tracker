@@ -26,7 +26,7 @@
 
 <script>
 import { defineAsyncComponent, defineComponent } from "vue";
-import { db } from "@/firebase";
+import { auth, db } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
 export default defineComponent({
@@ -51,8 +51,15 @@ export default defineComponent({
   },
   methods: {
     async init() {
-      onSnapshot(doc(db, "items/foods"), (snapshot) => {
-        this.items = snapshot.data().items;
+      auth.onAuthStateChanged((user) => {
+        let unsubscribe = () => {};
+        if (user) {
+          unsubscribe = onSnapshot(doc(db, "admin/items"), (snapshot) => {
+            this.items = snapshot.data().food;
+          });
+        } else {
+          unsubscribe();
+        }
       });
     },
   },

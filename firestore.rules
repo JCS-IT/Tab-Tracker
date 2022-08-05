@@ -9,19 +9,18 @@ service cloud.firestore {
     }
     match /users/{userId} {
       allow read: if request.auth.uid == userId || checkAdmin();
-				// allow create: if request.auth.uid == userId &&
-				// checkEmail() &&
-				// request.resource.data.name is string &&
-				// request.resource.data.tab is list;
       allow update: if
       	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(['tab'])) &&
       	request.resource.data.tab is list;
       allow delete: if checkAdmin();
     }
-    match /items/foods {
+    match /admin/users {
+      allow read: if checkAdmin();
+    }
+    match /admin/items {
       allow read: if request.auth != null;
       allow update: if checkAdmin() &&
-        request.resource.data.items is list;
+        request.resource.data.food is list;
     }
   }
 }
