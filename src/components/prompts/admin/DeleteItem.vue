@@ -4,7 +4,7 @@
       v-model="deleteItemMenu"
       fullscreen
       width="300px"
-      height="220px"
+      height="120px"
       :overlay="true"
       transition="dialog-transition"
     >
@@ -14,10 +14,8 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          Are you sure you want to delete this Item?
-        </v-card-title>
-        <v-card-text> Note: This action can not be undone </v-card-text>
+        <v-card-title> Delete {{ item }}? </v-card-title>
+        <v-card-subtitle> This action can not be undone </v-card-subtitle>
         <v-card-actions>
           <v-btn color="success" @click="deleteItem(item)"> Yes </v-btn>
           <v-btn color="error" @click="deleteItemMenu = false"> No </v-btn>
