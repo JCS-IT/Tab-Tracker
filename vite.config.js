@@ -4,7 +4,6 @@ import vuetify from "vite-plugin-vuetify";
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from 'vite-plugin-mkcert'
 import { terser } from 'rollup-plugin-terser';
-import htmlPurge from 'vite-plugin-html-purgecss';
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
@@ -14,7 +13,6 @@ export default defineConfig({
     vuetify({
       autoImport: true,
     }),
-    htmlPurge(),
     VitePWA({
       injectRegister: 'auto',
       registerType: "autoUpdate",
