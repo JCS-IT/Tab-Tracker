@@ -6,7 +6,7 @@
       fullscreen
       :overlay="true"
       max-width="300px"
-      max-height="220px"
+      max-height="120px"
       transition="dialog-transition"
     >
       <template v-slot:activator="{ props }">
@@ -15,8 +15,8 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title> Are you sure you want to clear the tab? </v-card-title>
-        <v-card-text> Note: This action can not be undone </v-card-text>
+        <v-card-title> Clear this tab? </v-card-title>
+        <v-card-subtitle> This action cannot be undone. </v-card-subtitle>
         <v-card-actions>
           <v-btn color="success" @click="clearTab()"> Yes </v-btn>
           <v-btn color="error" @click="clearTabMenu = false">No</v-btn>
