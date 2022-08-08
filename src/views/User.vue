@@ -126,20 +126,21 @@ export default defineComponent({
     },
   },
   async mounted() {
-    let unsubscribe = () => {};
     auth.onAuthStateChanged(async (user) => {
       if (user || this.$route.params.from === "admin") {
         this.tab = [];
-        unsubscribe = onSnapshot(
-          doc(db, `users/${this.$route.params.id}`),
-          (doc) => {
-            if (doc.exists()) {
-              this.name = doc.data().name;
-              this.tab = doc.data().tab;
-            }
-            this.tab.reverse();
+        onSnapshot(doc(db, `users/${this.$route.params.id}`), (doc) => {
+          if (doc.exists()) {
+            this.name = doc.data().name;
+            this.tab = doc.data().tab;
           }
-        );
+          this.tab.reverse();
+        });
+        onSnapshot(doc(db, "admin/items"), (doc) => {
+          if (doc.exists()) {
+            this.items = doc.data().food;
+          }
+        });
         user.getIdTokenResult().then((idTokenResult) => {
           this.admin = idTokenResult.claims.admin;
         });
