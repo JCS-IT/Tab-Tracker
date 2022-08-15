@@ -1,38 +1,33 @@
 {
-  "name": "tabs",
+  "name": "jcstabs",
   "version": "0.0.0",
   "scripts": {
+    "serve": "vite preview",
     "build": "vite build",
+    "build-only": "vite build",
     "dev": "vite",
-    "preview": "vite preview --port 5050",
-    "emulators": "firebase emulators:start"
+    "preview": "vite preview --port 4173",
+    "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
-    "@revolist/revogrid": "^3.1.8",
-    "firebase": "^9.9.1",
+    "firebase": "^9.9.2",
     "firebaseui": "^6.0.1",
-    "npm": "^8.16.0",
-    "postcss": "^8.4.14",
     "roboto-fontface": "*",
-    "sass": "^1.54.2",
     "vue": "^3.2.37",
     "vue-router": "^4.1.3",
     "vuetify": "^3.0.0-beta.0",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^3.0.1",
-    "firebase-admin": "^11.0.1",
-    "prettier": "2.7.1",
-    "sass": "^1.54.2",
-    "sass-loader": "^13.0.2",
-    "vite": "^3.0.4",
-    "vite-plugin-eslint": "^1.7.0",
-    "vite-plugin-mkcert": "^1.9.0",
-    "vite-plugin-pwa": "^0.12.3",
+    "@types/node": "^18.7.5",
+    "@types/webfontloader": "^1.6.34",
+    "@vitejs/plugin-vue": "^3.0.3",
+    "@vue/tsconfig": "^0.1.3",
+    "npm-run-all": "^4.1.5",
+    "typescript": "~4.7.4",
+    "vite": "^3.0.7",
     "vite-plugin-vuetify": "^1.0.0-alpha.14",
-    "vue-cli-plugin-vuetify": "~2.5.1",
-    "vuetify-loader": "^2.0.0-alpha.0"
+    "vue-tsc": "^0.40.1"
   }
 }
