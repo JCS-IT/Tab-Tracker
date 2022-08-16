@@ -25,11 +25,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { db } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
-
 import { defineComponent } from "vue";
+
 export default defineComponent({
   name: "DeleteItem",
   props: {

@@ -24,7 +24,7 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import { defineAsyncComponent, defineComponent } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -32,11 +32,11 @@ import { doc, onSnapshot } from "firebase/firestore";
 export default defineComponent({
   name: "ItemMenu",
   components: {
-    AddItem: defineAsyncComponent(() =>
-      import("@/components/prompts/admin/AddItem.vue")
+    AddItem: defineAsyncComponent(
+      () => import("@/components/admin/prompts/AddItem.vue")
     ),
-    DeleteItem: defineAsyncComponent(() =>
-      import("@/components/prompts/admin/DeleteItem.vue")
+    DeleteItem: defineAsyncComponent(
+      () => import("@/components/admin/prompts/DeleteItem.vue")
     ),
   },
   data() {
@@ -44,7 +44,7 @@ export default defineComponent({
       items: [],
       input: "",
       props: false,
-      nameRules: [(v) => !!v || "Name is required"],
+      nameRules: [(v: any) => !!v || "Name is required"],
       inputMenu: false,
       deleteItemMenu: false,
     };
@@ -55,7 +55,7 @@ export default defineComponent({
         let unsubscribe = () => {};
         if (user) {
           unsubscribe = onSnapshot(doc(db, "admin/items"), (snapshot) => {
-            this.items = snapshot.data().food;
+            this.items = snapshot.data()?.food;
           });
         } else {
           unsubscribe();

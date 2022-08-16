@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { db } from "@/firebase";
 import { doc, Timestamp, updateDoc } from "firebase/firestore";
 import { defineComponent } from "vue";

@@ -6,7 +6,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-package-lock.json
 
 node_modules
 .DS_Store
@@ -27,13 +26,3 @@ coverage
 *.njsproj
 *.sln
 *.sw?
-
-# firebase
-/firestore
-firebase-export-*
-.firebase
-
-# service worker dev
-/dev-dist
-/package-lock.json
-/jcs-tab-tracker-*.json

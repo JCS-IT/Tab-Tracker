@@ -1,17 +1,19 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col align="center">
-        <h1>Please login to use this app</h1>
-      </v-col>
-    </v-row>
+  <v-container align="center" justify="center">
+    <v-card width="200" height="200">
+      <v-card-text>
+        Redirecting
+        <br />
+        Please wait...
+      </v-card-text>
+      <v-progress-circular indeterminate />
+    </v-card>
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import { auth } from "@/firebase";
-
 export default defineComponent({
   name: "Home",
   mounted() {
@@ -19,6 +21,7 @@ export default defineComponent({
       if (user) {
         this.$router.push(`/user/${user.uid}`);
       } else {
+        this.$router.push("/login");
       }
     });
   },

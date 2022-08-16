@@ -1,20 +1,29 @@
+import { fileURLToPath, URL } from "node:url";
+
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import vuetify from "vite-plugin-vuetify";
-import { VitePWA } from "vite-plugin-pwa";
-import mkcert from 'vite-plugin-mkcert'
-import { terser } from 'rollup-plugin-terser';
-import { fileURLToPath, URL } from 'node:url'
 
+// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
+import vuetify from "vite-plugin-vuetify";
+
+import { VitePWA } from "vite-plugin-pwa";
+import mkcert from "vite-plugin-mkcert";
+import { terser } from "rollup-plugin-terser";
+
+// https://vitejs.dev/config/
 export default defineConfig({
-  server: { https: true },
+  server: {
+    https: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Referrer-Policy": "no-referrer",
+    },
+  },
   plugins: [
     vue(),
-    vuetify({
-      autoImport: true,
-    }),
+    vuetify({ autoImport: true }),
     VitePWA({
-      injectRegister: 'auto',
+      injectRegister: "auto",
       registerType: "autoUpdate",
       includeAssets: [
         "favicon.svg",
@@ -53,58 +62,58 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
+            handler: "CacheFirst",
             options: {
-              cacheName: 'google-fonts-cache',
+              cacheName: "google-fonts-cache",
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
               cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
+                statuses: [0, 200],
+              },
+            },
           },
           {
             urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: 'CacheFirst',
+            handler: "CacheFirst",
             options: {
-              cacheName: 'gstatic-fonts-cache',
+              cacheName: "gstatic-fonts-cache",
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
               cacheableResponse: {
-                statuses: [0, 200]
+                statuses: [0, 200],
               },
-            }
+            },
           },
           // cache google profile images
           {
             urlPattern: /^https:\/\/www.googleapis.com\/plus\/v1\/people\/.*/i,
-            handler: 'CacheFirst',
+            handler: "CacheFirst",
             options: {
-              cacheName: 'google-profile-cache',
+              cacheName: "google-profile-cache",
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
-              }
-            }
+                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+              },
+            },
           },
           {
             urlPattern: /^https:\/\/(.*\.googleusercontent\.com\/.*)/i,
-            handler: 'CacheFirst',
+            handler: "CacheFirst",
             options: {
-              cacheName: 'google-profile-images',
+              cacheName: "google-profile-images",
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // <== 1 month
+                maxAgeSeconds: 60 * 60 * 24 * 30, // <== 1 month
               },
               cacheableResponse: {
-                statuses: [0, 200]
+                statuses: [0, 200],
               },
-            }
-          }
+            },
+          },
         ],
       },
     }),
@@ -118,17 +127,12 @@ export default defineConfig({
       },
       format: {
         comments: false,
-        ecma: '2020',
       },
     }),
   ],
-  define: { "process.env": {} },
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL('./src', import.meta.url)),
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
-  },
-  build: {
-    chunkSizeWarningLimit: 1600,
   },
 });

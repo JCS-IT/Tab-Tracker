@@ -37,7 +37,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { functions } from "@/firebase";
 import { defineComponent } from "vue";
 export default defineComponent({

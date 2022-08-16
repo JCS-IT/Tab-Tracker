@@ -64,10 +64,25 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import { defineAsyncComponent, defineComponent } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
+
+interface Person {
+  name: string;
+  id: string;
+}
+
+interface User {
+  name: string;
+  uid: string;
+  displayName: string;
+}
+
+interface Users {
+  [key: string]: User;
+}
 
 export default defineComponent({
   name: "users menu",
@@ -110,32 +125,24 @@ export default defineComponent({
   },
   computed: {
     searchForUser() {
-      let filter = [];
-      if (this.search.length > 0) {
-        this.users.forEach((user) => {
-          if (user.name.toLowerCase().includes(this.search.toLowerCase())) {
-            filter.push(user);
-          }
-        });
-      } else {
-        filter = this.users;
-      }
-      return filter;
+      return this.users.filter((user: any) => {
+        return user.name.toLowerCase().includes(this.search.toLowerCase());
+      }) as Users[];
     },
   },
   components: {
-    DeleteUser: defineAsyncComponent(() =>
-      import("@/components/prompts/admin/DeleteUser.vue")
+    DeleteUser: defineAsyncComponent(
+      () => import("@/components/admin/prompts/DeleteUser.vue")
     ),
   },
   methods: {
-    filterUsers(letter) {
-      return this.users?.filter((person) => {
+    filterUsers(letter: string) {
+      return this.users?.filter((person: Person) => {
         return person.name
           .split(" ")[1]
           ?.toUpperCase()
           .startsWith(letter.toUpperCase());
-      });
+      }) as User[];
     },
   },
   async mounted() {
@@ -143,7 +150,7 @@ export default defineComponent({
     auth.onAuthStateChanged((user) => {
       if (user) {
         unsubscribe = onSnapshot(doc(db, "admin/users"), (doc) => {
-          this.users = doc.data().index;
+          this.users = doc.data()?.index;
         });
       } else {
         unsubscribe();
@@ -152,14 +159,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss">
-* {
-  text-decoration: none;
-}
-
-#nav {
-  position: sticky;
-  top: 0;
-}
-</style>
