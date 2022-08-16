@@ -80,7 +80,6 @@
 import { defineAsyncComponent, defineComponent } from "vue";
 import { auth, db } from "../firebase";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
-
 export default defineComponent({
   data() {
     return {
@@ -96,13 +95,13 @@ export default defineComponent({
   },
   components: {
     AddItem: defineAsyncComponent(() =>
-      import("@/components/prompts/items/AddItem.vue")
+      import("@/components/public/AddItems.vue")
     ),
     DeleteItem: defineAsyncComponent(() =>
-      import("@/components/prompts/items/DeleteItem.vue")
+      import("@/components/public/DeleteItem.vue")
     ),
     ClearTab: defineAsyncComponent(() =>
-      import("@/components/prompts/admin/ClearTab.vue")
+      import("@/components/admin/prompts/ClearTab.vue")
     ),
   },
   computed: {
@@ -145,7 +144,6 @@ export default defineComponent({
           this.admin = idTokenResult.claims.admin;
         });
       } else {
-        unsubscribe();
         this.$router.push("/");
       }
     });

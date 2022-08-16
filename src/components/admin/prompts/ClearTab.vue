@@ -1,51 +1,48 @@
 <template>
   <div class="text-center">
     <v-dialog
-      v-model="deleteItemMenu"
+      v-model="clearTabMenu"
+      scrollable
       fullscreen
-      width="300px"
-      height="120px"
       :overlay="true"
+      max-width="300px"
+      max-height="120px"
       transition="dialog-transition"
     >
       <template v-slot:activator="{ props }">
         <v-btn color="error" v-bind="props">
-          <v-icon>mdi-delete</v-icon> Delete
+          <v-icon>mdi-close-circle</v-icon> Clear All
         </v-btn>
       </template>
       <v-card>
-        <v-card-title> Delete {{ item }}? </v-card-title>
+        <v-card-title> Clear this tab? </v-card-title>
         <v-card-subtitle> This action cannot be undone. </v-card-subtitle>
         <v-card-actions>
-          <v-btn color="success" @click="deleteItem(item)"> Yes </v-btn>
-          <v-btn color="error" @click="deleteItemMenu = false"> No </v-btn>
+          <v-btn color="success" @click="clearTab()"> Yes </v-btn>
+          <v-btn color="error" @click="clearTabMenu = false">No</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { db } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
-
 import { defineComponent } from "vue";
 export default defineComponent({
-  name: "DeleteItem",
-  props: {
-    items: Array,
-    item: String,
-  },
+  name: "ClearTab",
   data() {
     return {
-      deleteItemMenu: false,
+      clearTabMenu: false,
     };
   },
   methods: {
-    async deleteItem(item) {
-      this.deleteItemMenu = false;
-      await updateDoc(doc(db, "admin/items"), {
-        food: this.items.filter((i) => i !== item),
+    async clearTab() {
+      this.clearTabMenu = false;
+      const docRef = doc(db, `users/${this.$route.params.id}`);
+      await updateDoc(docRef, {
+        tab: [],
       });
     },
   },
