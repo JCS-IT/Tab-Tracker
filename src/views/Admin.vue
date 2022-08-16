@@ -7,8 +7,8 @@
           <span>Home</span>
         </v-btn>
         <v-tab value="staff">
-          <v-icon>mdi-clipboard-multiple</v-icon>
-          <span>Orders</span>
+          <v-icon>mdi-account-school</v-icon>
+          <span>Staff</span>
         </v-tab>
         <v-tab value="items">
           <v-icon>mdi-package</v-icon>
