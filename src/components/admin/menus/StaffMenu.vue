@@ -147,11 +147,7 @@ export default defineComponent({
       }) as User[];
     },
   },
-  beforeDestroy() {
-    unsubscribe();
-  },
-  async mounted() {
-    let unsubscribe = () => {};
+  mounted() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         unsubscribe = onSnapshot(doc(db, "admin/users"), (doc) => {

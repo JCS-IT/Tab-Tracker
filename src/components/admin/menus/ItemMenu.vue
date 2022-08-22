@@ -51,21 +51,16 @@ export default defineComponent({
       deleteItemMenu: false,
     };
   },
-  methods: {
-    async init() {
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          unsubscribe = onSnapshot(doc(db, "admin/items"), (snapshot) => {
-            this.items = snapshot.data()?.food;
-          });
-        } else {
-          unsubscribe();
-        }
-      });
-    },
-  },
   mounted() {
-    this.init();
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        unsubscribe = onSnapshot(doc(db, "admin/items"), (snapshot) => {
+          this.items = snapshot.data()?.food;
+        });
+      } else {
+        unsubscribe();
+      }
+    });
   },
 });
 </script>

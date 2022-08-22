@@ -154,7 +154,7 @@ export default defineComponent({
     itemSub();
   },
   async mounted() {
-    auth.onAuthStateChanged(async (user) => {
+    auth.onAuthStateChanged((user) => {
       if (user || this.$route.params.from === "admin") {
         user?.getIdTokenResult().then((idTokenResult) => {
           this.admin = idTokenResult.claims.admin;
