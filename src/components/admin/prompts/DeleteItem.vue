@@ -42,10 +42,10 @@ export default defineComponent({
     };
   },
   methods: {
-    async deleteItem(item) {
+    async deleteItem(item: string | undefined) {
       this.deleteItemMenu = false;
       await updateDoc(doc(db, "admin/items"), {
-        food: this.items.filter((i) => i !== item),
+        food: this.items?.filter((i) => i !== item),
       });
     },
   },

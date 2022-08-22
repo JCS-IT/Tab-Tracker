@@ -54,19 +54,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in tab" :key="item">
+            <tr v-for="(item, index) in tab" :key="index">
               <td class="text-center">{{ item.name }}</td>
-              <td class="text-center">
-                {{ item.date.toDate() }}
-              </td>
+              <td class="text-center">{{ convertDate(item.date as any) }}</td>
               <td
-                v-if="isCurrentDate(item.date) && $route.params.from != 'admin'"
+                v-if="isCurrentDate(item.date as any) && $route.params.from != 'admin'"
               >
-                <DeleteItem
-                  :input="item"
-                  :tab="tab"
-                  :uid="this.$route.params.id"
-                ></DeleteItem>
+                <DeleteItem :input="item" :tab="tab"></DeleteItem>
               </td>
             </tr>
           </tbody>
@@ -76,74 +70,98 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import { defineAsyncComponent, defineComponent } from "vue";
 import { auth, db } from "../firebase";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
+
+let tabSub: () => void;
+let itemSub: () => void;
+
+interface Total {
+  [key: string]: number;
+}
+interface Tab {
+  [key: string]: {
+    name: string;
+    date: Timestamp;
+  };
+}
 export default defineComponent({
   data() {
     return {
-      tab: [],
-      name: "",
-      item: "",
-      items: [],
-      admin: false,
-      showGrid: false,
-      addItemMenu: false,
-      clearTabMenu: false,
+      tab: [] as Tab[],
+      name: "" as string,
+      item: "" as string,
+      items: [] as string[],
+      admin: false as any,
+      showGrid: false as boolean,
+      addItemMenu: false as boolean,
+      clearTabMenu: false as boolean,
     };
   },
   components: {
-    AddItem: defineAsyncComponent(() =>
-      import("@/components/public/AddItems.vue")
+    AddItem: defineAsyncComponent(
+      () => import("@/components/public/AddItems.vue")
     ),
-    DeleteItem: defineAsyncComponent(() =>
-      import("@/components/public/DeleteItem.vue")
+    DeleteItem: defineAsyncComponent(
+      () => import("@/components/public/DeleteItem.vue")
     ),
-    ClearTab: defineAsyncComponent(() =>
-      import("@/components/admin/prompts/ClearTab.vue")
+    ClearTab: defineAsyncComponent(
+      () => import("@/components/admin/prompts/ClearTab.vue")
     ),
   },
   computed: {
     total() {
-      let total = {};
-      this.items.forEach((item) => {
+      let total = {} as Total;
+      this.items.forEach((item: any) => {
         total[item] = 0;
       });
-      this.tab?.forEach((item) => {
+      this.tab?.forEach((item: any) => {
         total[item.name]++;
       });
       return total;
     },
   },
   methods: {
-    isCurrentDate(input) {
+    isCurrentDate(input: Timestamp) {
       return (
         Timestamp.now().toDate().toDateString() ===
         input.toDate().toDateString()
       );
     },
+    convertDate(input: Timestamp) {
+      return input.toDate().toLocaleString();
+    },
+  },
+  async created() {
+    this.tab = [];
+    tabSub = onSnapshot(doc(db, `users/${this.$route.params.id}`), (doc) => {
+      if (doc.exists()) {
+        this.name = doc.data().name;
+        this.tab = doc.data().tab;
+      }
+      this.tab.reverse();
+    });
+    itemSub = onSnapshot(doc(db, "admin/items"), (doc) => {
+      if (doc.exists()) {
+        this.items = doc.data().food;
+      }
+    });
+  },
+  beforeDestroy() {
+    tabSub();
+    itemSub();
   },
   async mounted() {
     auth.onAuthStateChanged(async (user) => {
       if (user || this.$route.params.from === "admin") {
-        this.tab = [];
-        onSnapshot(doc(db, `users/${this.$route.params.id}`), (doc) => {
-          if (doc.exists()) {
-            this.name = doc.data().name;
-            this.tab = doc.data().tab;
-          }
-          this.tab.reverse();
-        });
-        onSnapshot(doc(db, "admin/items"), (doc) => {
-          if (doc.exists()) {
-            this.items = doc.data().food;
-          }
-        });
-        user.getIdTokenResult().then((idTokenResult) => {
+        user?.getIdTokenResult().then((idTokenResult) => {
           this.admin = idTokenResult.claims.admin;
         });
       } else {
+        tabSub();
+        itemSub();
         this.$router.push("/");
       }
     });

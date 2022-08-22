@@ -69,6 +69,8 @@ import { defineAsyncComponent, defineComponent } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
+let unsubscribe: () => void;
+
 interface Person {
   name: string;
   id: string;
@@ -144,6 +146,9 @@ export default defineComponent({
           .startsWith(letter.toUpperCase());
       }) as User[];
     },
+  },
+  beforeDestroy() {
+    unsubscribe();
   },
   async mounted() {
     let unsubscribe = () => {};

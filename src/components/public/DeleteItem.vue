@@ -14,7 +14,7 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title> Delete {{ input.name }}? </v-card-title>
+        <v-card-title> Delete {{ input?.name }}? </v-card-title>
         <v-card-subtitle> This action cannot be undone. </v-card-subtitle>
         <v-card-actions>
           <v-btn color="success" @click="deleteItem()"> Yes </v-btn>
@@ -34,7 +34,6 @@ export default defineComponent({
   props: {
     input: Object,
     tab: Object,
-    uid: String,
   },
   data() {
     return {
@@ -44,8 +43,8 @@ export default defineComponent({
   methods: {
     async deleteItem() {
       const docRef = doc(db, `users/${this.$route.params.id}`);
-      this.tab.indexOf(this.input) > -1
-        ? this.tab.splice(this.tab.indexOf(this.input), 1)
+      this.tab?.indexOf(this.input) > -1
+        ? this.tab?.splice(this.tab.indexOf(this.input), 1)
         : null;
       await updateDoc(docRef, {
         tab: this.tab,

@@ -29,6 +29,8 @@ import { defineAsyncComponent, defineComponent } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
+let unsubscribe = () => {};
+
 export default defineComponent({
   name: "ItemMenu",
   components: {
@@ -52,7 +54,6 @@ export default defineComponent({
   methods: {
     async init() {
       auth.onAuthStateChanged((user) => {
-        let unsubscribe = () => {};
         if (user) {
           unsubscribe = onSnapshot(doc(db, "admin/items"), (snapshot) => {
             this.items = snapshot.data()?.food;
