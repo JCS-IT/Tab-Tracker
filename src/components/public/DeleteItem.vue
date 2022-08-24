@@ -2,10 +2,8 @@
   <div class="text-center">
     <v-dialog
       v-model="deleteItemMenu"
-      fullscreen
-      width="300px"
-      max-height="120px"
-      :overlay="true"
+      :fullscreen="mobile"
+      overlay
       transition="dialog-transition"
     >
       <template v-slot:activator="{ props }">
@@ -13,7 +11,7 @@
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
-      <v-card>
+      <v-card width="300px" max-height="120px">
         <v-card-title> Delete {{ input?.name }}? </v-card-title>
         <v-card-subtitle> This action cannot be undone. </v-card-subtitle>
         <v-card-actions>
@@ -29,11 +27,16 @@
 import { db } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { defineComponent } from "vue";
+import { useDisplay } from "vuetify";
 export default defineComponent({
   name: "DeleteItem",
   props: {
     input: Object,
     tab: Object,
+  },
+  setup() {
+    const { mobile } = useDisplay();
+    return { mobile };
   },
   data() {
     return {

@@ -2,22 +2,19 @@
   <div class="text-center">
     <v-dialog
       v-model="addItemMenu"
+      :fullscreen="mobile"
       scrollable
-      fullscreen
-      :overlay="true"
-      max-width="300px"
-      max-height="90%"
       transition="dialog-transition"
     >
       <template v-slot:activator="{ props }">
         <v-btn color="success" v-bind="props"> Add Item </v-btn>
       </template>
-      <v-card>
+      <v-card width="300px">
         <v-card-title> Add Item </v-card-title>
         <v-btn
           color="success"
-          v-for="item in items"
-          :key="item.date"
+          v-for="(item, index) in items"
+          :key="index"
           @click="addItem(item)"
           class="ma-1"
         >
@@ -35,11 +32,17 @@
 import { db } from "@/firebase";
 import { doc, Timestamp, updateDoc } from "firebase/firestore";
 import { defineComponent } from "vue";
+import { useDisplay } from "vuetify";
+
 export default defineComponent({
   name: "AddItem",
   props: {
     items: Array,
     tab: Object,
+  },
+  setup() {
+    const { mobile } = useDisplay();
+    return { mobile };
   },
   data() {
     return {
@@ -47,14 +50,14 @@ export default defineComponent({
     };
   },
   methods: {
-    async addItem(item) {
+    async addItem(item: any) {
       this.addItemMenu = false;
       const docRef = doc(db, `users/${this.$route.params.id}`);
       let input = {
         name: item,
         date: Timestamp.now(),
       };
-      this.tab.push(input);
+      this.tab?.push(input);
       await updateDoc(docRef, {
         tab: this.tab,
       });
