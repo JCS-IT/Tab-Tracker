@@ -57,9 +57,7 @@
             <tr v-for="(item, index) in tab" :key="index">
               <td class="text-center">{{ item.name }}</td>
               <td class="text-center">{{ convertDate(item.date as any) }}</td>
-              <td
-                v-if="isCurrentDate(item.date as any) && $route.params.from != 'admin'"
-              >
+              <td v-if="isCurrentDate(item.date as any)">
                 <DeleteItem :input="item" :tab="tab"></DeleteItem>
               </td>
             </tr>
@@ -125,10 +123,9 @@ export default defineComponent({
   },
   methods: {
     isCurrentDate(input: Timestamp) {
-      return (
-        Timestamp.now().toDate().toDateString() ===
-        input.toDate().toDateString()
-      );
+      let current = Timestamp.now();
+      let difference = current.seconds - input.seconds;
+      return difference < 300;
     },
     convertDate(input: Timestamp) {
       return input.toDate().toLocaleString();
