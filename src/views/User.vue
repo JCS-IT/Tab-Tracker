@@ -35,7 +35,7 @@
             </tr>
           </thead>
           <tbody>
-            <td v-for="(item, index) in total" :key="index">
+            <td v-for="(item, index) in total" :key="index" class="pl-7">
               {{ item }}
             </td>
           </tbody>
