@@ -12,7 +12,7 @@
     </template>
     <v-card color="white">
       <v-card-title primary-title> Add New Item </v-card-title>
-      <v-form ref="newFood" lazy-validation @submit.prevent>
+      <v-form ref="newFood" lazy-validation>
         <v-text-field
           class="mx-5 input"
           v-model="input"
@@ -50,15 +50,16 @@ export default defineComponent({
     return {
       input: "",
       props: false,
-      nameRules: [(v) => !!v || "Name is required"],
+      nameRules: [(v: any) => !!v || "Name is required"],
       inputMenu: false,
     };
   },
   props: {
-    items: Array,
+    items: Array as any,
   },
   methods: {
-    async addItem(item) {
+    async addItem(item: any) {
+      // @ts-expect-error
       let temp = await this.$refs.newFood.validate();
       if (temp.valid) {
         this.inputMenu = false;
