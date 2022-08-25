@@ -5,17 +5,17 @@ admin.initializeApp();
 export const beforeCreate = functions.auth
   .user()
   .beforeCreate((user, context) => {
-    if (context != null) {
-      if (!user.email?.endsWith("@educbe.ca")) {
-        throw new functions.https.HttpsError(
-          "permission-denied",
-          "You must be in the educbe.ca domain to create an account"
-        );
-      }
-    } else {
+    if (context == null) {
       throw new functions.https.HttpsError(
         "permission-denied",
         "Unknown origin"
+      );
+    }
+
+    if (!user.email?.endsWith("@educbe.ca")) {
+      throw new functions.https.HttpsError(
+        "permission-denied",
+        "You must be in the educbe.ca domain to create an account"
       );
     }
   });
@@ -43,23 +43,6 @@ export const setUpFirestore = functions.auth
       ],
     });
     return batch.commit();
-  });
-
-export const setUpUserClaims = functions.auth
-  .user()
-  .onCreate((user, context) => {
-    if (context == null) {
-      throw new functions.https.HttpsError(
-        "permission-denied",
-        "Unknown origin"
-      );
-    }
-    return admin
-      .auth()
-      .setCustomUserClaims(user.uid, { admin: false })
-      .catch((err) => {
-        return err;
-      });
   });
 
 export const purgeUser = functions.auth.user().onDelete((user) => {
