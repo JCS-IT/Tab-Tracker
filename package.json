@@ -7,7 +7,8 @@
     "build-only": "vite build",
     "dev": "vite",
     "preview": "vite preview --port 4173",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "emulators": "firebase emulators:start"
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
