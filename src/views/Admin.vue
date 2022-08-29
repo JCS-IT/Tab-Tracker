@@ -50,10 +50,10 @@ export default defineComponent({
   },
   components: {
     StaffMenu: defineAsyncComponent(
-      () => import("@/components/admin/Menus/StaffMenu.vue")
+      () => import("@/components/admin/menus/StaffMenu.vue")
     ),
     ItemMenu: defineAsyncComponent(
-      () => import("@/components/admin/Menus/ItemMenu.vue")
+      () => import("@/components/admin/menus/ItemMenu.vue")
     ),
   },
 });
