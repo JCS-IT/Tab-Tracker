@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { db } from "@/firebase";
+import { auth, db } from "@/firebase";
 import { doc, Timestamp, updateDoc } from "firebase/firestore";
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
@@ -52,7 +52,7 @@ export default defineComponent({
   methods: {
     async addItem(item: any) {
       this.addItemMenu = false;
-      const docRef = doc(db, `users/${this.$route.params.id}`);
+      const docRef = doc(db, `users/${auth.currentUser?.uid}`);
       let input = {
         name: item,
         date: Timestamp.now(),
