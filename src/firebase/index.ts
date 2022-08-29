@@ -28,6 +28,4 @@ initializeAppCheck(app, {
   isTokenAutoRefreshEnabled: true,
 });
 
-connectFunctionsEmulator(functions, "localhost", 5001);
-
 export { app, auth, db, functions };
