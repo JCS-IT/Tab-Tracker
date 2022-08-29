@@ -24,7 +24,7 @@ export default defineConfig({
     vuetify({ autoImport: true }),
     mkcert(),
     VitePWA({
-      injectRegister: "auto",
+      injectRegister: "inline",
       registerType: "autoUpdate",
       includeAssets: [
         "favicon.svg",
