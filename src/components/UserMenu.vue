@@ -3,7 +3,7 @@
     <template v-slot:activator="{ props }">
       <v-btn icon v-bind="props" :disabled="user == null">
         <v-avatar>
-          <v-img :src="user?.photoURL" alt="Avatar" />
+          <v-img :src="(user?.photoURL as string)" alt="Avatar" />
         </v-avatar>
       </v-btn>
     </template>
@@ -11,7 +11,7 @@
       <v-card-text>
         <div class="mx-auto text-center">
           <v-avatar size="large">
-            <v-img :src="user?.photoURL" alt="Avatar" />
+            <v-img :src="(user?.photoURL as string)" alt="Avatar" />
           </v-avatar>
           <h3>{{ user?.displayName }}</h3>
           <p class="text-caption mt-1">{{ user?.email }}</p>
@@ -35,12 +35,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { auth } from "@/firebase";
+import type { User } from "firebase/auth";
 
 export default defineComponent({
   name: "UserMenu",
   data() {
     return {
-      user: null as any,
+      user: null as User | null,
       admin: false as unknown,
     };
   },
@@ -51,9 +52,9 @@ export default defineComponent({
     },
   },
   mounted() {
-    auth.onAuthStateChanged((user: any) => {
+    auth.onAuthStateChanged((user) => {
       this.user = user;
-      user?.getIdTokenResult().then((token: any) => {
+      user?.getIdTokenResult().then((token) => {
         this.admin = token.claims.admin;
       });
     });

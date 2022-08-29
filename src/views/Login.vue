@@ -20,7 +20,7 @@ import { GoogleAuthProvider } from "@firebase/auth";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 export default defineComponent({
-  name: "login",
+  name: "Login-view",
   data() {
     return {
       loggedIn: false,
@@ -35,7 +35,8 @@ export default defineComponent({
       }
       const uiConfig = {
         callbacks: {
-          uiShown: function () {
+          uiShown: () => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             document.getElementById("loader")!.style.display = "none";
           },
         },

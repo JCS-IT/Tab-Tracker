@@ -36,6 +36,7 @@
           <v-expansion-panel-text>
             <User
               v-for="user in filterUsers(letter)"
+              :key="user.data.email"
               :user="user"
               :items="items"
               ref="user"
@@ -101,7 +102,7 @@ export default defineComponent({
   },
   computed: {
     searchForUser() {
-      return this.users.filter((user: any) => {
+      return this.users.filter((user: User) => {
         return user.data.displayName
           .toLowerCase()
           .includes(this.search.toLowerCase()) as boolean;
@@ -117,8 +118,9 @@ export default defineComponent({
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
       }
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      this.$refs.user[0].data.dialog = true;
+      this.$refs.user[0].data.dialog = true as boolean;
     },
     filterUsers(letter: string) {
       return this.users?.filter((user: User) => {
@@ -133,6 +135,7 @@ export default defineComponent({
     auth.onAuthStateChanged((user) => {
       if (user) {
         userSnap = onSnapshot(collection(db, "users"), (snap) => {
+          this.users = [];
           snap.forEach((doc) => {
             this.users.push(doc.data() as User);
           });

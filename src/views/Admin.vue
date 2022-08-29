@@ -43,6 +43,7 @@
 import { defineComponent, defineAsyncComponent } from "vue";
 
 export default defineComponent({
+  name: "Admin-view",
   data() {
     return {
       active: "staff",

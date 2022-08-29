@@ -21,7 +21,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in items">
+            <tr v-for="item in items" :key="item">
               <td>{{ item }}</td>
               <td>{{ total[item] }}</td>
             </tr>
@@ -58,14 +58,14 @@
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
 import { auth, db } from "@/firebase";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, Timestamp } from "firebase/firestore";
 import type { User } from "@/types";
 
 let itemSub: () => void;
 let tabSub: () => void;
 
 export default defineComponent({
-  name: "User",
+  name: "User-View",
   components: {
     AddItem: defineAsyncComponent(
       () => import("@/components/public/AddItem.vue")
@@ -78,23 +78,23 @@ export default defineComponent({
     return {
       user: {} as User,
       items: [],
-      admin: false as any,
+      admin: false as boolean,
     };
   },
   computed: {
     total() {
       const total = {} as { [key: string]: number };
-      this.items.forEach((item: any) => {
+      this.items.forEach((item) => {
         total[item] = 0;
       });
-      this.user.tab.forEach((item: any) => {
+      this.user.tab.forEach((item) => {
         total[item.name]++;
       });
       return total;
     },
   },
   methods: {
-    isCurrentDate(date: any) {
+    isCurrentDate(date: Timestamp) {
       const now = new Date();
       const diff = now.getTime() - date.toDate().getTime();
       return diff < 300000;

@@ -88,7 +88,7 @@ import { httpsCallable } from "@firebase/functions";
 import { functions } from "@/firebase";
 
 export default defineComponent({
-  name: "User",
+  name: "User-component",
   data() {
     return {
       dialog: {
@@ -101,10 +101,10 @@ export default defineComponent({
   computed: {
     total() {
       const total = {} as { [key: string]: number };
-      this.items.forEach((item: any) => {
+      this.items.forEach((item) => {
         total[item] = 0;
       });
-      this.user.tab.forEach((item: any) => {
+      this.user.tab.forEach((item) => {
         total[item.name]++;
       });
       return total;

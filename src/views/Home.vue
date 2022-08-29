@@ -18,6 +18,7 @@ import { defineComponent } from "vue";
 import { auth } from "@/firebase";
 
 export default defineComponent({
+  name: "Home-view",
   mounted() {
     auth.onAuthStateChanged((user) => {
       if (!user) {
