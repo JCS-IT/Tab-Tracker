@@ -16,7 +16,7 @@ const router = createRouter({
       beforeEnter: checkAdmin,
     },
     {
-      path: "/:from?/user/:id",
+      path: "/user",
       name: "User",
       component: () => import("@/views/User.vue"),
       beforeEnter: loginRequired,
