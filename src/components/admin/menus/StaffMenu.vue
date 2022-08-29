@@ -1,101 +1,104 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
-        <v-menu>
-          <template v-slot:activator="{ props }">
-            <v-text-field v-model="search" placeholder="Search" v-bind="props">
-            </v-text-field>
-          </template>
-          <v-list>
-            <v-list-item v-for="(user, index) in searchForUser" :key="index">
-              <v-list-item-title
-                @click="$router.push(`/admin/user/${user.id}`)"
-              >
-                {{ user.name }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-col>
-    </v-row>
-    <v-container v-for="letter in list" :key="letter" class="mb-3">
-      <v-card>
-        <v-card-title primary-title>
-          {{ letter.toUpperCase() }}
-        </v-card-title>
-        <v-row class="my-10">
-          <v-col
-            v-for="user in filterUsers(letter)"
-            :key="user.displayName"
-            align="center"
-          >
-            <v-menu>
+      <v-expansion-panels>
+        <v-expansion-panel v-for="letter in letters" :key="letter">
+          <v-expansion-panel-title>
+            <b>{{ letter.toUpperCase() }}</b>
+          </v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <v-tooltip
+              bottom
+              v-for="(user, index) in filterUsers(letter)"
+              :key="index"
+            >
               <template v-slot:activator="{ props }">
-                <v-btn
-                  color="info"
-                  v-bind="props"
-                  :id="user.name.split(' ')[1]"
-                >
-                  {{ user.name }}
+                <v-btn icon v-bind="props" @click="dialog[index] = true">
+                  <v-avatar>
+                    <v-img :src="user?.data.photoURL" alt="Avatar" />
+                  </v-avatar>
                 </v-btn>
+                <v-dialog v-model="dialog[index]">
+                  <v-card width="200px">
+                    <v-card-title>
+                      <v-avatar>
+                        <v-img :src="user?.data.photoURL" alt="Avatar" />
+                      </v-avatar>
+                      <span>{{ user.data.displayName }}</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-list>
+                        <v-list-item
+                          v-for="(item, index) in items"
+                          :key="index"
+                        >
+                          <v-list-item-title>{{ item }}</v-list-item-title>
+                          <v-list-item-subtitle>
+                            {{ total(item, user) }}
+                          </v-list-item-subtitle>
+                        </v-list-item>
+                      </v-list>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn
+                        color="primary"
+                        @click="dialog[index] = false"
+                        text
+                      >
+                        Close
+                      </v-btn>
+                      <ClearTab :uid="user.data.uid" />
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
               </template>
-              <v-list>
-                <v-list-item>
-                  <router-link :to="`/admin/user/${user.uid}`">
-                    <v-btn
-                      color="success"
-                      width="107px"
-                      prepend-icon="mdi-account-hard-hat"
-                    >
-                      Go To
-                    </v-btn>
-                  </router-link>
-                </v-list-item>
-                <v-list-item>
-                  <DeleteUser :user="user"></DeleteUser>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </v-col>
-        </v-row>
-      </v-card>
-    </v-container>
+              <span>{{ user?.data.displayName }}</span>
+            </v-tooltip>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineAsyncComponent, defineComponent } from "vue";
+import { defineComponent, defineAsyncComponent } from "vue";
 import { auth, db } from "@/firebase";
-import { doc, onSnapshot } from "firebase/firestore";
-
-let unsubscribe: () => void;
-
-interface Person {
-  name: string;
-  id: string;
-}
+import { doc, collection, onSnapshot, Timestamp } from "firebase/firestore";
+let userSub: () => void;
+let itemSub: () => void;
 
 interface User {
-  name: string;
-  uid: string;
-  displayName: string;
+  data: {
+    displayName: string;
+    email: string;
+    photoURL: string;
+    uid: string;
+  };
+  tab: [
+    {
+      data: Timestamp;
+      name: string;
+    }
+  ];
 }
 
-interface Users {
-  [key: string]: User;
+interface Dialog {
+  [key: string]: boolean;
 }
 
 export default defineComponent({
-  name: "users menu",
+  components: {
+    DeleteUser: defineAsyncComponent(() => import("../prompts/DeleteUser.vue")),
+    User: defineAsyncComponent(() => import("../components/User.vue")),
+    ClearTab: defineAsyncComponent(() => import("../prompts/ClearTab.vue")),
+  },
   data() {
     return {
-      props: null,
-      search: "",
-      deleteUserMenu: false,
-      usersMenu: false,
-      users: [],
-      list: [
+      dialog: {} as Dialog,
+      users: [] as User[],
+      items: [] as string[],
+      letters: [
         "a",
         "b",
         "c",
@@ -125,36 +128,42 @@ export default defineComponent({
       ],
     };
   },
-  computed: {
-    searchForUser() {
-      return this.users.filter((user: any) => {
-        return user.name.toLowerCase().includes(this.search.toLowerCase());
-      }) as Users[];
-    },
-  },
-  components: {
-    DeleteUser: defineAsyncComponent(
-      () => import("@/components/admin/prompts/DeleteUser.vue")
-    ),
-  },
   methods: {
     filterUsers(letter: string) {
-      return this.users?.filter((person: Person) => {
-        return person.name
+      return this.users?.filter((user: User) => {
+        return user.data.displayName
           .split(" ")[1]
-          ?.toUpperCase()
-          .startsWith(letter.toUpperCase());
-      }) as User[];
+          ?.toLowerCase()
+          .startsWith(letter);
+      });
+    },
+    total(item: string, user: User) {
+      return user.tab.filter((tab: { name: string }) => {
+        return tab.name === item;
+      }).length;
     },
   },
-  mounted() {
+  beforeDestroy() {
+    userSub();
+    itemSub();
+  },
+  created() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        unsubscribe = onSnapshot(doc(db, "admin/users"), (doc) => {
-          this.users = doc.data()?.index;
+        userSub = onSnapshot(collection(db, "users"), (snapshot) => {
+          this.users = [];
+          snapshot.forEach((doc) => {
+            // @ts-ignore
+            this.users.push(doc.data());
+            this.dialog[doc.id] = false;
+          });
+        });
+        itemSub = onSnapshot(doc(db, "admin/items"), (snapshot) => {
+          this.items = snapshot.data()?.food;
         });
       } else {
-        unsubscribe();
+        userSub();
+        itemSub();
       }
     });
   },
