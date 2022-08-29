@@ -31,16 +31,25 @@ export const setUpFirestore = functions.auth
     }
     const batch = admin.firestore().batch();
     batch.set(admin.firestore().doc(`users/${user.uid}`), {
-      name: user.displayName,
+      data: {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      },
       tab: [],
+      roles: {},
     });
-    batch.update(admin.firestore().doc("admin/users"), {
-      index: [
-        {
-          name: user.displayName,
-          uid: user.uid,
+    batch.update(admin.firestore().doc(`admin/users`), {
+      index: {
+        [user.uid]: {
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
         },
-      ],
+      },
     });
     return batch.commit();
   });
@@ -48,12 +57,6 @@ export const setUpFirestore = functions.auth
 export const purgeUser = functions.auth.user().onDelete((user) => {
   const batch = admin.firestore().batch();
   batch.delete(admin.firestore().doc(`users/${user.uid}`));
-  batch.update(admin.firestore().doc("admin/users"), {
-    index: admin.firestore.FieldValue.arrayRemove({
-      name: user.displayName,
-      uid: user.uid,
-    }),
-  });
   return batch.commit();
 });
 
@@ -73,7 +76,13 @@ export const deleteUser = functions.https.onCall(async (data, context) => {
       "invalid argument passed to function"
     );
   }
-  await admin.auth().deleteUser(data.uid);
+  if (data.uid === context.auth?.uid) {
+    throw new functions.https.HttpsError(
+      "permission-denied",
+      "You cannot delete yourself"
+    );
+  }
+  return await admin.auth().deleteUser(data.uid);
 });
 
 export const makeAdmin = functions.https.onCall(async (data, context) => {
@@ -92,5 +101,11 @@ export const makeAdmin = functions.https.onCall(async (data, context) => {
       "invalid argument passed to function"
     );
   }
-  return admin.auth().setCustomUserClaims(data.uid, { admin: true });
+  const batch = admin.firestore().batch();
+  batch.update(admin.firestore().doc(`users/${data.uid}`), {
+    roles: {
+      admin: true,
+    },
+  });
+  return await admin.auth().setCustomUserClaims(data.uid, { admin: true });
 });
