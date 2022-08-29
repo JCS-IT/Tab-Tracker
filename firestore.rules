@@ -10,6 +10,7 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if request.auth.uid == userId || checkAdmin();
       allow update: if
+        request.auth.uid == userId &&
       	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(['tab'])) &&
       	request.resource.data.tab is list;
     }
