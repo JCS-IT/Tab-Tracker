@@ -18,6 +18,7 @@
                 variant="outlined"
                 v-model="itemName"
                 :loading="loading"
+                @keyup.enter="addItem"
               />
             </v-card-text>
             <v-card-actions>
