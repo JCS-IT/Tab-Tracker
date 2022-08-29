@@ -10,9 +10,7 @@
       transition="dialog-transition"
     >
       <template v-slot:activator="{ props }">
-        <v-btn color="error" v-bind="props">
-          <v-icon>mdi-close-circle</v-icon> Clear All
-        </v-btn>
+        <v-btn color="error" v-bind="props"> Clear Tab </v-btn>
       </template>
       <v-card>
         <v-card-title> Clear this tab? </v-card-title>
