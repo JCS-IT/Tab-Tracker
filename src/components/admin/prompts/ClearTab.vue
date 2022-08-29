@@ -37,10 +37,16 @@ export default defineComponent({
       clearTabMenu: false,
     };
   },
+  props: {
+    uid: {
+      type: String,
+      required: true,
+    },
+  },
   methods: {
     async clearTab() {
       this.clearTabMenu = false;
-      const docRef = doc(db, `users/${this.$route.params.id}`);
+      const docRef = doc(db, `users/${this.uid}`);
       await updateDoc(docRef, {
         tab: [],
       });
