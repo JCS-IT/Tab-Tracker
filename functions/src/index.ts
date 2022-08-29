@@ -41,7 +41,7 @@ export const setUpFirestore = functions.auth
       tab: [],
       roles: {},
     });
-    batch.update(admin.firestore().doc(`admin/users`), {
+    batch.update(admin.firestore().doc("admin/users"), {
       index: {
         [user.uid]: {
           email: user.email,
@@ -85,27 +85,33 @@ export const deleteUser = functions.https.onCall(async (data, context) => {
   return await admin.auth().deleteUser(data.uid);
 });
 
-export const makeAdmin = functions.https.onCall(async (data, context) => {
+export const toggleAdmin = functions.https.onCall(async (data, context) => {
+  console.log(data);
   if (context.app == undefined) {
     throw new functions.https.HttpsError("permission-denied", "Unknown origin");
   }
-  if (!context.auth?.token.admin) {
+  if (context.auth?.token.admin !== true) {
     throw new functions.https.HttpsError(
       "permission-denied",
-      "You must be an admin to make an admin"
+      "You must be an administrator to do this"
     );
   }
-  if (!(typeof data.uid === "string")) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "invalid argument passed to function"
-    );
-  }
+  const user = await admin.auth().getUserByEmail(data.email);
+  await admin
+    .auth()
+    .setCustomUserClaims(user.uid, {
+      admin: data.admin as boolean,
+    })
+    .catch((err) => {
+      throw new functions.https.HttpsError("internal", err.message);
+    });
   const batch = admin.firestore().batch();
-  batch.update(admin.firestore().doc(`users/${data.uid}`), {
+  batch.update(admin.firestore().doc(`users/${user.uid}`), {
     roles: {
-      admin: true,
+      admin: data.admin as boolean,
     },
   });
-  return await admin.auth().setCustomUserClaims(data.uid, { admin: true });
+  return batch.commit().catch((err) => {
+    return err;
+  });
 });
