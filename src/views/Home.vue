@@ -19,7 +19,7 @@ export default defineComponent({
   mounted() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        this.$router.push(`/user/${user.uid}`);
+        this.$router.push(`/user`);
       } else {
         this.$router.push("/login");
       }
