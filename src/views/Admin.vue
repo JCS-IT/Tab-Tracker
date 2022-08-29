@@ -41,21 +41,19 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
-import { auth } from "../firebase";
 
 export default defineComponent({
   data() {
     return {
       active: "staff",
-      userID: auth.currentUser?.uid,
     };
   },
   components: {
     StaffMenu: defineAsyncComponent(
-      () => import("@/components/admin/menus/StaffMenu.vue")
+      () => import("@/components/admin/Menus/StaffMenu.vue")
     ),
     ItemMenu: defineAsyncComponent(
-      () => import("@/components/admin/menus/ItemMenu.vue")
+      () => import("@/components/admin/Menus/ItemMenu.vue")
     ),
   },
 });

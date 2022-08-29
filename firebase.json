@@ -13,8 +13,7 @@
     "predeploy": [
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
-    ],
-    "source": "functions"
+    ]
   },
   "hosting": {
     "public": "dist",
@@ -42,9 +41,6 @@
     },
     "hosting": {
       "port": 5000
-    },
-    "eventarc": {
-      "port": 9299
     },
     "ui": {
       "enabled": true

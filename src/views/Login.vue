@@ -18,6 +18,7 @@ import { defineComponent } from "vue";
 import { auth } from "@/firebase";
 import { GoogleAuthProvider } from "@firebase/auth";
 import * as firebaseui from "firebaseui";
+import "firebaseui/dist/firebaseui.css";
 export default defineComponent({
   name: "login",
   data() {

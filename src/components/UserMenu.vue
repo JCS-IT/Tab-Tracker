@@ -1,7 +1,7 @@
 <template>
   <v-menu rounded>
     <template v-slot:activator="{ props }">
-      <v-btn icon v-bind="props">
+      <v-btn icon v-bind="props" :disabled="user == null">
         <v-avatar>
           <v-img :src="user?.photoURL" alt="Avatar" />
         </v-avatar>
@@ -47,12 +47,13 @@ export default defineComponent({
   methods: {
     logout() {
       auth.signOut();
+      this.$router.push("/login");
     },
   },
   mounted() {
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged((user: any) => {
       this.user = user;
-      user?.getIdTokenResult().then((token) => {
+      user?.getIdTokenResult().then((token: any) => {
         this.admin = token.claims.admin;
       });
     });

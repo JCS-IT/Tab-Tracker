@@ -1,34 +1,34 @@
 <template>
-  <v-container>
+  <v-container align="center">
     <v-row>
-      <v-col align="center">
-        <h3>{{ user.data?.displayName }}'s Tab</h3>
+      <v-col>
+        <h1>{{ user.data?.displayName }}'s Tab</h1>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <AddItem :items="items" :tab="tab" />
+        <AddItem :items="items" />
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
-        <h4 class="text-center">Total</h4>
+      <v-col cols="6">
+        <h4 class="text-center">Totals</h4>
         <v-table>
           <thead>
             <tr>
-              <th v-for="index in items" :key="item">{{ index }}s</th>
+              <th>Item</th>
+              <th>Count</th>
             </tr>
           </thead>
           <tbody>
-            <td v-for="(item, index) in total" :key="index" class="pl-7">
-              {{ item }}
-            </td>
+            <tr v-for="item in items">
+              <td>{{ item }}</td>
+              <td>{{ total[item] }}</td>
+            </tr>
           </tbody>
         </v-table>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
+      <v-col cols="6">
         <h4 class="text-center">History</h4>
         <v-table>
           <thead>
@@ -39,11 +39,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in tab" :key="index">
+            <tr v-for="(item, index) in user.tab" :key="index">
               <td class="text-center">{{ item.name }}</td>
-              <td class="text-center">{{ convertDate(item.date as any) }}</td>
-              <td v-if="isCurrentDate(item.date as any)">
-                <DeleteItem :input="item" :tab="tab"></DeleteItem>
+              <td class="text-center">
+                {{ item.date.toDate().toLocaleString() }}
+              </td>
+              <td v-if="isCurrentDate(item.date)">
+                <DeleteItem :item="item"></DeleteItem>
               </td>
             </tr>
           </tbody>
@@ -54,110 +56,71 @@
 </template>
 
 <script lang="ts">
-import { defineAsyncComponent, defineComponent } from "vue";
-import { auth, db } from "../firebase";
-import { doc, onSnapshot, Timestamp } from "firebase/firestore";
+import { defineComponent, defineAsyncComponent } from "vue";
+import { auth, db } from "@/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+import type { User } from "@/types";
 
-let tabSub: () => void;
 let itemSub: () => void;
-
-interface Total {
-  [key: string]: number;
-}
-interface Tab {
-  [key: string]: {
-    name: string;
-    date: Timestamp;
-  };
-}
-
-interface User {
-  data: {
-    displayName: string;
-    email: string;
-    photoURL: string;
-    uid: string;
-  };
-  tab: Tab;
-}
+let tabSub: () => void;
 
 export default defineComponent({
-  data() {
-    return {
-      tab: [] as Tab[],
-      user: {} as User,
-      item: "" as string,
-      items: [] as string[],
-      admin: false as any,
-      showGrid: false as boolean,
-      addItemMenu: false as boolean,
-      clearTabMenu: false as boolean,
-    };
-  },
+  name: "User",
   components: {
     AddItem: defineAsyncComponent(
-      () => import("@/components/public/AddItems.vue")
+      () => import("@/components/public/AddItem.vue")
     ),
     DeleteItem: defineAsyncComponent(
       () => import("@/components/public/DeleteItem.vue")
     ),
-    ClearTab: defineAsyncComponent(
-      () => import("@/components/admin/prompts/ClearTab.vue")
-    ),
+  },
+  data() {
+    return {
+      user: {} as User,
+      items: [],
+      admin: false as any,
+    };
   },
   computed: {
     total() {
-      let total = {} as Total;
+      let total = {} as { [key: string]: number };
       this.items.forEach((item: any) => {
         total[item] = 0;
       });
-      this.tab.forEach((item: any) => {
+      this.user.tab.forEach((item: any) => {
         total[item.name]++;
       });
       return total;
     },
   },
   methods: {
-    isCurrentDate(input: Timestamp) {
-      let current = Timestamp.now();
-      let difference = current.seconds - input.seconds;
-      return difference < 300;
-    },
-    convertDate(input: Timestamp) {
-      return input.toDate().toLocaleString();
+    isCurrentDate(date: any) {
+      const now = new Date();
+      const diff = now.getTime() - date.toDate().getTime();
+      return diff < 300000;
     },
   },
-  async created() {
-    tabSub = onSnapshot(doc(db, `users/${auth.currentUser?.uid}`), (doc) => {
-      this.tab = [];
-      if (doc.exists()) {
-        this.tab = doc.data().tab;
-        this.user = doc.data() as User;
-      }
-      this.tab.reverse();
-    });
-    itemSub = onSnapshot(doc(db, "admin/items"), (doc) => {
-      if (doc.exists()) {
-        this.items = doc.data().food;
+  mounted() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        tabSub = onSnapshot(doc(db, "users", user.uid), (doc) => {
+          this.user = doc.data() as User;
+          this.user.tab.reverse();
+        });
+        itemSub = onSnapshot(doc(db, "admin/items"), (doc) => {
+          if (doc.exists()) {
+            this.items = doc.data().food;
+          }
+        });
+      } else {
+        tabSub();
+        itemSub();
       }
     });
   },
   beforeDestroy() {
     tabSub();
     itemSub();
-  },
-  beforeMounted() {
-    auth.onAuthStateChanged((user) => {
-      if (user || this.$route.params.from === "admin") {
-        user?.getIdTokenResult().then((idTokenResult) => {
-          this.admin = idTokenResult.claims.admin;
-        });
-      } else {
-        tabSub();
-        itemSub();
-        this.$router.push("/");
-      }
-    });
   },
 });
 </script>

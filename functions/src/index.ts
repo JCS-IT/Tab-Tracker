@@ -2,62 +2,45 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 admin.initializeApp();
 
+import {addItem, removeItem} from "./items";
+
+export {addItem, removeItem};
+
 export const beforeCreate = functions.auth
-  .user()
-  .beforeCreate((user, context) => {
-    if (context == null) {
-      throw new functions.https.HttpsError(
-        "permission-denied",
-        "Unknown origin"
-      );
-    }
+    .user()
+    .beforeCreate((user, context) => {
+      if (context == null) {
+        throw new functions.https.HttpsError(
+            "permission-denied",
+            "Unknown origin"
+        );
+      }
 
-    if (!user.email?.endsWith("@educbe.ca")) {
-      throw new functions.https.HttpsError(
-        "permission-denied",
-        "You must be in the educbe.ca domain to create an account"
-      );
-    }
-  });
-
-export const setUpFirestore = functions.auth
-  .user()
-  .onCreate((user, context) => {
-    if (context == null) {
-      throw new functions.https.HttpsError(
-        "permission-denied",
-        "Unknown origin"
-      );
-    }
-    const batch = admin.firestore().batch();
-    batch.set(admin.firestore().doc(`users/${user.uid}`), {
-      data: {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      },
-      tab: [],
-      roles: {},
+      if (!user.email?.endsWith("@educbe.ca")) {
+        throw new functions.https.HttpsError(
+            "permission-denied",
+            "You must be in the educbe.ca domain to create an account"
+        );
+      }
     });
-    batch.update(admin.firestore().doc("admin/users"), {
-      index: {
-        [user.uid]: {
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
-        },
-      },
-    });
-    return batch.commit();
-  });
 
-export const purgeUser = functions.auth.user().onDelete((user) => {
+export const onCreate = functions.auth.user().onCreate((user) => {
   const batch = admin.firestore().batch();
-  batch.delete(admin.firestore().doc(`users/${user.uid}`));
+  batch.set(admin.firestore().doc(`users/${user.uid}`), {
+    data: {
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    },
+    tab: [],
+    roles: {},
+  });
   return batch.commit();
+});
+
+export const onDelete = functions.auth.user().onDelete((user) => {
+  return admin.firestore().doc(`users/${user.uid}`).delete();
 });
 
 export const deleteUser = functions.https.onCall(async (data, context) => {
@@ -66,52 +49,53 @@ export const deleteUser = functions.https.onCall(async (data, context) => {
   }
   if (!context.auth?.token.admin) {
     throw new functions.https.HttpsError(
-      "permission-denied",
-      "You must be an admin to delete a user"
+        "permission-denied",
+        "You must be an admin to delete a user"
     );
   }
-  if (!(typeof data.uid === "string")) {
+  if (!(typeof data.email === "string")) {
     throw new functions.https.HttpsError(
-      "invalid-argument",
-      "invalid argument passed to function"
+        "invalid-argument",
+        "invalid argument passed to function"
     );
   }
-  if (data.uid === context.auth?.uid) {
+  if (data.email === context.auth?.token.email) {
     throw new functions.https.HttpsError(
-      "permission-denied",
-      "You cannot delete yourself"
+        "permission-denied",
+        "You cannot delete yourself"
     );
   }
-  return await admin.auth().deleteUser(data.uid);
+
+  const user = await admin.auth().getUserByEmail(data.email);
+  return admin.auth().deleteUser(user.uid);
 });
 
-export const toggleAdmin = functions.https.onCall(async (data, context) => {
-  console.log(data);
+export const clearTab = functions.https.onCall(async (data, context) => {
   if (context.app == undefined) {
     throw new functions.https.HttpsError("permission-denied", "Unknown origin");
   }
-  if (context.auth?.token.admin !== true) {
+  if (context.auth == undefined) {
     throw new functions.https.HttpsError(
-      "permission-denied",
-      "You must be an administrator to do this"
+        "permission-denied",
+        "You must be logged in"
+    );
+  }
+  if (!context.auth.token.admin) {
+    throw new functions.https.HttpsError(
+        "permission-denied",
+        "You must be an admin to clear the tab"
     );
   }
   const user = await admin.auth().getUserByEmail(data.email);
-  await admin
-    .auth()
-    .setCustomUserClaims(user.uid, {
-      admin: data.admin as boolean,
-    })
-    .catch((err) => {
-      throw new functions.https.HttpsError("internal", err.message);
-    });
-  const batch = admin.firestore().batch();
-  batch.update(admin.firestore().doc(`users/${user.uid}`), {
-    roles: {
-      admin: data.admin as boolean,
-    },
-  });
-  return batch.commit().catch((err) => {
-    return err;
-  });
+  return admin
+      .firestore()
+      .doc(`users/${user.uid}`)
+      .update({
+        tab: [],
+      })
+      .then(() => {
+        return {
+          message: "Tab cleared",
+        };
+      });
 });

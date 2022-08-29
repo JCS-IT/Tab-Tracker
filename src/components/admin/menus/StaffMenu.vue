@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
       <v-col width="100px">
         <v-menu>
@@ -26,77 +26,20 @@
         <v-expansion-panel
           v-for="letter in letters"
           :key="letter"
-          :value="letter"
           :id="letter"
+          :value="letter"
+          class="mb-2"
         >
           <v-expansion-panel-title>
             <b>{{ letter.toUpperCase() }}</b>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-tooltip
-              bottom
-              v-for="(user, index) in filterUsers(letter)"
-              :key="index"
-            >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  icon
-                  v-bind="props"
-                  @click="dialog[user.data.uid] = true"
-                >
-                  <v-avatar>
-                    <v-img :src="user?.data.photoURL" alt="Avatar" />
-                  </v-avatar>
-                </v-btn>
-                <v-dialog v-model="dialog[user.data.uid]" persistent>
-                  <v-card>
-                    <v-card-title>
-                      <v-avatar>
-                        <v-img :src="user?.data.photoURL" alt="Avatar" />
-                      </v-avatar>
-                      <span>{{ user.data.displayName }}</span>
-                    </v-card-title>
-                    <v-divider />
-                    <v-card-text>
-                      <h4>Tab:</h4>
-                      <v-list>
-                        <v-list-item
-                          v-for="(item, index) in items"
-                          :key="index"
-                        >
-                          <v-list-item-title>
-                            {{ item }}s:
-                            {{ total(item, user) }}
-                          </v-list-item-title>
-                        </v-list-item>
-                      </v-list>
-                    </v-card-text>
-                    <v-divider />
-                    <v-card-text>
-                      <h4>Roles:</h4>
-                      <v-switch
-                        :loading="loading"
-                        :disabled="loading"
-                        :model-value="user.roles.admin"
-                        label="Administrator"
-                        @click="toggleAdmin(user)"
-                      />
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn
-                        color="primary"
-                        @click="dialog[user.data.uid] = false"
-                        text
-                      >
-                        Close
-                      </v-btn>
-                      <ClearTab :uid="user.data.uid" />
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </template>
-              <span>{{ user?.data.displayName }}</span>
-            </v-tooltip>
+            <User
+              v-for="user in filterUsers(letter)"
+              :user="user"
+              :items="items"
+              ref="user"
+            />
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -106,48 +49,26 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
-import { auth, db, functions } from "@/firebase";
-import { doc, collection, onSnapshot, Timestamp } from "firebase/firestore";
-import { httpsCallable } from "@firebase/functions";
-let userSub: () => void;
-let itemSub: () => void;
+import { auth, db } from "@/firebase";
+import type { User } from "@/types";
+import { doc, collection, onSnapshot } from "@firebase/firestore";
 
-interface User {
-  data: {
-    displayName: string;
-    email: string;
-    photoURL: string;
-    uid: string;
-  };
-  tab: [
-    {
-      data: Timestamp;
-      name: string;
-    }
-  ];
-  roles: {
-    admin: boolean;
-    dev: boolean;
-  };
-}
-
-interface Dialog {
-  [key: string]: boolean;
-}
+let userSnap: () => void;
+let itemSnap: () => void;
 
 export default defineComponent({
+  name: "StaffMenu",
   components: {
-    DeleteUser: defineAsyncComponent(() => import("../prompts/DeleteUser.vue")),
-    ClearTab: defineAsyncComponent(() => import("../prompts/ClearTab.vue")),
+    User: defineAsyncComponent(
+      () => import("@/components/admin/components/User.vue")
+    ),
   },
   data() {
     return {
-      dialog: {} as Dialog,
-      users: [] as User[],
+      search: "",
       items: [] as string[],
-      search: "" as string,
       panels: [] as string[],
-      loading: false as boolean,
+      users: [] as User[],
       letters: [
         "a",
         "b",
@@ -175,7 +96,7 @@ export default defineComponent({
         "x",
         "y",
         "z",
-      ],
+      ] as string[],
     };
   },
   computed: {
@@ -183,24 +104,11 @@ export default defineComponent({
       return this.users.filter((user: any) => {
         return user.data.displayName
           .toLowerCase()
-          .includes(this.search.toLowerCase());
+          .includes(this.search.toLowerCase()) as boolean;
       }) as User[];
     },
   },
   methods: {
-    filterUsers(letter: string) {
-      return this.users?.filter((user: User) => {
-        return user.data.displayName
-          .split(" ")[1]
-          ?.toLowerCase()
-          .startsWith(letter);
-      });
-    },
-    total(item: string, user: User) {
-      return user.tab.filter((tab: { name: string }) => {
-        return tab.name === item;
-      }).length;
-    },
     getUser(user: User) {
       this.panels = [];
       const panel = user.data.displayName.split(" ")[1].toLowerCase().charAt(0);
@@ -209,44 +117,34 @@ export default defineComponent({
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
       }
-      this.dialog[user.data.uid] = true;
+      // @ts-ignore
+      this.$refs.user[0].data.dialog = true;
     },
-    async toggleAdmin(user: User) {
-      this.loading = true;
-      try {
-        const toggleRole = httpsCallable(functions, "toggleAdmin");
-        await toggleRole({
-          uid: user.data.uid,
-          email: user.data.email,
-          admin: !user.roles.admin,
-        });
-      } catch (err) {
-        this.$emit("error", err);
-      }
-      this.loading = false;
+    filterUsers(letter: string) {
+      return this.users?.filter((user: User) => {
+        return user.data.displayName
+          .split(" ")[1]
+          ?.toLowerCase()
+          .startsWith(letter);
+      });
     },
-  },
-  beforeDestroy() {
-    userSub();
-    itemSub();
   },
   created() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        userSub = onSnapshot(collection(db, "users"), (snapshot) => {
-          this.users = [];
-          snapshot.forEach((doc) => {
-            // @ts-ignore
-            this.users.push(doc.data());
-            this.dialog[doc.id] = false;
+        userSnap = onSnapshot(collection(db, "users"), (snap) => {
+          snap.forEach((doc) => {
+            this.users.push(doc.data() as User);
           });
         });
-        itemSub = onSnapshot(doc(db, "admin/items"), (snapshot) => {
-          this.items = snapshot.data()?.food;
+        itemSnap = onSnapshot(doc(db, "admin/items"), (doc) => {
+          if (doc.exists()) {
+            this.items = doc.data().food as string[];
+          }
         });
       } else {
-        userSub();
-        itemSub();
+        userSnap();
+        itemSnap();
       }
     });
   },

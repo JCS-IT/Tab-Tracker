@@ -22,6 +22,7 @@ export default defineConfig({
   plugins: [
     vue(),
     vuetify({ autoImport: true }),
+    mkcert(),
     VitePWA({
       injectRegister: "auto",
       registerType: "autoUpdate",
@@ -117,7 +118,6 @@ export default defineConfig({
         ],
       },
     }),
-    mkcert(),
     terser({
       compress: {
         drop_console: true,
