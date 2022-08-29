@@ -1,30 +1,15 @@
 <template>
   <v-container>
-    <div style="display: flex; justify-content: center">
-      <h3>{{ name }}'s Tab</h3>
-    </div>
-    <v-row
-      v-if="$route.params.from == 'admin' && admin"
-      class="my-4"
-      justify="space-between"
-    >
-      <router-link :to="`/admin`">
-        <v-btn color="primary" class="px-5" prepend-icon="mdi-shield-account">
-          Back to admin
-        </v-btn>
-      </router-link>
-      <ClearTab></ClearTab>
+    <v-row>
+      <v-col align="center">
+        <h3>{{ user.data?.displayName }}'s Tab</h3>
+      </v-col>
     </v-row>
-    <v-row v-else class="my-4" justify="space-between">
-      <AddItem :items="items" :tab="tab"></AddItem>
-      <router-link to="/admin" v-if="admin">
-        <v-btn color="info" prepend-icon="mdi-shield-account">
-          Admin Menu
-        </v-btn>
-      </router-link>
+    <v-row>
+      <v-col>
+        <AddItem :items="items" :tab="tab" />
+      </v-col>
     </v-row>
-  </v-container>
-  <v-container>
     <v-row>
       <v-col>
         <h4 class="text-center">Total</h4>
@@ -85,11 +70,22 @@ interface Tab {
     date: Timestamp;
   };
 }
+
+interface User {
+  data: {
+    displayName: string;
+    email: string;
+    photoURL: string;
+    uid: string;
+  };
+  tab: Tab;
+}
+
 export default defineComponent({
   data() {
     return {
       tab: [] as Tab[],
-      name: "" as string,
+      user: {} as User,
       item: "" as string,
       items: [] as string[],
       admin: false as any,
@@ -115,7 +111,7 @@ export default defineComponent({
       this.items.forEach((item: any) => {
         total[item] = 0;
       });
-      this.tab?.forEach((item: any) => {
+      this.tab.forEach((item: any) => {
         total[item.name]++;
       });
       return total;
@@ -132,11 +128,11 @@ export default defineComponent({
     },
   },
   async created() {
-    this.tab = [];
-    tabSub = onSnapshot(doc(db, `users/${this.$route.params.id}`), (doc) => {
+    tabSub = onSnapshot(doc(db, `users/${auth.currentUser?.uid}`), (doc) => {
+      this.tab = [];
       if (doc.exists()) {
-        this.name = doc.data().name;
         this.tab = doc.data().tab;
+        this.user = doc.data() as User;
       }
       this.tab.reverse();
     });
@@ -150,7 +146,7 @@ export default defineComponent({
     tabSub();
     itemSub();
   },
-  async mounted() {
+  beforeMounted() {
     auth.onAuthStateChanged((user) => {
       if (user || this.$route.params.from === "admin") {
         user?.getIdTokenResult().then((idTokenResult) => {
