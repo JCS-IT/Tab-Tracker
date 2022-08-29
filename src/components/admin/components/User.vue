@@ -100,7 +100,7 @@ export default defineComponent({
   },
   computed: {
     total() {
-      let total = {} as { [key: string]: number };
+      const total = {} as { [key: string]: number };
       this.items.forEach((item: any) => {
         total[item] = 0;
       });
@@ -132,7 +132,7 @@ export default defineComponent({
       required: true,
     },
     items: {
-      type: Array as () => String[],
+      type: Array as () => string[],
       required: true,
     },
   },

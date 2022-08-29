@@ -83,7 +83,7 @@ export default defineComponent({
   },
   computed: {
     total() {
-      let total = {} as { [key: string]: number };
+      const total = {} as { [key: string]: number };
       this.items.forEach((item: any) => {
         total[item] = 0;
       });
@@ -118,7 +118,7 @@ export default defineComponent({
       }
     });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     tabSub();
     itemSub();
   },
