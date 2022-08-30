@@ -28,10 +28,6 @@
         "source": "**",
         "destination": "/index.html"
       }
-    ],
-    "predeploy": [
-      "yarn lint",
-      "yarn build"
     ]
   },
   "emulators": {
