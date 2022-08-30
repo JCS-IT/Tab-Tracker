@@ -6,8 +6,9 @@
           <template v-slot:activator="{ props }">
             <v-text-field
               v-model="search"
-              placeholder="Search"
+              label="Search"
               v-bind="props"
+              append-inner-icon="mdi-magnify"
             />
           </template>
           <v-list>
@@ -51,7 +52,7 @@
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
 import { auth, db } from "@/firebase";
-import type { User } from "@/types";
+import type { User, Item } from "@/types";
 import { doc, collection, onSnapshot } from "@firebase/firestore";
 
 let userSnap: () => void;
@@ -67,7 +68,7 @@ export default defineComponent({
   data() {
     return {
       search: "",
-      items: [] as string[],
+      items: [] as Item[],
       panels: [] as string[],
       users: [] as User[],
       letters: [
@@ -142,7 +143,7 @@ export default defineComponent({
         });
         itemSnap = onSnapshot(doc(db, "admin/items"), (doc) => {
           if (doc.exists()) {
-            this.items = doc.data().food as string[];
+            this.items = doc.data().food as Item[];
           }
         });
       } else {
