@@ -11,18 +11,13 @@ export const addItem = functions.https.onCall(async (data, context) => {
         "You must be an admin to add an item"
     );
   }
-  if (!(typeof data.name === "string")) {
-    throw new functions.https.HttpsError(
-        "invalid-argument",
-        "invalid argument passed to function"
-    );
-  }
+
   // add an item to the foods array in admin/items document
   return admin
       .firestore()
       .doc("admin/items")
       .update({
-        food: admin.firestore.FieldValue.arrayUnion(data.name),
+        food: admin.firestore.FieldValue.arrayUnion(data.item),
       });
 });
 
@@ -36,18 +31,12 @@ export const removeItem = functions.https.onCall(async (data, context) => {
         "You must be an admin to remove an item"
     );
   }
-  if (!(typeof data.name === "string")) {
-    throw new functions.https.HttpsError(
-        "invalid-argument",
-        "invalid argument passed to function"
-    );
-  }
   console.log(data.name);
   // remove an item from the foods array in admin/items document
   return admin
       .firestore()
       .doc("admin/items")
       .update({
-        food: admin.firestore.FieldValue.arrayRemove(data.name),
+        food: admin.firestore.FieldValue.arrayRemove(data.item),
       });
 });
