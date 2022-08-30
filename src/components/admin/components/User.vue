@@ -48,6 +48,11 @@
           </v-expansion-panel>
         </v-expansion-panels>
       </v-card-text>
+      <v-divider />
+      <v-card-text>
+        <span>Roles:</span>
+        <toggle-admin :user="user" />
+      </v-card-text>
       <v-card-actions>
         <v-btn color="red" @click="dialog.clear = true" :loading="dialog.clear">
           Clear Tab
@@ -85,13 +90,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, defineAsyncComponent } from "vue";
 import type { User, Item } from "@/types";
 import { httpsCallable } from "@firebase/functions";
 import { functions } from "@/firebase";
 
 export default defineComponent({
   name: "User-component",
+  components: {
+    ToggleAdmin: defineAsyncComponent(() => import("./prompt/ToggleAdmin.vue")),
+  },
   data() {
     return {
       dialog: {

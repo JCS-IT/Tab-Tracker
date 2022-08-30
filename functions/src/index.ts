@@ -99,3 +99,40 @@ export const clearTab = functions.https.onCall(async (data, context) => {
         };
       });
 });
+
+export const toggleAdmin = functions.https.onCall(async (data, context) => {
+  if (context.app == undefined) {
+    throw new functions.https.HttpsError("permission-denied", "Unknown origin");
+  }
+  if (context.auth == undefined) {
+    throw new functions.https.HttpsError(
+        "permission-denied",
+        "You must be logged in"
+    );
+  }
+  if (!context.auth.token.admin) {
+    throw new functions.https.HttpsError(
+        "permission-denied",
+        "You must be an admin to toggle admin status"
+    );
+  }
+  const user = await admin.auth().getUserByEmail(data.email);
+  try {
+    await admin.auth().setCustomUserClaims(user.uid, {
+      admin: !user.customClaims?.admin,
+    });
+    await admin
+        .firestore()
+        .doc(`users/${user.uid}`)
+        .update({
+          roles: {
+            admin: !user.customClaims?.admin,
+          },
+        });
+  } catch (e) {
+    throw new functions.https.HttpsError(
+        "unknown",
+        "An unknown error occurred"
+    );
+  }
+});
