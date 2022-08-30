@@ -9,7 +9,8 @@
     "dev": "vite",
     "preview": "vite preview --port 4173",
     "type-check": "vue-tsc --noEmit",
-    "emulators": "firebase emulators:start"
+    "emulators": "firebase emulators:start",
+    "emulators: functions": "firebase emulators:start --only functions"
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
