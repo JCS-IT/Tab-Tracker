@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: yarn
+        run: yarn install
       - name: Build and deploy
         run: yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
