@@ -4,11 +4,11 @@
       <v-col>
         <v-btn color="green-lighten-2" @click="dialog = true"> Add Item </v-btn>
         <v-dialog v-model="dialog" persistent>
-          <v-alert v-if="error">
-            <v-alert-title>Error Occurred</v-alert-title>
-            {{ error }}
-          </v-alert>
           <v-card width="300px" :loading="loading" :disabled="loading">
+            <v-alert v-if="error">
+              <v-alert-title>Error Occurred</v-alert-title>
+              {{ error }}
+            </v-alert>
             <v-card-title>
               <span class="headline">Add Item</span>
             </v-card-title>
@@ -16,7 +16,15 @@
               <v-text-field
                 label="Item Name"
                 variant="outlined"
-                v-model="itemName"
+                v-model="item.name"
+                :loading="loading"
+                @keyup.enter="addItem"
+              />
+              <v-text-field
+                label="Item Price"
+                variant="outlined"
+                type="number"
+                v-model="item.price"
                 :loading="loading"
                 @keyup.enter="addItem"
               />
@@ -32,7 +40,7 @@
               <v-btn
                 color="red"
                 @click="
-                  itemName = '';
+                  item.name = '';
                   dialog = false;
                 "
               >
@@ -44,11 +52,11 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="item in items" :key="item">
+      <v-col v-for="item in items" :key="item.name">
         <v-menu :close-on-content-click="false">
           <template v-slot:activator="{ props }">
             <v-btn color="blue-lighten-3" v-bind="props">
-              {{ item }}
+              {{ item.name }}: ${{ item.price }}
             </v-btn>
           </template>
           <v-card>
@@ -70,6 +78,7 @@ import { defineComponent } from "vue";
 import { auth, db, functions } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { httpsCallable } from "@firebase/functions";
+import type { Item } from "@/types";
 
 let itemSub: () => void;
 
@@ -78,10 +87,13 @@ export default defineComponent({
   data() {
     return {
       dialog: false,
-      itemName: "",
+      item: {
+        name: "",
+        price: 0,
+      } as Item,
       loading: false,
       error: null as string | null,
-      items: [] as string[],
+      items: [] as Item[],
     };
   },
   methods: {
@@ -89,21 +101,23 @@ export default defineComponent({
       this.loading = true;
       try {
         const addItem = httpsCallable(functions, "addItem");
-        await addItem({ name: this.itemName });
+        await addItem({ item: this.item });
+        this.dialog = false;
       } catch (error) {
         console.log(error);
         this.error = error as string;
-      } finally {
-        this.itemName = "";
-        this.loading = false;
-        this.dialog = false;
       }
+      this.item = {
+        name: "",
+        price: 0,
+      };
+      this.loading = false;
     },
-    async removeItem(item: string) {
+    async removeItem(item: Item) {
       this.loading = true;
       try {
         const removeItem = httpsCallable(functions, "removeItem");
-        await removeItem({ name: item });
+        await removeItem({ item: item });
       } catch (error) {
         console.log(error);
         this.error = error as string;
@@ -118,7 +132,7 @@ export default defineComponent({
       if (user) {
         itemSub = onSnapshot(doc(db, "admin/items"), (doc) => {
           if (doc.exists()) {
-            this.items = doc.data().food as string[];
+            this.items = doc.data().food as Item[];
           }
         });
       } else {

@@ -24,12 +24,12 @@
                 color="green-accent-1"
                 v-for="(item, index) in items"
                 :key="index"
-                :loading="loading[item]"
-                :disabled="loading[item]"
+                :loading="loading[item.name]"
+                :disabled="loading[item.name]"
                 @click="addItem(item)"
                 class="ma-1"
               >
-                {{ item }}
+                {{ item.name }}: ${{ item.price }}
               </v-btn>
             </v-card-text>
             <v-card-actions>
@@ -46,12 +46,13 @@
 import { defineComponent } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, updateDoc, arrayUnion, Timestamp } from "firebase/firestore";
+import type { Item } from "@/types";
 
 export default defineComponent({
   name: "AddItem",
   props: {
     items: {
-      type: Array as () => string[],
+      type: Array as () => Item[],
       required: true,
     },
   },
@@ -63,12 +64,13 @@ export default defineComponent({
     };
   },
   methods: {
-    async addItem(item: string) {
-      this.loading[item] = true;
+    async addItem(item: Item) {
+      this.loading[item.name] = true;
       try {
         await updateDoc(doc(db, `users/${auth.currentUser?.uid}`), {
           tab: arrayUnion({
-            name: item,
+            name: item.name,
+            price: item.price,
             date: Timestamp.now(),
           }),
         });
@@ -77,13 +79,13 @@ export default defineComponent({
         console.error(error);
       } finally {
         this.dialog = false;
-        this.loading[item] = false;
+        this.loading[item.name] = false;
       }
     },
   },
   mounted() {
     this.items.forEach((item) => {
-      this.loading[item] = false;
+      this.loading[item.name] = false;
     });
   },
 });

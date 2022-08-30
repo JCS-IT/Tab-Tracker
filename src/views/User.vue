@@ -18,12 +18,19 @@
             <tr>
               <th>Item</th>
               <th>Count</th>
+              <th>Price</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in items" :key="item">
-              <td>{{ item }}</td>
-              <td>{{ total[item] }}</td>
+            <tr v-for="item in items" :key="item.name">
+              <td>{{ item.name }}</td>
+              <td>{{ total[item.name] }}</td>
+              <td>${{ item.price }}</td>
+            </tr>
+            <tr>
+              <th>
+                <span>Total: ${{ totalPrice }} </span>
+              </th>
             </tr>
           </tbody>
         </v-table>
@@ -34,13 +41,14 @@
           <thead>
             <tr>
               <th class="text-center">Item</th>
+              <th class="text-center">Price</th>
               <th class="text-center">Date</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in user.tab" :key="index">
               <td class="text-center">{{ item.name }}</td>
+              <td class="text-center">${{ item.price }}</td>
               <td class="text-center">
                 {{ item.date.toDate().toLocaleString() }}
               </td>
@@ -59,7 +67,7 @@
 import { defineComponent, defineAsyncComponent } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
-import type { User } from "@/types";
+import type { User, Item } from "@/types";
 
 let itemSub: () => void;
 let tabSub: () => void;
@@ -77,7 +85,7 @@ export default defineComponent({
   data() {
     return {
       user: {} as User,
-      items: [],
+      items: [] as Item[],
       admin: false as boolean,
     };
   },
@@ -85,10 +93,17 @@ export default defineComponent({
     total() {
       const total = {} as { [key: string]: number };
       this.items.forEach((item) => {
-        total[item] = 0;
+        total[item.name] = 0;
       });
       this.user.tab.forEach((item) => {
         total[item.name]++;
+      });
+      return total;
+    },
+    totalPrice() {
+      let total = 0;
+      this.items.forEach((item) => {
+        total += this.total[item.name] * item.price;
       });
       return total;
     },

@@ -10,6 +10,7 @@ export type User = {
   tab: [
     {
       name: string;
+      price: number;
       date: Timestamp;
     }
   ];
@@ -21,4 +22,9 @@ export type User = {
 export type Tab = {
   name: string;
   date: Timestamp;
+};
+
+export type Item = {
+  name: string;
+  price: number;
 };
