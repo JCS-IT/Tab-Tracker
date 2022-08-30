@@ -13,21 +13,26 @@
               <span class="headline">Add Item</span>
             </v-card-title>
             <v-card-text>
-              <v-text-field
-                label="Item Name"
-                variant="outlined"
-                v-model="item.name"
-                :loading="loading"
-                @keyup.enter="addItem"
-              />
-              <v-text-field
-                label="Item Price"
-                variant="outlined"
-                type="number"
-                v-model="item.price"
-                :loading="loading"
-                @keyup.enter="addItem"
-              />
+              <v-form ref="item" lazy-validation>
+                <v-text-field
+                  label="Item Name"
+                  variant="outlined"
+                  v-model="item.name"
+                  :loading="loading"
+                  :rules="rules.name"
+                  @keyup.enter="addItem"
+                />
+                <v-text-field
+                  label="Item Price"
+                  variant="outlined"
+                  type="number"
+                  v-model="item.price"
+                  prefix="$"
+                  :loading="loading"
+                  :rules="rules.price"
+                  @keyup.enter="addItem"
+                />
+              </v-form>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -41,6 +46,7 @@
                 color="red"
                 @click="
                   item.name = '';
+                  item.price = null;
                   dialog = false;
                 "
               >
@@ -88,17 +94,29 @@ export default defineComponent({
     return {
       dialog: false,
       item: {
-        name: "",
-        price: 0,
-      } as Item,
+        name: "" as string,
+        price: null as number | null,
+      },
       loading: false,
       error: null as string | null,
       items: [] as Item[],
+      rules: {
+        name: [(v: unknown) => !!v || "Name is required"],
+        price: [(v: unknown) => !!v || "Price is required"],
+      },
     };
   },
   methods: {
     async addItem() {
       this.loading = true;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      const checkValid = await this.$refs.item.validate();
+      if (!checkValid.valid) {
+        this.loading = false;
+        return;
+      }
+
       try {
         const addItem = httpsCallable(functions, "addItem");
         await addItem({ item: this.item });
