@@ -32,15 +32,18 @@
       <v-card-text>
         <v-expansion-panels>
           <v-expansion-panel>
-            <v-expansion-panel-title> Tab </v-expansion-panel-title>
+            <v-expansion-panel-title>
+              <span class="headline">Tab</span>
+            </v-expansion-panel-title>
             <v-expansion-panel-text>
               <v-list>
                 <v-list-item v-for="(item, index) in items" :key="index">
                   <v-list-item-title>
-                    {{ item }}: {{ total[item as string] }}
+                    {{ item.name }}: {{ count[item.name] }} * ${{ item.price }}
                   </v-list-item-title>
                 </v-list-item>
               </v-list>
+              Total: ${{ total }}
             </v-expansion-panel-text>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -83,7 +86,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import type { User } from "@/types";
+import type { User, Item } from "@/types";
 import { httpsCallable } from "@firebase/functions";
 import { functions } from "@/firebase";
 
@@ -99,15 +102,20 @@ export default defineComponent({
     };
   },
   computed: {
-    total() {
+    count() {
       const total = {} as { [key: string]: number };
       this.items.forEach((item) => {
-        total[item] = 0;
+        total[item.name] = 0;
       });
       this.user.tab.forEach((item) => {
         total[item.name]++;
       });
       return total;
+    },
+    total() {
+      return this.user.tab.reduce((total, item) => {
+        return total + item.price;
+      }, 0);
     },
   },
   methods: {
@@ -132,7 +140,7 @@ export default defineComponent({
       required: true,
     },
     items: {
-      type: Array as () => string[],
+      type: Array as () => Item[],
       required: true,
     },
   },
