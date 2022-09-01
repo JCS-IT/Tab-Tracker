@@ -7,30 +7,7 @@
     </v-row>
     <v-row>
       <v-col v-for="item in items" :key="item.name">
-        <v-menu :close-on-content-click="false">
-          <template v-slot:activator="{ props }">
-            <v-btn color="blue-lighten-3" v-bind="props">
-              {{ item.name }}: ${{ item.price }}
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-text>
-              <v-row>
-                <v-col>
-                  <v-btn
-                    color="red"
-                    @click="removeItem(item)"
-                    :loading="loading"
-                    prepend-icon="mdi-delete"
-                    width="100%"
-                  >
-                    Delete
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </v-menu>
+        <item :input="item" :items="items" />
       </v-col>
     </v-row>
   </v-container>
@@ -63,6 +40,7 @@ export default defineComponent({
     AddItem: defineAsyncComponent(
       () => import("../components/prompt/items/AddItem.vue")
     ),
+    Item: defineAsyncComponent(() => import("../components/Item.vue")),
   },
   methods: {
     async removeItem(item: Item) {
