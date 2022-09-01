@@ -1,5 +1,9 @@
 <template>
-  <v-card width="200px" :loading="loading" :disabled="loading">
+  <v-card
+    width="200px"
+    :loading="loading.update || loading.delete"
+    :disabled="loading.update"
+  >
     <v-alert v-if="error != null">
       {{ error }}
     </v-alert>
@@ -20,18 +24,16 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-btn @click="updateItem()" color="green" :loading="loading">
+      <v-btn @click="updateItem()" color="green" :loading="loading.update">
         Update
       </v-btn>
-      <v-btn @click="removeItem(item)" prepend-icon="mdi-delete" color="red">
-        Delete
-      </v-btn>
+      <delete-item :item="item" />
     </v-card-actions>
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, defineAsyncComponent } from "vue";
 import { functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
 import type { Item } from "@/types";
@@ -40,7 +42,11 @@ export default defineComponent({
   name: "ItemComponent",
   data() {
     return {
-      loading: false,
+      loading: {
+        update: false,
+        delete: false,
+        dialog: false,
+      },
       dialog: false,
       error: null as string | null,
       rules: {
@@ -64,13 +70,12 @@ export default defineComponent({
   },
   methods: {
     async updateItem() {
-      this.loading = true;
+      this.loading.update = true;
       try {
         // update item in array
         const temp = [...this.items] as Item[];
         const index = this.items.findIndex((i) => i.name === this.item.name);
         temp[index].price = this.item.price;
-
         const updateItem = httpsCallable(functions, "updateItem");
         await updateItem({
           items: temp,
@@ -78,22 +83,14 @@ export default defineComponent({
       } catch (error) {
         this.error = error as string;
       } finally {
-        this.loading = false;
+        this.loading.update = false;
       }
     },
-    async removeItem(item: Item) {
-      this.loading = true;
-      try {
-        const removeItem = httpsCallable(functions, "removeItem");
-        await removeItem({ item: item });
-      } catch (error) {
-        console.log(error);
-        this.error = error as string;
-      } finally {
-        this.loading = false;
-        this.dialog = false;
-      }
-    },
+  },
+  components: {
+    DeleteItem: defineAsyncComponent(
+      () => import("../components/prompt/items/DeleteItem.vue")
+    ),
   },
 });
 </script>
