@@ -11,8 +11,13 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col>
+        <span>Total Owed: ${{ total }}</span>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="6">
-        <h4 class="text-center">Totals</h4>
+        <h4 class="text-center">Tally's</h4>
         <v-table>
           <thead>
             <tr>
@@ -24,13 +29,8 @@
           <tbody>
             <tr v-for="item in items" :key="item.name">
               <td>{{ item.name }}</td>
-              <td>{{ total[item.name] }}</td>
+              <td>{{ tally[item.name] }}</td>
               <td>${{ item.price }}</td>
-            </tr>
-            <tr>
-              <th>
-                <span>Total: ${{ totalPrice }} </span>
-              </th>
             </tr>
           </tbody>
         </v-table>
@@ -90,7 +90,7 @@ export default defineComponent({
     };
   },
   computed: {
-    total() {
+    tally() {
       const total = {} as { [key: string]: number };
       this.items.forEach((item) => {
         total[item.name] = 0;
@@ -100,10 +100,10 @@ export default defineComponent({
       });
       return total;
     },
-    totalPrice() {
+    total() {
       let total = 0;
-      this.items.forEach((item) => {
-        total += this.total[item.name] * item.price;
+      this.user?.tab?.forEach((item) => {
+        total += item.price;
       });
       return total;
     },
