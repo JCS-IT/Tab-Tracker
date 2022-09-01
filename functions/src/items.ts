@@ -7,18 +7,16 @@ export const addItem = functions.https.onCall(async (data, context) => {
   }
   if (!context.auth.token.admin) {
     throw new functions.https.HttpsError(
-      "permission-denied",
-      "You must be an admin to add an item"
+        "permission-denied",
+        "You must be an admin to add an item"
     );
   }
-
-  // add an item to the foods array in admin/items document
   return admin
-    .firestore()
-    .doc("admin/items")
-    .update({
-      food: admin.firestore.FieldValue.arrayUnion(data.item),
-    });
+      .firestore()
+      .doc("admin/items")
+      .update({
+        food: admin.firestore.FieldValue.arrayUnion(data.item),
+      });
 });
 
 export const removeItem = functions.https.onCall(async (data, context) => {
@@ -27,18 +25,16 @@ export const removeItem = functions.https.onCall(async (data, context) => {
   }
   if (!context.auth.token.admin) {
     throw new functions.https.HttpsError(
-      "permission-denied",
-      "You must be an admin to remove an item"
+        "permission-denied",
+        "You must be an admin to remove an item"
     );
   }
-  console.log(data.name);
-  // remove an item from the foods array in admin/items document
   return admin
-    .firestore()
-    .doc("admin/items")
-    .update({
-      food: admin.firestore.FieldValue.arrayRemove(data.item),
-    });
+      .firestore()
+      .doc("admin/items")
+      .update({
+        food: admin.firestore.FieldValue.arrayRemove(data.item),
+      });
 });
 
 export const updateItem = functions.https.onCall(async (data, context) => {
@@ -47,14 +43,11 @@ export const updateItem = functions.https.onCall(async (data, context) => {
   }
   if (!context.auth.token.admin) {
     throw new functions.https.HttpsError(
-      "permission-denied",
-      "You must be an admin to update an item"
+        "permission-denied",
+        "You must be an admin to update an item"
     );
   }
-  const batch = admin.firestore().batch();
-  batch.update(admin.firestore().doc("admin/items"), {
+  return admin.firestore().doc("admin/items").update({
     food: data.items,
   });
-
-  return batch.commit();
 });
