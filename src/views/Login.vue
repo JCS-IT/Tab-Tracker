@@ -58,6 +58,8 @@ export default defineComponent({
     auth.onAuthStateChanged((user) => {
       if (!user) {
         this.showAuthMenu();
+      } else {
+        this.$router.push("/user");
       }
     });
   },
