@@ -904,6 +904,11 @@ eslint-module-utils@^2.7.3:
   dependencies:
     debug "^3.2.7"
 
+eslint-plugin-firebase-functions@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-firebase-functions/-/eslint-plugin-firebase-functions-1.0.14.tgz#2f5054e43d61be24937f86abbeb2cbcd901bf5ef"
+  integrity sha512-gcqDJ7PNOpfHUHaQi+pH8RYa27/Q8Lr8wdCpAmqx9ufvmr7S0msBtHVZo5iblAM9O6hjJpvqoX9VLe+5HZLKfw==
+
 eslint-plugin-import@^2.26.0:
   version "2.26.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.26.0.tgz#f812dc47be4f2b72b478a021605a59fc6fe8b88b"
