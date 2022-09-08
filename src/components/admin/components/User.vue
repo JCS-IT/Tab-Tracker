@@ -78,14 +78,16 @@
                 @click="clearTab"
                 :loading="loading"
                 :disabled="loading"
-                >Clear</v-btn
               >
+                Clear
+              </v-btn>
               <v-btn
                 color="green"
                 @click="dialog.clear = false"
                 :disabled="loading"
-                >Cancel</v-btn
               >
+                Cancel
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
