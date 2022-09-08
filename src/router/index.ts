@@ -35,13 +35,11 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  if (import.meta.env.DEV) {
-    return next();
-  }
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin);
   const user = await auth.currentUser;
   const admin = (await auth.currentUser?.getIdTokenResult())?.claims.admin;
+
   switch (true) {
     case requiresAuth && !user:
       return next({
