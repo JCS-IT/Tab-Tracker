@@ -96,15 +96,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent } from "vue";
+import { defineComponent } from "vue";
 import type { User, Item } from "@/types";
 import { httpsCallable } from "@firebase/functions";
 import { functions } from "@/firebase";
+import ToggleAdmin from "./prompt/user/ToggleAdmin.vue";
 
 export default defineComponent({
   name: "User-component",
   components: {
-    ToggleAdmin: defineAsyncComponent(() => import("./prompt/ToggleAdmin.vue")),
+    ToggleAdmin,
   },
   data() {
     return {

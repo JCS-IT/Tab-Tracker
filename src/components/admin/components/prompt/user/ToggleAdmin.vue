@@ -2,8 +2,8 @@
   <v-dialog
     v-model="dialog"
     fullscreen
-    :max-width="user.roles.admin ? '350px' : '500px'"
-    :max-height="user.roles.admin ? '120px' : '340px'"
+    :max-width="user?.roles.admin ? '350px' : '500px'"
+    :max-height="user?.roles.admin ? '120px' : '340px'"
     :overlay="true"
     persistent
     transition="dialog-transition"
@@ -13,8 +13,8 @@
         color="primary"
         label="Administrator"
         v-bind="props"
-        :model-value="user.roles?.admin"
-        :disabled="user.roles?.dev"
+        :model-value="user?.roles?.admin"
+        :disabled="user?.roles?.dev"
         :loading="loading.switch"
         @click="(dialog = true), (loading.switch = true)"
         :messages="

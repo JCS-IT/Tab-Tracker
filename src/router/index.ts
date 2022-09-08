@@ -34,8 +34,6 @@ const router = createRouter({
   ],
 });
 
-export default router;
-
 router.beforeEach(async (to, from, next) => {
   if (import.meta.env.DEV) {
     return next();
@@ -55,3 +53,5 @@ router.beforeEach(async (to, from, next) => {
       return next();
   }
 });
+
+export default router;

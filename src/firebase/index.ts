@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
-import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getFunctions } from "firebase/functions";
 import { getAnalytics } from "firebase/analytics";
 import { getPerformance } from "firebase/performance";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
@@ -27,19 +27,5 @@ initializeAppCheck(app, {
   provider: new ReCaptchaV3Provider("6LfgHEEgAAAAAEaYmNJkZHGvxQ4-c6syHPdOb5r5"),
   isTokenAutoRefreshEnabled: true,
 });
-
-if (import.meta.env.DEV) {
-  connectFunctionsEmulator(functions, "localhost", 5001);
-  fetch("http://localhost:8080/").then((res) => {
-    if (res.ok) {
-      connectFirestoreEmulator(db, "localhost", 8080);
-    }
-  });
-  fetch("http://localhost:9099/").then((res) => {
-    if (res.ok) {
-      connectAuthEmulator(auth, "http://localhost:9099");
-    }
-  });
-}
 
 export { app, auth, db, functions };

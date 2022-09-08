@@ -14,7 +14,7 @@
           <v-list>
             <v-list-item v-for="(user, index) in searchForUser" :key="index">
               <v-list-item-title @click="getUser(user)">
-                {{ user.data.displayName }}
+                {{ user?.data?.displayName }}
               </v-list-item-title>
               <v-divider />
             </v-list-item>
@@ -37,10 +37,10 @@
           <v-expansion-panel-text>
             <User
               v-for="user in filterUsers(letter)"
-              :key="user.data.email"
+              :key="user?.data?.email"
               :user="user"
               :items="items"
-              ref="user"
+              :ref="user?.data?.email"
             />
           </v-expansion-panel-text>
         </v-expansion-panel>
@@ -119,9 +119,11 @@ export default defineComponent({
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
       }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this.$refs.user[0].data.dialog = true as boolean;
+      setTimeout(() => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        this.$refs[user.data.email][0].dialog.user = true;
+      }, 500);
     },
     filterUsers(letter: string) {
       return this.users?.filter((user: User) => {
