@@ -5,10 +5,10 @@
         <h1>Login</h1>
       </v-card-title>
       <div id="firebaseui-auth-container"></div>
-      <v-container id="loader" align="center">
+      <div id="loader" align="center">
         loading...
         <v-progress-circular indeterminate />
-      </v-container>
+      </div>
     </v-card>
   </v-container>
 </template>
@@ -22,12 +22,6 @@ import "firebaseui/dist/firebaseui.css";
 
 export default defineComponent({
   name: "Login-view",
-  data() {
-    return {
-      loggedIn: false,
-      user: {},
-    };
-  },
   methods: {
     showAuthMenu() {
       let ui = firebaseui.auth.AuthUI.getInstance();
@@ -48,6 +42,9 @@ export default defineComponent({
             provider: GoogleAuthProvider.PROVIDER_ID,
             clientID:
               "557593235569-a0jimberq7k4j3s90klgju18msi1fel0.apps.googleusercontent.com",
+            customParameters: {
+              prompt: "select_account",
+            },
           },
         ],
         credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
