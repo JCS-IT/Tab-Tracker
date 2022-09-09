@@ -1,4 +1,4 @@
-<template>
+<template v-if="user != null">
   <v-tooltip>
     <template v-slot:activator="{ props }">
       <v-btn
