@@ -40,7 +40,7 @@
                 <v-list-item>
                   <v-list-item-title> Total: ${{ total }} </v-list-item-title>
                 </v-list-item>
-                <div v-for="(item, index) in items" :key="index">
+                <template v-for="(item, index) in items" :key="index">
                   <v-list-item v-if="count[item.name] > 0">
                     <v-list-item-title>
                       {{ item.name }}: {{ count[item.name] }} * ${{
@@ -48,7 +48,7 @@
                       }}
                     </v-list-item-title>
                   </v-list-item>
-                </div>
+                </template>
               </v-list>
             </v-expansion-panel-text>
           </v-expansion-panel>

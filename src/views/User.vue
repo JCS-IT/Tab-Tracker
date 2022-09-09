@@ -68,7 +68,6 @@ import { defineComponent, defineAsyncComponent } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
 import type { User, Item } from "@/types";
-import AddItem from "@/components/public/items/AddItem.vue";
 
 let itemSub: () => void;
 let tabSub: () => void;
@@ -76,7 +75,9 @@ let tabSub: () => void;
 export default defineComponent({
   name: "User-View",
   components: {
-    AddItem,
+    AddItem: defineAsyncComponent(
+      () => import("@/components/public/items/AddItem.vue")
+    ),
     DeleteItem: defineAsyncComponent(
       () => import("@/components/public/items/DeleteItem.vue")
     ),

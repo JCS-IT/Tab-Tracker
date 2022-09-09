@@ -8,13 +8,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import NavBar from "@/components/public/NavBar.vue";
+import { defineComponent, defineAsyncComponent } from "vue";
 
 export default defineComponent({
   name: "App",
   components: {
-    NavBar,
+    NavBar: defineAsyncComponent(
+      () => import("@/components/public/NavBar.vue")
+    ),
   },
 });
 </script>

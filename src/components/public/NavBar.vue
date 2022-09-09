@@ -9,13 +9,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import UserMenu from "@/components/public/UserMenu.vue";
+import { defineComponent, defineAsyncComponent } from "vue";
 
 export default defineComponent({
   name: "NavBar",
   components: {
-    UserMenu,
+    UserMenu: defineAsyncComponent(() => import("./UserMenu.vue")),
   },
 });
 </script>
