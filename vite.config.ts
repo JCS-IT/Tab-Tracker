@@ -9,6 +9,7 @@ import vuetify from "vite-plugin-vuetify";
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from "vite-plugin-mkcert";
 import { terser } from "rollup-plugin-terser";
+import { splitVendorChunkPlugin } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,6 +18,17 @@ export default defineConfig({
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Referrer-Policy": "no-referrer",
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vuetify: ["vuetify"],
+          vue: ["vue"],
+          "vue-router": ["vue-router"],
+        },
+      },
     },
   },
   plugins: [
@@ -118,12 +130,11 @@ export default defineConfig({
         ],
       },
     }),
+    splitVendorChunkPlugin(),
+    // @ts-ignore
     terser({
       compress: {
         drop_console: true,
-        unsafe_arrows: true,
-        unsafe_comps: true,
-        passes: 2,
       },
       format: {
         comments: false,
