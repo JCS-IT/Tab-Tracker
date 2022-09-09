@@ -17,12 +17,13 @@
           <p class="text-caption mt-1">{{ user?.email }}</p>
           <div v-if="admin">
             <v-divider class="my-3" />
-            <router-link
-              to="/admin"
-              style="text-decoration: none; color: inherit"
+            <v-btn
+              rounded
+              variant="text"
+              @click="$router.push({ name: 'Admin' })"
             >
-              <v-btn rounded variant="text">admin menu</v-btn>
-            </router-link>
+              admin menu
+            </v-btn>
           </div>
           <v-divider class="my-3" />
           <v-btn rounded variant="text" @click="logout()"> logout </v-btn>
@@ -48,7 +49,7 @@ export default defineComponent({
   methods: {
     logout() {
       auth.signOut();
-      this.$router.push("/login");
+      this.$router.push({ name: "Login" });
     },
   },
   mounted() {
