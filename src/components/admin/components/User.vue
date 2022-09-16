@@ -75,7 +75,7 @@ import { defineComponent, defineAsyncComponent } from "vue";
 import type { User, Item } from "@/types";
 
 export default defineComponent({
-  name: "User-component",
+  name: "UserComponent",
   components: {
     ToggleAdmin: defineAsyncComponent(
       () => import("./prompt/user/ToggleAdmin.vue")
