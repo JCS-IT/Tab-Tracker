@@ -13,7 +13,6 @@
   "dependencies": {
     "@mdi/font": "7.0.96",
     "firebase": "^9.9.4",
-    "firebaseui": "^6.0.1",
     "roboto-fontface": "*",
     "vue": "^3.2.39",
     "vue-router": "^4.1.5",
