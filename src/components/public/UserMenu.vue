@@ -1,4 +1,4 @@
-<template v-if="user != null">
+<template>
   <v-menu rounded>
     <template v-slot:activator="{ props }">
       <v-btn icon v-bind="props" :disabled="user == null">

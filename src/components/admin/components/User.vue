@@ -5,17 +5,17 @@
         :ref="user.data.displayName"
         icon
         v-bind="props"
-        @click="dialog.user = true"
-        :loading="dialog.user"
+        @click="dialog = true"
+        :loading="dialog"
       >
         <v-avatar>
           <v-img :src="user?.data.photoURL" alt="Avatar" />
         </v-avatar>
       </v-btn>
     </template>
-    <span>{{ user?.data.displayName }}</span>
+    {{ user?.data.displayName }}
   </v-tooltip>
-  <v-dialog v-model="dialog.user">
+  <v-dialog v-model="dialog">
     <v-card width="300px">
       <v-card-title>
         <v-row>
@@ -25,21 +25,20 @@
             </v-avatar>
           </v-col>
           <v-col>
-            <span class="headline">{{ user?.data.displayName }}</span>
+            {{ user?.data.displayName }}
           </v-col>
         </v-row>
       </v-card-title>
-      <v-card-text>
+      <v-card-text align="center">
         <v-expansion-panels>
           <v-expansion-panel>
             <v-expansion-panel-title>
-              <span class="headline">Tab</span>
+              Tab
+              <v-spacer />
+              Total: ${{ total }}
             </v-expansion-panel-title>
             <v-expansion-panel-text>
               <v-list>
-                <v-list-item>
-                  <v-list-item-title> Total: ${{ total }} </v-list-item-title>
-                </v-list-item>
                 <template v-for="(item, index) in items" :key="index">
                   <v-list-item v-if="count[item.name] > 0">
                     <v-list-item-title>
@@ -60,95 +59,51 @@
         <toggle-admin :user="user" />
       </v-card-text>
       <v-card-actions>
-        <v-btn color="red" @click="dialog.clear = true" :loading="dialog.clear">
-          Clear Tab
-        </v-btn>
-        <v-dialog v-model="dialog.clear">
-          <v-card :loading="loading" :disabled="loading">
-            <v-card-title>
-              <span class="headline">Are you Sure?</span>
-            </v-card-title>
-            <v-card-subtitle> This action can not be undone. </v-card-subtitle>
-            <v-card-text>
-              <p>This will clear the tab for {{ user?.data.displayName }}</p>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                color="red"
-                @click="clearTab"
-                :loading="loading"
-                :disabled="loading"
-              >
-                Clear
-              </v-btn>
-              <v-btn
-                color="green"
-                @click="dialog.clear = false"
-                :disabled="loading"
-              >
-                Cancel
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-btn color="primary" @click="dialog.user = false">Cancel</v-btn>
+        <v-btn color="primary" @click="dialog = false">Cancel</v-btn>
+        <ClearTab
+          :email="user.data.email"
+          :name="user.data.displayName"
+          v-if="user.tab.length > 0"
+        />
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, defineAsyncComponent } from "vue";
 import type { User, Item } from "@/types";
-import { httpsCallable } from "@firebase/functions";
-import { functions } from "@/firebase";
-import ToggleAdmin from "./prompt/user/ToggleAdmin.vue";
 
 export default defineComponent({
   name: "User-component",
   components: {
-    ToggleAdmin,
+    ToggleAdmin: defineAsyncComponent(
+      () => import("./prompt/user/ToggleAdmin.vue")
+    ),
+    ClearTab: defineAsyncComponent(() => import("./prompt/user/ClearTab.vue")),
   },
   data() {
     return {
-      dialog: {
-        user: false,
-        clear: false,
-      },
+      dialog: false,
       loading: false,
     };
   },
   computed: {
     count() {
-      const total = {} as { [key: string]: number };
-      this.items.forEach((item) => {
-        total[item.name] = 0;
+      const count: { [key: string]: number } = {};
+      this.user?.tab.forEach((item) => {
+        if (count[item.name]) {
+          count[item.name]++;
+        } else {
+          count[item.name] = 1;
+        }
       });
-      this.user.tab.forEach((item) => {
-        total[item.name]++;
-      });
-      return total;
+      return count;
     },
     total() {
       return this.user.tab.reduce((total, item) => {
         return total + item.price;
       }, 0);
-    },
-  },
-  methods: {
-    async clearTab() {
-      this.loading = true;
-      try {
-        const clearTab = httpsCallable(functions, "clearTab");
-        await clearTab({
-          email: this.user.data.email,
-        });
-      } catch (error) {
-        console.error(error);
-      } finally {
-        this.loading = false;
-        this.dialog.clear = false;
-      }
     },
   },
   props: {
