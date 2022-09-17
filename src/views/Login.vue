@@ -1,11 +1,6 @@
 <template>
   <v-container class="d-flex justify-center align-center">
-    <v-card
-      color="dark-grey"
-      :width="alert ? '400' : '300'"
-      :disabled="loading"
-      :loading="loading"
-    >
+    <v-card color="dark-grey" :width="alert ? '400' : '300'">
       <v-card-title class="text-center">
         <h1>Login</h1>
       </v-card-title>
@@ -30,6 +25,7 @@
             <v-img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
               style="width: 20px; height: 20px; margin-right: 10px"
+              icon
             />
             Continue with Google
           </v-btn>
@@ -48,7 +44,6 @@ export default defineComponent({
   name: "Login-view",
   data() {
     return {
-      loading: false,
       alert: false,
       error: {
         status: "",
@@ -83,8 +78,8 @@ export default defineComponent({
         });
     },
   },
-  mounted() {
-    auth.onAuthStateChanged(async (user) => {
+  created() {
+    auth.onAuthStateChanged((user) => {
       if (user) {
         this.$router.push("/user");
       }

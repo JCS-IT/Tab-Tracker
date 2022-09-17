@@ -27,13 +27,13 @@ import { defineComponent } from "vue";
 import { auth } from "@/firebase";
 
 export default defineComponent({
-  name: "Home-view",
+  name: "HomeView",
   mounted() {
     auth.onAuthStateChanged((user) => {
-      if (!user) {
-        this.$router.push({ name: "Login" });
+      if (user) {
+        this.$router.push("/user");
       } else {
-        this.$router.push({ name: "User" });
+        this.$router.push("/login");
       }
     });
   },

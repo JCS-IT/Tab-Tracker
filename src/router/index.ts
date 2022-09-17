@@ -40,16 +40,13 @@ router.beforeEach(async (to, from, next) => {
   const user = await auth.currentUser;
   const admin = (await auth.currentUser?.getIdTokenResult())?.claims.admin;
 
-  switch (true) {
-    case requiresAuth && !user:
-      return next({
-        name: "Login",
-      });
-    case requiresAdmin && !admin:
-      return next(from.path);
-    default:
-      return next();
+  if (requiresAuth && !user) {
+    next("/login");
   }
+  if (requiresAdmin && !admin) {
+    next("/user");
+  }
+  next();
 });
 
 export default router;

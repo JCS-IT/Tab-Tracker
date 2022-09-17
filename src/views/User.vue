@@ -73,7 +73,7 @@ let itemSub: () => void;
 let tabSub: () => void;
 
 export default defineComponent({
-  name: "User-View",
+  name: "UserView",
   components: {
     AddItem: defineAsyncComponent(
       () => import("@/components/public/items/AddItem.vue")
