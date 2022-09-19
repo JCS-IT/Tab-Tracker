@@ -17,6 +17,15 @@ coverage
 /cypress/videos/
 /cypress/screenshots/
 
+# yarn v2
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
