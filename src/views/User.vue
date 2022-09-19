@@ -12,12 +12,12 @@
     </v-row>
     <v-row>
       <v-col>
-        <span>Total Owed: ${{ total }}</span>
+        <span>Total Owed: {{ total }}</span>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="6">
-        <h4 class="text-center">Tally's</h4>
+        <h4 class="text-center">Tally</h4>
         <v-table>
           <thead>
             <tr>
@@ -30,7 +30,14 @@
             <tr v-for="item in items" :key="item.name">
               <td>{{ item.name }}</td>
               <td>{{ tally[item.name] }}</td>
-              <td>${{ item.price }}</td>
+              <td>
+                {{
+                  new Intl.NumberFormat("en-CA", {
+                    style: "currency",
+                    currency: "CAD",
+                  }).format(item.price)
+                }}
+              </td>
             </tr>
           </tbody>
         </v-table>
@@ -48,7 +55,14 @@
           <tbody>
             <tr v-for="(item, index) in user.tab" :key="index">
               <td class="text-center">{{ item.name }}</td>
-              <td class="text-center">${{ item.price }}</td>
+              <td class="text-center">
+                {{
+                  new Intl.NumberFormat("en-CA", {
+                    style: "currency",
+                    currency: "CAD",
+                  }).format(item.price)
+                }}
+              </td>
               <td class="text-center">
                 {{ item.date.toDate().toLocaleString() }}
               </td>
@@ -105,7 +119,10 @@ export default defineComponent({
       this.user?.tab?.forEach((item) => {
         total += item.price;
       });
-      return total;
+      return new Intl.NumberFormat("en-CA", {
+        style: "currency",
+        currency: "CAD",
+      }).format(total);
     },
   },
   methods: {
