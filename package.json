@@ -13,13 +13,8 @@
   "dependencies": {
     "@mdi/font": "7.0.96",
     "firebase": "^9.10.0",
-<<<<<<< HEAD
-=======
-    "firebase-tools": "^11.9.0",
-    "global": "^4.4.0",
->>>>>>> 310aa674cc24f10cbb22d30a1da2277b63b1730a
     "roboto-fontface": "*",
-    "vue": "3.2.37",
+    "vue": "3.2.39",
     "vue-router": "^4.1.5",
     "vuetify": "^3.0.0-beta.0",
     "webfontloader": "^1.6.28"
@@ -37,15 +32,9 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "typescript": "~4.8.3",
-<<<<<<< HEAD
-    "vite": "^3.1.1",
-    "vite-plugin-mkcert": "^1.9.0",
-    "vite-plugin-pwa": "^0.12.7",
-=======
     "vite": "^3.1.3",
     "vite-plugin-mkcert": "^1.9.0",
     "vite-plugin-pwa": "^0.12.8",
->>>>>>> 310aa674cc24f10cbb22d30a1da2277b63b1730a
     "vite-plugin-vuetify": "^1.0.0-alpha.17",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-tsc": "^0.40.13"
