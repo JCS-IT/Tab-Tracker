@@ -12,66 +12,78 @@
     </v-row>
     <v-row>
       <v-col>
-        <span>Total Owed: {{ total }}</span>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="6">
-        <h4 class="text-center">Tally</h4>
-        <v-table>
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Count</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in items" :key="item.name">
-              <td>{{ item.name }}</td>
-              <td>{{ tally[item.name] }}</td>
-              <td>
-                {{
-                  new Intl.NumberFormat("en-CA", {
-                    style: "currency",
-                    currency: "CAD",
-                  }).format(item.price)
-                }}
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-      <v-col cols="6">
-        <h4 class="text-center">History</h4>
-        <v-table>
-          <thead>
-            <tr>
-              <th class="text-center">Item</th>
-              <th class="text-center">Price</th>
-              <th class="text-center">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in user.tab" :key="index">
-              <td class="text-center">{{ item.name }}</td>
-              <td class="text-center">
-                {{
-                  new Intl.NumberFormat("en-CA", {
-                    style: "currency",
-                    currency: "CAD",
-                  }).format(item.price)
-                }}
-              </td>
-              <td class="text-center">
-                {{ item.date.toDate().toLocaleString() }}
-              </td>
-              <td v-if="isCurrentDate(item.date)">
-                <DeleteItem :item="item"></DeleteItem>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
+        <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-title>
+              Tab
+              <v-spacer />
+              Total: {{ total }}
+            </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <v-table density="compact">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template v-for="(item, index) in items" :key="index">
+                    <tr v-if="count[item.name] > 0">
+                      <td>{{ item.name }}</td>
+                      <td>{{ count[item.name] }}</td>
+                      <td>
+                        {{
+                          new Intl.NumberFormat("en-CA", {
+                            style: "currency",
+                            currency: "CAD",
+                          }).format(item.price)
+                        }}
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </v-table>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+          <v-expansion-panel>
+            <v-expansion-panel-title> History </v-expansion-panel-title>
+            <v-expansion-panel-text class="pa-0">
+              <v-lazy>
+                <v-table>
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template v-for="(item, index) in user.tab" :key="index">
+                      <tr v-if="count[item.name] > 0">
+                        <td>{{ item.name }}</td>
+                        <td>{{ count[item.name] }}</td>
+                        <td>
+                          {{
+                            new Intl.NumberFormat("en-CA", {
+                              style: "currency",
+                              currency: "CAD",
+                            }).format(item.price)
+                          }}
+                        </td>
+                        <td v-if="isCurrentDate(item.date)">
+                          <DeleteItem :item="item"></DeleteItem>
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </v-table>
+              </v-lazy>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-col>
     </v-row>
   </v-container>
@@ -104,7 +116,7 @@ export default defineComponent({
     };
   },
   computed: {
-    tally() {
+    count() {
       const total = {} as { [key: string]: number };
       this.items.forEach((item) => {
         total[item.name] = 0;
