@@ -9,10 +9,6 @@
   </v-window>
   <v-bottom-navigation>
     <v-tabs v-model="active">
-      <v-tab @click="$router.push({ name: 'Home' })">
-        <v-icon>mdi-home</v-icon>
-        Home
-      </v-tab>
       <v-tab value="staff">
         <v-icon>mdi-account-school</v-icon>
         Staff
