@@ -1,42 +1,28 @@
 <template>
-  <v-navigation-drawer permanent width="190">
-    <v-container>
-      <v-tabs direction="vertical" v-model="active">
-        <v-btn color="error" @click="$router.push('/')">
-          <v-icon>mdi-home</v-icon>
-          <span>Home</span>
-        </v-btn>
-        <v-tab value="staff">
-          <v-icon>mdi-account-school</v-icon>
-          <span>Staff</span>
-        </v-tab>
-        <v-tab value="items">
-          <v-icon>mdi-package</v-icon>
-          <span>Items</span>
-        </v-tab>
-      </v-tabs>
-    </v-container>
-  </v-navigation-drawer>
   <v-window v-model="active">
     <v-window-item value="staff">
-      <v-container fluid>
-        <v-row>
-          <v-col>
-            <StaffMenu />
-          </v-col>
-        </v-row>
-      </v-container>
+      <StaffMenu />
     </v-window-item>
     <v-window-item value="items">
-      <v-container fluid>
-        <v-row>
-          <v-col>
-            <ItemMenu />
-          </v-col>
-        </v-row>
-      </v-container>
+      <ItemMenu />
     </v-window-item>
   </v-window>
+  <v-bottom-navigation>
+    <v-tabs v-model="active">
+      <v-tab @click="$router.push({ name: 'Home' })">
+        <v-icon>mdi-home</v-icon>
+        Home
+      </v-tab>
+      <v-tab value="staff">
+        <v-icon>mdi-account-school</v-icon>
+        Staff
+      </v-tab>
+      <v-tab value="items">
+        <v-icon>mdi-package</v-icon>
+        Items
+      </v-tab>
+    </v-tabs>
+  </v-bottom-navigation>
 </template>
 
 <script lang="ts">
