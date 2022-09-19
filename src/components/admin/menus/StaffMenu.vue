@@ -122,7 +122,7 @@ export default defineComponent({
       setTimeout(() => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        this.$refs[user.data.email][0].dialog.user = true;
+        this.$refs[user.data.email][0].dialog = true;
       }, 500);
     },
     filterUsers(letter: string) {
