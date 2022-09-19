@@ -14,14 +14,10 @@
         label="Administrator"
         v-bind="props"
         :model-value="user?.roles?.admin"
-        :disabled="user?.roles?.dev"
+        :disabled="message().disabled"
         :loading="loading.switch"
         @click="(dialog = true), (loading.switch = true)"
-        :messages="
-          user.roles.dev
-            ? 'user is a developer and cannot be edited'
-            : 'make user an administrator'
-        "
+        :messages="message().message"
       />
     </template>
     <v-card :loading="loading.dialog">
@@ -55,7 +51,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { functions } from "@/firebase";
+import { auth, functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
 import type { User } from "@/types";
 
@@ -74,10 +70,10 @@ export default defineComponent({
         dialog: false,
       },
       error: {
-        status: false as boolean,
-        message: "" as string,
+        status: false,
+        message: "",
       },
-      dialog: false as boolean,
+      dialog: false,
       list: [
         "can edit any user",
         "can edit any item",
@@ -103,6 +99,30 @@ export default defineComponent({
     cancel() {
       this.dialog = false;
       this.loading.switch = false;
+    },
+    message() {
+      if (this.user.data.email == auth.currentUser?.email) {
+        return {
+          disabled: true,
+          message: "You cannot change your own permissions",
+        };
+      }
+      if (this.user.roles.admin) {
+        return {
+          disabled: false,
+          message: "Click to remove admin permissions",
+        };
+      }
+      if (this.user.roles.dev) {
+        return {
+          disabled: true,
+          message: "This user is a developer",
+        };
+      }
+      return {
+        disabled: false,
+        message: "Click to add admin permissions",
+      };
     },
   },
 });
