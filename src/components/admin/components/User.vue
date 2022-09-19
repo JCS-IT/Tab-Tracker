@@ -1,5 +1,5 @@
 <template v-if="user != null">
-  <v-tooltip>
+  <v-tooltip :text="user?.data.displayName">
     <template v-slot:activator="{ props }">
       <v-btn
         :ref="user.data.displayName"
@@ -13,7 +13,6 @@
         </v-avatar>
       </v-btn>
     </template>
-    {{ user?.data.displayName }}
   </v-tooltip>
   <v-dialog v-model="dialog">
     <v-card width="300px">
@@ -76,6 +75,7 @@
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
 import type { User, Item } from "@/types";
+import { useDisplay } from "vuetify";
 
 export default defineComponent({
   name: "UserComponent",
@@ -84,6 +84,10 @@ export default defineComponent({
       () => import("./prompt/user/ToggleAdmin.vue")
     ),
     ClearTab: defineAsyncComponent(() => import("./prompt/user/ClearTab.vue")),
+  },
+  setup() {
+    const { mobile } = useDisplay();
+    return { mobile };
   },
   data() {
     return {
