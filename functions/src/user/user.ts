@@ -1,5 +1,4 @@
 import { onCall, HttpsError } from "firebase-functions/v1/https";
-import { apps } from "firebase-admin";
 
 export const clearTab = onCall(async (data, context) => {
   if (context.app == undefined) {
@@ -10,10 +9,6 @@ export const clearTab = onCall(async (data, context) => {
       "permission-denied",
       "You must be an admin to clear the tab"
     );
-  }
-  if (apps.length === 0) {
-    const { initializeApp } = await import("firebase-admin");
-    initializeApp();
   }
 
   const { firestore, auth } = await import("firebase-admin");
@@ -29,10 +24,6 @@ export const toggleRole = onCall(async (data, context) => {
   }
   if (!context.auth?.token.admin) {
     throw new HttpsError("permission-denied", "You must be an admin");
-  }
-  if (apps.length === 0) {
-    const { initializeApp } = await import("firebase-admin");
-    initializeApp();
   }
 
   const { auth, firestore } = await import("firebase-admin");

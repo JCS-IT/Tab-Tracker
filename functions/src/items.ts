@@ -1,5 +1,4 @@
 import { onCall, HttpsError } from "firebase-functions/v1/https";
-import { apps } from "firebase-admin";
 
 export const addItem = onCall(async (data, context) => {
   if (context.app === undefined) {
@@ -10,10 +9,6 @@ export const addItem = onCall(async (data, context) => {
       "permission-denied",
       "You must be an admin to add an item"
     );
-  }
-  if (apps.length === 0) {
-    const { initializeApp } = await import("firebase-admin");
-    initializeApp();
   }
   const { firestore } = await import("firebase-admin");
 
@@ -34,10 +29,6 @@ export const deleteItem = onCall(async (data, context) => {
       "You must be an admin to delete an item"
     );
   }
-  if (apps.length === 0) {
-    const { initializeApp } = await import("firebase-admin");
-    initializeApp();
-  }
   const { firestore } = await import("firebase-admin");
 
   return firestore()
@@ -56,10 +47,6 @@ export const updateItem = onCall(async (data, context) => {
       "permission-denied",
       "You must be an admin to update an item"
     );
-  }
-  if (apps.length === 0) {
-    const { initializeApp } = await import("firebase-admin");
-    initializeApp();
   }
   const { firestore } = await import("firebase-admin");
 

@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 import { getAnalytics } from "firebase/analytics";
 import { getPerformance } from "firebase/performance";
@@ -28,7 +28,6 @@ initializeAppCheck(app, {
   isTokenAutoRefreshEnabled: true,
 });
 
-connectAuthEmulator(auth, "http://localhost:9099");
 connectFunctionsEmulator(functions, "localhost", 5001);
 
 export { app, auth, db, functions };

@@ -46,6 +46,7 @@ export default defineComponent({
     return {
       dialog: false,
       loading: false,
+      error: "",
     };
   },
   methods: {

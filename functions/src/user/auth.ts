@@ -1,7 +1,6 @@
 import { auth } from "firebase-functions";
-import { apps } from "firebase-admin";
 
-export const beforeCreated = auth.user().beforeCreate(async (event) => {
+export const beforeCreate = auth.user().beforeCreate(async (event) => {
   const { email } = event;
   if (!email?.endsWith("@educbe.ca")) {
     const { HttpsError } = await import("firebase-functions/v1/auth");
@@ -14,11 +13,6 @@ export const beforeCreated = auth.user().beforeCreate(async (event) => {
 
 export const onCreate = auth.user().onCreate(async (user) => {
   const { email, displayName, photoURL } = user;
-
-  if (apps.length === 0) {
-    const { initializeApp } = await import("firebase-admin");
-    initializeApp();
-  }
 
   const { firestore } = await import("firebase-admin");
 
