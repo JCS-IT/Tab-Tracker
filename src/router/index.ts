@@ -34,19 +34,19 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, from, next) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin);
-  const user = await auth.currentUser;
-  const admin = (await auth.currentUser?.getIdTokenResult())?.claims.admin;
+// router.beforeEach(async (to, from, next) => {
+//   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+//   const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin);
+//   const user = await auth.currentUser;
+//   const admin = (await auth.currentUser?.getIdTokenResult())?.claims.admin;
 
-  if (requiresAuth && !user) {
-    next("/login");
-  }
-  if (requiresAdmin && !admin) {
-    next("/user");
-  }
-  next();
-});
+//   if (requiresAuth && !user) {
+//     next("/login");
+//   }
+//   if (requiresAdmin && !admin) {
+//     next("/user");
+//   }
+//   next();
+// });
 
 export default router;

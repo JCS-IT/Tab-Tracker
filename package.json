@@ -10,6 +10,11 @@
     "preview": "vite preview --port 4173",
     "type-check": "vue-tsc --noEmit"
   },
+  "workspaces": {
+    "packages": [
+      "functions"
+    ]
+  },
   "dependencies": {
     "@mdi/font": "7.0.96",
     "firebase": "^9.10.0",
