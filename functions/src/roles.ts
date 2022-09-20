@@ -1,18 +1,13 @@
 import { auth, firestore } from "firebase-admin";
-import * as functions from "firebase-functions";
+// import * as functions from "firebase-functions";
+import { onCall, HttpsError } from "firebase-functions/v1/https";
 
-export const toggleRole = functions.https.onCall(async (data, context) => {
+export const toggleRole = onCall(async (data, context) => {
   if (context.app == undefined) {
-    throw new functions.https.HttpsError(
-      "failed-precondition",
-      "Unknown origin"
-    );
+    throw new HttpsError("failed-precondition", "Unknown origin");
   }
   if (!context.auth?.token.admin) {
-    throw new functions.https.HttpsError(
-      "permission-denied",
-      "You must be an admin"
-    );
+    throw new HttpsError("permission-denied", "You must be an admin");
   }
   const { email, role } = data;
   const user = await auth().getUserByEmail(email);
@@ -29,6 +24,6 @@ export const toggleRole = functions.https.onCall(async (data, context) => {
         },
       });
   } catch (error) {
-    throw new functions.https.HttpsError(error.code, error.message);
+    throw new HttpsError(error.code, error.message);
   }
 });
