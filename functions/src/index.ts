@@ -1,28 +1,22 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+
+import { HttpsError } from "firebase-functions/v2/identity";
+
 admin.initializeApp();
 
 import { addItem, removeItem, updateItem } from "./items";
 
 export { addItem, removeItem, updateItem };
 
-export const beforeCreate = functions.auth
-  .user()
-  .beforeCreate((user, context) => {
-    if (context == null) {
-      throw new functions.https.HttpsError(
-        "permission-denied",
-        "Unknown origin"
-      );
-    }
-
-    if (!user.email?.endsWith("@educbe.ca")) {
-      throw new functions.https.HttpsError(
-        "permission-denied",
-        "You must be in the educbe.ca domain to create an account"
-      );
-    }
-  });
+export const beforecreate = functions.auth.user().beforeCreate((user) => {
+  if (!user.email?.endsWith("@educbe.ca")) {
+    throw new HttpsError(
+      "permission-denied",
+      "You must be in the educbe.ca domain to create an account"
+    );
+  }
+});
 
 export const onCreate = functions.auth.user().onCreate((user) => {
   const batch = admin.firestore().batch();

@@ -2,13 +2,7 @@
 lib/**/*.js
 lib/**/*.js.map
 
-# TypeScript v1 declaration files
-typings/
-
-# Node.js dependency directory
-node_modules/
-
-#yarn v2
+# yarn v2
 .yarn/*
 !.yarn/patches
 !.yarn/releases
@@ -16,3 +10,9 @@ node_modules/
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+# TypeScript v1 declaration files
+typings/
+
+# Node.js dependency directory
+node_modules/

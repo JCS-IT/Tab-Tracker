@@ -62,7 +62,6 @@ export default defineComponent({
           this.$router.push("/user");
         })
         .catch((error) => {
-          console.log(error);
           try {
             const errorMessage = error.message.match(/{.*}/g);
             const json = JSON.parse(errorMessage);
