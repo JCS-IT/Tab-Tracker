@@ -8,7 +8,8 @@
     "build-only": "vite build",
     "dev": "vite",
     "preview": "vite preview --port 4173",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "emulators": "firebase emulators:start --only functions,auth"
   },
   "workspaces": [
     "functions"
@@ -38,7 +39,7 @@
     "typescript": "~4.8.3",
     "vite": "^3.1.3",
     "vite-plugin-mkcert": "^1.9.0",
-    "vite-plugin-pwa": "^0.12.8",
+    "vite-plugin-pwa": "^0.13.0",
     "vite-plugin-vuetify": "^1.0.0-alpha.17",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-tsc": "^0.40.13"
