@@ -1,5 +1,4 @@
 import { auth, firestore } from "firebase-admin";
-// import * as functions from "firebase-functions";
 import { onCall, HttpsError } from "firebase-functions/v1/https";
 
 export const toggleRole = onCall(async (data, context) => {

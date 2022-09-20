@@ -2,18 +2,22 @@ import { initializeApp } from "firebase-admin";
 
 initializeApp();
 
-import { addItem, removeItem, updateItem } from "./items";
-import { onCreate, onDelete, beforecreated } from "./auth";
-import { clearTab } from "./clearTab";
-import { toggleRole } from "./roles";
+import { addItem, deleteItem, updateItem } from "./items";
+import {
+  clearTab,
+  onCreate,
+  onDelete,
+  toggleRole,
+  beforecreated,
+} from "./user";
 
 export {
   addItem,
-  removeItem,
+  deleteItem,
   updateItem,
-  beforecreated,
+  clearTab,
   onCreate,
   onDelete,
-  clearTab,
   toggleRole,
+  beforecreated,
 };
