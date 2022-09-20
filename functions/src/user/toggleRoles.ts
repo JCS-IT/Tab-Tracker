@@ -11,7 +11,7 @@ export const toggleRole = onCall(async (data, context) => {
   const { email, role } = data;
   const user = await auth().getUserByEmail(email);
 
-  try {
+  return async () => {
     await auth().setCustomUserClaims(user.uid, {
       [role]: !user.customClaims?.[role],
     });
@@ -22,7 +22,5 @@ export const toggleRole = onCall(async (data, context) => {
           [role]: !user.customClaims?.[role],
         },
       });
-  } catch (error) {
-    throw new HttpsError(error.code, error.message);
-  }
+  };
 });
