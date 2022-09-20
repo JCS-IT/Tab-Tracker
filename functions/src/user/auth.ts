@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions";
+import { auth } from "firebase-functions";
 import { HttpsError, beforeUserCreated } from "firebase-functions/v2/identity";
 import { firestore } from "firebase-admin";
 
@@ -12,7 +12,7 @@ export const beforecreated = beforeUserCreated((event) => {
   }
 });
 
-export const onCreate = functions.auth.user().onCreate(async (user) => {
+export const onCreate = auth.user().onCreate(async (user) => {
   const { email, displayName, photoURL } = user;
 
   return firestore().doc(`users/${user.uid}`).set({
@@ -26,6 +26,6 @@ export const onCreate = functions.auth.user().onCreate(async (user) => {
   });
 });
 
-export const onDelete = functions.auth.user().onDelete(async (user) => {
+export const onDelete = auth.user().onDelete(async (user) => {
   return firestore().doc(`users/${user.uid}`).delete();
 });
