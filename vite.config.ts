@@ -91,7 +91,7 @@ export default defineConfig({
           },
           // cache google profile images
           {
-            urlPattern: /^https:\/\/www.googleapis.com\/plus\/v1\/people\/.*/i,
+            urlPattern: /^https:\/\/www\.googleapis.com\/plus\/v1\/people\/.*/i,
             handler: "CacheFirst",
             options: {
               cacheName: "google-profile-cache",
@@ -118,7 +118,7 @@ export default defineConfig({
         ],
       },
     }),
-   ],
+  ],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
