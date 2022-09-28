@@ -8,11 +8,11 @@
     Add Item
   </v-btn>
   <v-dialog v-model="dialog" :fullscreen="mobile">
-    <v-alert color="error" v-if="error">
-      <v-alert-title>Error Detected</v-alert-title>
-      please check the console for more information.
+    <v-alert color="error" v-if="error.code">
+      <v-alert-title>{{ error.code }}</v-alert-title>
+      {{ error.message }}
     </v-alert>
-    <v-card max-width="300px" fullscreen>
+    <v-card max-width="100%" fullscreen>
       <v-card-title>
         <span class="headline">Add Item</span>
       </v-card-title>
@@ -66,7 +66,10 @@ export default defineComponent({
     return {
       dialog: false,
       loading: {} as { [key: string]: boolean },
-      error: false,
+      error: {
+        code: null,
+        message: null,
+      } as { code: string | null; message: string | null },
     };
   },
   methods: {
@@ -80,8 +83,11 @@ export default defineComponent({
             date: Timestamp.now(),
           }),
         });
-      } catch (error) {
-        this.error = true;
+      } catch (error: any) {
+        this.error = {
+          code: error.code,
+          message: error.message,
+        };
         console.error(error);
       } finally {
         this.dialog = false;
