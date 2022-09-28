@@ -12,8 +12,8 @@
       <v-alert-title>{{ error.code }}</v-alert-title>
       {{ error.message }}
     </v-alert>
-    <v-card max-width="100%" fullscreen>
-      <v-card-title>
+    <v-card max-width="500px" fullscreen>
+      <v-card-title align="center">
         <span class="headline">Add Item</span>
       </v-card-title>
       <v-card-text>
