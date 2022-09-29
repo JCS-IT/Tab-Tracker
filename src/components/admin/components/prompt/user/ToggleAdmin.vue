@@ -38,7 +38,7 @@
         <v-btn
           color="primary"
           text
-          @click="toggleAdmin(user.data.email)"
+          @click="toggleAdmin(user.info.email)"
           :loading="loading.dialog"
         >
           OK
@@ -101,7 +101,7 @@ export default defineComponent({
       this.loading.switch = false;
     },
     message() {
-      if (this.user.data.email == auth.currentUser?.email) {
+      if (this.user.info.email == auth.currentUser?.email) {
         return {
           disabled: true,
           message: "You cannot change your own permissions",

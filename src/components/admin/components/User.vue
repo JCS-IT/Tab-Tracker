@@ -1,15 +1,15 @@
 <template v-if="user != null">
-  <v-tooltip :text="user?.data.displayName">
+  <v-tooltip :text="user?.info.displayName">
     <template v-slot:activator="{ props }">
       <v-btn
-        :ref="user.data.displayName"
+        :ref="user.info.displayName"
         icon
         v-bind="props"
         @click="dialog = true"
         :loading="dialog"
       >
         <v-avatar>
-          <v-img :src="user?.data.photoURL" alt="Avatar" />
+          <v-img :src="user?.info.photoURL" alt="Avatar" />
         </v-avatar>
       </v-btn>
     </template>
@@ -20,11 +20,11 @@
         <v-row>
           <v-col>
             <v-avatar>
-              <v-img :src="user.data.photoURL" alt="User Avatar" />
+              <v-img :src="user.info.photoURL" alt="User Avatar" />
             </v-avatar>
           </v-col>
           <v-col>
-            {{ user?.data.displayName }}
+            {{ user?.info.displayName }}
           </v-col>
         </v-row>
       </v-card-title>
@@ -63,8 +63,8 @@
       <v-card-actions>
         <v-btn color="primary" @click="dialog = false">Cancel</v-btn>
         <ClearTab
-          :email="user.data.email"
-          :name="user.data.displayName"
+          :email="user.info.email"
+          :name="user.info.displayName"
           v-if="user.tab.length > 0"
         />
       </v-card-actions>

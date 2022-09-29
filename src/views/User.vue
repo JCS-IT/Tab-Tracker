@@ -2,7 +2,7 @@
   <v-container align="center">
     <v-row>
       <v-col>
-        <h1>{{ user.data?.displayName }}'s Tab</h1>
+        <h1>{{ user.info?.displayName }}'s Tab</h1>
       </v-col>
     </v-row>
     <v-row>

@@ -17,7 +17,7 @@ export const onCreate = auth.user().onCreate(async (user) => {
   const { firestore } = await import("firebase-admin");
 
   return firestore().doc(`users/${user.uid}`).set({
-    data: {
+    info: {
       email,
       displayName,
       photoURL,
