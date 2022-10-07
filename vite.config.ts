@@ -58,7 +58,9 @@ export default defineConfig({
         ],
       },
       workbox: {
-        sourcemap: true,
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -66,7 +68,7 @@ export default defineConfig({
             options: {
               cacheName: "google-fonts-cache",
               expiration: {
-                maxEntries: 10,
+                maxEntries: 1,
                 maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
               cacheableResponse: {
@@ -80,7 +82,7 @@ export default defineConfig({
             options: {
               cacheName: "gstatic-fonts-cache",
               expiration: {
-                maxEntries: 10,
+                maxEntries: 1,
                 maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
               cacheableResponse: {
@@ -95,7 +97,7 @@ export default defineConfig({
             options: {
               cacheName: "google-profile-cache",
               expiration: {
-                maxEntries: 10,
+                maxEntries: 1,
                 maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
             },
@@ -106,7 +108,7 @@ export default defineConfig({
             options: {
               cacheName: "google-profile-images",
               expiration: {
-                maxEntries: 10,
+                maxEntries: 1,
                 maxAgeSeconds: 60 * 60 * 24 * 30, // <== 1 month
               },
               cacheableResponse: {
