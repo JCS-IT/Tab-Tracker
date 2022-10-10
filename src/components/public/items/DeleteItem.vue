@@ -7,7 +7,12 @@
   >
     <v-icon>mdi-delete</v-icon>
   </v-btn>
-  <v-dialog v-model="dialog" overlay transition="dialog-transition">
+  <v-dialog
+    v-model="dialog"
+    overlay
+    transition="dialog-transition"
+    max-width="400px"
+  >
     <v-card class="text-center">
       <v-card-title>
         <span class="headline">Delete Item</span>

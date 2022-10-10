@@ -7,12 +7,17 @@
   >
     Add Item
   </v-btn>
-  <v-dialog v-model="dialog" :fullscreen="mobile">
+  <v-dialog
+    v-model="dialog"
+    :fullscreen="mobile"
+    :max-width="mobile ? width : '500px'"
+    min-width="330px"
+  >
     <v-alert color="error" v-if="error.code">
       <v-alert-title>{{ error.code }}</v-alert-title>
       {{ error.message }}
     </v-alert>
-    <v-card max-width="500px" fullscreen>
+    <v-card>
       <v-card-title align="center">
         <span class="headline">Add Item</span>
       </v-card-title>
@@ -59,8 +64,8 @@ export default defineComponent({
     },
   },
   setup() {
-    const { mobile } = useDisplay();
-    return { mobile };
+    const { mobile, width } = useDisplay();
+    return { mobile, width };
   },
   data() {
     return {

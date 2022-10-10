@@ -1,9 +1,7 @@
 <template>
   <v-dialog
     v-model="dialog"
-    fullscreen
     :max-width="user?.roles.admin ? '350px' : '500px'"
-    :max-height="user?.roles.admin ? '120px' : '340px'"
     :overlay="true"
     persistent
     transition="dialog-transition"
@@ -20,7 +18,10 @@
         :messages="message().message"
       />
     </template>
-    <v-card :loading="loading.dialog">
+    <v-card
+      :loading="loading.dialog"
+      :max-height="user?.roles.admin ? '120px' : '340px'"
+    >
       <v-card-title>Are you sure?</v-card-title>
       <v-card-subtitle>
         This will {{ user.roles.admin ? "remove" : "add" }} the user as an

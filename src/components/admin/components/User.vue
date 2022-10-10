@@ -14,8 +14,8 @@
       </v-btn>
     </template>
   </v-tooltip>
-  <v-dialog v-model="dialog">
-    <v-card width="300px">
+  <v-dialog v-model="dialog" width="300px">
+    <v-card>
       <v-card-title>
         <v-row>
           <v-col>

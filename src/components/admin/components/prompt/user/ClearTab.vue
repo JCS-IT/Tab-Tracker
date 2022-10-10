@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog">
+  <v-dialog v-model="dialog" max-width="300px">
     <template v-slot:activator="{ props }">
       <v-btn v-bind="props" color="red" :loading="dialog"> Clear Tab </v-btn>
     </template>
