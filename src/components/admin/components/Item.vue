@@ -1,18 +1,18 @@
 <template>
-  <v-card
+  <VCard
     width="200px"
     :loading="loading.update || loading.delete"
     :disabled="loading.update"
   >
-    <v-alert v-if="error != null">
+    <VAlert v-if="error != null">
       {{ error }}
-    </v-alert>
-    <v-card-title>
+    </VAlert>
+    <VCardTitle>
       {{ item.name }}
-    </v-card-title>
-    <v-card-text class="pb-0">
-      <v-form>
-        <v-text-field
+    </VCardTitle>
+    <VCardText class="pb-0">
+      <VForm>
+        <VTextField
           label="Price"
           variant="outlined"
           type="number"
@@ -21,15 +21,15 @@
           :rules="rules.price"
           @keyup.enter="updateItem()"
         />
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn @click="updateItem()" color="green" :loading="loading.update">
+      </VForm>
+    </VCardText>
+    <VCardActions>
+      <VBtn @click="updateItem()" color="green" :loading="loading.update">
         Update
-      </v-btn>
-      <delete-item :item="item" />
-    </v-card-actions>
-  </v-card>
+      </VBtn>
+      <DeleteItem :item="item" />
+    </VCardActions>
+  </VCard>
 </template>
 
 <script lang="ts">

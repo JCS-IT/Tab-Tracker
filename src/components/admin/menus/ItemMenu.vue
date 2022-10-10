@@ -1,16 +1,16 @@
 <template>
-  <v-container fluid align="center">
-    <v-row>
-      <v-col>
-        <add-item />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col v-for="item in items" :key="item.name">
-        <item :input="item" :items="items" />
-      </v-col>
-    </v-row>
-  </v-container>
+  <VContainer fluid align="center">
+    <VRow>
+      <VCol>
+        <AddItem />
+      </VCol>
+    </VRow>
+    <VRow>
+      <VCol v-for="item in items" :key="item.name">
+        <Item :input="item" :items="items" />
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <script lang="ts">

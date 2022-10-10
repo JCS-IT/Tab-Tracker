@@ -1,17 +1,14 @@
 <template>
-  <v-app>
-    <v-app-bar color="blue-lighten-2">
-      <v-app-bar-nav-icon
-        @click="$router.push({ name: 'Home' })"
-        icon="mdi-home"
-      />
-      <v-toolbar-title> JCS Tab Tracker </v-toolbar-title>
-      <user-menu v-if="loggedIn" />
-    </v-app-bar>
-    <v-main>
-      <router-view />
-    </v-main>
-  </v-app>
+  <VApp>
+    <VAppBar color="blue-lighten-2">
+      <VAppBarNavIcon @click="$router.push({ name: 'Home' })" icon="mdi-home" />
+      <VToolbarTitle>JCS Tabs</VToolbarTitle>
+      <UserMenu v-if="loggedIn" />
+    </VAppBar>
+    <VMain>
+      <RouterView />
+    </VMain>
+  </VApp>
 </template>
 
 <script lang="ts">

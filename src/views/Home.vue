@@ -1,25 +1,25 @@
 <template>
-  <v-container align="center">
-    <v-row>
-      <v-col>
-        <v-card color="blue-lighten-2" width="300px">
-          <v-card-title> Please wait... </v-card-title>
-          <v-card-text>
-            <v-progress-circular indeterminate />
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
+  <VContainer align="center">
+    <VRow>
+      <VCol>
+        <VCard color="blue-lighten-2" width="300px">
+          <VCardTitle> Please wait... </VCardTitle>
+          <VCardText>
+            <VProgressCircular indeterminate />
+          </VCardText>
+          <VCardActions>
+            <VBtn
               color="primary"
               variant="text"
               @click="$router.push({ name: 'User' })"
             >
               stuck? click here
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+            </VBtn>
+          </VCardActions>
+        </VCard>
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <script lang="ts">

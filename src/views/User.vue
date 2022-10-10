@@ -1,26 +1,26 @@
 <template>
-  <v-container align="center">
-    <v-row>
-      <v-col>
+  <VContainer align="center">
+    <VRow>
+      <VCol>
         <h1>{{ user.info?.displayName }}'s Tab</h1>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
+      </VCol>
+    </VRow>
+    <VRow>
+      <VCol>
         <AddItem :items="items" />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <v-expansion-panels>
-          <v-expansion-panel>
-            <v-expansion-panel-title>
+      </VCol>
+    </VRow>
+    <VRow>
+      <VCol>
+        <VExpansionPanels>
+          <VExpansionPanel>
+            <VExpansionPanelTitle>
               Tab
-              <v-spacer />
+              <VSpacer />
               Total: {{ total }}
-            </v-expansion-panel-title>
-            <v-expansion-panel-text>
-              <v-table density="compact">
+            </VExpansionPanelTitle>
+            <VExpansionPanelText>
+              <VTable density="compact">
                 <thead>
                   <tr>
                     <th>Item</th>
@@ -44,14 +44,14 @@
                     </tr>
                   </template>
                 </tbody>
-              </v-table>
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-          <v-expansion-panel>
-            <v-expansion-panel-title> History </v-expansion-panel-title>
-            <v-expansion-panel-text class="pa-0">
-              <v-lazy>
-                <v-table>
+              </VTable>
+            </VExpansionPanelText>
+          </VExpansionPanel>
+          <VExpansionPanel>
+            <VExpansionPanelTitle> History </VExpansionPanelTitle>
+            <VExpansionPanelText class="pa-0">
+              <VLazy>
+                <VTable>
                   <thead>
                     <tr>
                       <th>Item</th>
@@ -73,19 +73,19 @@
                           }}
                         </td>
                         <td v-if="isCurrentDate(item.date)">
-                          <DeleteItem :item="item"></DeleteItem>
+                          <DeleteItem :item="item" />
                         </td>
                       </tr>
                     </template>
                   </tbody>
-                </v-table>
-              </v-lazy>
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </v-col>
-    </v-row>
-  </v-container>
+                </VTable>
+              </VLazy>
+            </VExpansionPanelText>
+          </VExpansionPanel>
+        </VExpansionPanels>
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <script lang="ts">

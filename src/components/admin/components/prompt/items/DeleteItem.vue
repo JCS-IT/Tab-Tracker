@@ -1,7 +1,7 @@
 <template>
-  <v-dialog v-model="dialog">
+  <VDialog v-model="dialog">
     <template v-slot:activator>
-      <v-btn
+      <VBtn
         color="red"
         :loading="loading.pending"
         @click="
@@ -10,21 +10,19 @@
         "
       >
         Delete
-      </v-btn>
+      </VBtn>
     </template>
-    <v-card :loading="loading.confirm" :disabled="loading.confirm">
-      <v-alert v-if="error != null">
+    <VCard :loading="loading.confirm" :disabled="loading.confirm">
+      <VAlert v-if="error != null">
         {{ error }}
-      </v-alert>
-      <v-card-title> Are you sure? </v-card-title>
-      <v-card-subtitle>
-        This will permanently delete this item.
-      </v-card-subtitle>
-      <v-card-actions>
-        <v-btn @click="deleteItem()" color="red" :loading="loading.confirm">
+      </VAlert>
+      <VCardTitle> Are you sure? </VCardTitle>
+      <VCardSubtitle> This will permanently delete this item. </VCardSubtitle>
+      <VCardActions>
+        <VBtn @click="deleteItem()" color="red" :loading="loading.confirm">
           Delete
-        </v-btn>
-        <v-btn
+        </VBtn>
+        <VBtn
           @click="
             dialog = false;
             loading.pending = false;
@@ -32,10 +30,10 @@
           color="green"
         >
           Cancel
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script lang="ts">

@@ -1,40 +1,40 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col width="100px">
-        <v-menu>
+  <VContainer fluid>
+    <VRow>
+      <VCol width="100px">
+        <VMenu>
           <template v-slot:activator="{ props }">
-            <v-text-field
+            <VTextField
               v-model="search"
               label="Search"
               v-bind="props"
               append-inner-icon="mdi-magnify"
             />
           </template>
-          <v-list>
-            <v-list-item v-for="(user, index) in searchForUser" :key="index">
-              <v-list-item-title @click="getUser(user)">
+          <VList>
+            <VListItem v-for="(user, index) in searchForUser" :key="index">
+              <VListItemTitle @click="getUser(user)">
                 {{ user?.info?.displayName }}
-              </v-list-item-title>
-              <v-divider />
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-expansion-panels v-model="panels" multiple>
-        <v-expansion-panel
+              </VListItemTitle>
+              <VDivider />
+            </VListItem>
+          </VList>
+        </VMenu>
+      </VCol>
+    </VRow>
+    <VRow>
+      <VExpansionPanels v-model="panels" multiple>
+        <VExpansionPanel
           v-for="letter in letters"
           :key="letter"
           :id="letter"
           :value="letter"
           class="mb-2"
         >
-          <v-expansion-panel-title>
+          <VExpansionPanelTitle>
             <b>{{ letter.toUpperCase() }}</b>
-          </v-expansion-panel-title>
-          <v-expansion-panel-text>
+          </VExpansionPanelTitle>
+          <VExpansionPanelText>
             <User
               v-for="user in filterUsers(letter)"
               :key="user?.info?.email"
@@ -42,11 +42,11 @@
               :items="items"
               :ref="user?.info?.email"
             />
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-row>
-  </v-container>
+          </VExpansionPanelText>
+        </VExpansionPanel>
+      </VExpansionPanels>
+    </VRow>
+  </VContainer>
 </template>
 
 <script lang="ts">

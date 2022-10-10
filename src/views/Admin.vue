@@ -1,24 +1,24 @@
 <template>
-  <v-window v-model="active">
-    <v-window-item value="staff">
+  <VWindow v-model="active">
+    <VWindowItem value="staff">
       <StaffMenu />
-    </v-window-item>
-    <v-window-item value="items">
+    </VWindowItem>
+    <VWindowItem value="items">
       <ItemMenu />
-    </v-window-item>
-  </v-window>
-  <v-bottom-navigation>
-    <v-tabs v-model="active">
-      <v-tab value="staff">
-        <v-icon>mdi-account-school</v-icon>
+    </VWindowItem>
+  </VWindow>
+  <VBottomNavigation>
+    <VTabs v-model="active">
+      <VTab value="staff">
+        <VIcon>mdi-account-school</VIcon>
         Staff
-      </v-tab>
-      <v-tab value="items">
-        <v-icon>mdi-package</v-icon>
+      </VTab>
+      <VTab value="items">
+        <VIcon>mdi-package</VIcon>
         Items
-      </v-tab>
-    </v-tabs>
-  </v-bottom-navigation>
+      </VTab>
+    </VTabs>
+  </VBottomNavigation>
 </template>
 
 <script lang="ts">

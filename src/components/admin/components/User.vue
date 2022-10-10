@@ -1,75 +1,75 @@
 <template v-if="user != null">
-  <v-tooltip :text="user?.info.displayName">
+  <VTooltip :text="user?.info.displayName">
     <template v-slot:activator="{ props }">
-      <v-btn
+      <VBtn
         :ref="user.info.displayName"
         icon
         v-bind="props"
         @click="dialog = true"
         :loading="dialog"
       >
-        <v-avatar>
-          <v-img :src="user?.info.photoURL" alt="Avatar" />
-        </v-avatar>
-      </v-btn>
+        <VAvatar>
+          <VImg :src="user?.info.photoURL" alt="Avatar" />
+        </VAvatar>
+      </VBtn>
     </template>
-  </v-tooltip>
-  <v-dialog v-model="dialog" width="300px">
-    <v-card>
-      <v-card-title>
-        <v-row>
-          <v-col>
-            <v-avatar>
-              <v-img :src="user.info.photoURL" alt="User Avatar" />
-            </v-avatar>
-          </v-col>
-          <v-col>
+  </VTooltip>
+  <VDialog v-model="dialog" width="300px">
+    <VCard>
+      <VCardTitle>
+        <VRow>
+          <VCol>
+            <VAvatar>
+              <VImg :src="user.info.photoURL" alt="User Avatar" />
+            </VAvatar>
+          </VCol>
+          <VCol>
             {{ user?.info.displayName }}
-          </v-col>
-        </v-row>
-      </v-card-title>
-      <v-card-text align="center">
-        <v-expansion-panels>
-          <v-expansion-panel>
-            <v-expansion-panel-title>
+          </VCol>
+        </VRow>
+      </VCardTitle>
+      <VCardText align="center">
+        <VExpansionPanels>
+          <VExpansionPanel>
+            <VExpansionPanelTitle>
               Tab
-              <v-spacer />
+              <VSpacer />
               Total: ${{ total }}
-            </v-expansion-panel-title>
-            <v-expansion-panel-text>
-              <v-list>
+            </VExpansionPanelTitle>
+            <VExpansionPanelText>
+              <VList>
                 <template v-for="(item, index) in items" :key="index">
-                  <v-list-item v-if="count[item.name] > 0">
-                    <v-list-item-title>
+                  <VListItem v-if="count[item.name] > 0">
+                    <VListItemTitle>
                       {{ item.name }}: {{ count[item.name] }} *{{
                         new Intl.NumberFormat("en-CA", {
                           style: "currency",
                           currency: "CAD",
                         }).format(item.price)
                       }}
-                    </v-list-item-title>
-                  </v-list-item>
+                    </VListItemTitle>
+                  </VListItem>
                 </template>
-              </v-list>
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </v-card-text>
-      <v-divider />
-      <v-card-text>
+              </VList>
+            </VExpansionPanelText>
+          </VExpansionPanel>
+        </VExpansionPanels>
+      </VCardText>
+      <VDivider />
+      <VCardText>
         <span>Roles:</span>
-        <toggle-admin :user="user" />
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="primary" @click="dialog = false">Cancel</v-btn>
+        <ToggleAdmin :user="user" />
+      </VCardText>
+      <VCardActions>
+        <VBtn color="primary" @click="dialog = false">Cancel</VBtn>
         <ClearTab
           :email="user.info.email"
           :name="user.info.displayName"
           v-if="user.tab.length > 0"
         />
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script lang="ts">

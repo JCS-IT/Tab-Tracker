@@ -1,38 +1,39 @@
 <template>
-  <v-container class="d-flex justify-center align-center">
-    <v-card color="dark-grey" :width="alert ? '400' : '300'">
-      <v-card-title class="text-center">
+  <VContainer class="d-flex justify-center align-center">
+    <VCard color="dark-grey" :width="alert ? '400' : '300'">
+      <VCardTitle class="text-center">
         <h1>Login</h1>
-      </v-card-title>
-      <v-divider />
-      <v-card-text>
-        <v-alert type="error" v-if="alert" variant="outlined" prominent>
-          <v-alert-title>
+      </VCardTitle>
+      <VDivider />
+      <VCardText>
+        <VAlert type="error" v-if="alert" variant="outlined" prominent>
+          <VAlertTitle>
             {{ error.status.replace("_", " ") }}
-          </v-alert-title>
+          </VAlertTitle>
           {{ error.message }}
-          <v-divider />
-          <v-btn
+          <VDivider />
+          <VBtn
             variant="text"
             class="float-right"
             color="blue"
             @click="alert = false"
-            >Dismiss</v-btn
           >
-        </v-alert>
-        <div class="text-center" v-else>
-          <v-btn @click="signIn()">
-            <v-img
+            Dismiss
+          </VBtn>
+        </VAlert>
+        <template v-else>
+          <VBtn @click="signIn()">
+            <VImg
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
               style="width: 20px; height: 20px; margin-right: 10px"
               icon
             />
             Continue with Google
-          </v-btn>
-        </div>
-      </v-card-text>
-    </v-card>
-  </v-container>
+          </VBtn>
+        </template>
+      </VCardText>
+    </VCard>
+  </VContainer>
 </template>
 
 <script lang="ts">

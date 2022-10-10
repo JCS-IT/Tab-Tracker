@@ -1,41 +1,36 @@
 <template>
-  <v-btn
-    color="red"
-    :loading="dialog"
-    :disabled="dialog"
-    @click="dialog = true"
-  >
-    <v-icon>mdi-delete</v-icon>
-  </v-btn>
-  <v-dialog
+  <VBtn color="red" :loading="dialog" :disabled="dialog" @click="dialog = true">
+    <VIcon>mdi-delete</VIcon>
+  </VBtn>
+  <VDialog
     v-model="dialog"
     overlay
     transition="dialog-transition"
-    max-width="400px"
+    maxWidth="400px"
   >
-    <v-card class="text-center">
-      <v-card-title>
+    <VCard class="text-center">
+      <VCardTitle>
         <span class="headline">Delete Item</span>
-      </v-card-title>
-      <v-card-subtitle>
+      </VCardTitle>
+      <VCardSubtitle>
         {{ item?.name }} at {{ item?.date.toDate().toLocaleString() }}
-      </v-card-subtitle>
-      <v-card-text>
+      </VCardSubtitle>
+      <VCardText>
         <span> Are you sure you want to delete this item? </span>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn
+      </VCardText>
+      <VCardActions>
+        <VBtn
           color="green"
           @click="deleteItem"
           :loading="loading"
           :disabled="loading"
         >
           Delete
-        </v-btn>
-        <v-btn color="red" @click="dialog = false"> Cancel </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </VBtn>
+        <VBtn color="red" @click="dialog = false"> Cancel </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script lang="ts">

@@ -1,28 +1,28 @@
 <template>
-  <v-btn
+  <VBtn
     color="green-lighten-2"
     :loading="dialog"
     :disabled="dialog"
     @click="dialog = true"
   >
     Add Item
-  </v-btn>
-  <v-dialog
+  </VBtn>
+  <VDialog
     v-model="dialog"
     :fullscreen="mobile"
-    :max-width="mobile ? width : '500px'"
-    min-width="330px"
+    :maxWidth="mobile ? width : '500px'"
+    minWidth="330px"
   >
-    <v-alert color="error" v-if="error.code">
-      <v-alert-title>{{ error.code }}</v-alert-title>
+    <VAlert color="error" v-if="error.code">
+      <VAlertTitle>{{ error.code }}</VAlertTitle>
       {{ error.message }}
-    </v-alert>
-    <v-card>
-      <v-card-title align="center">
+    </VAlert>
+    <VCard>
+      <VCardTitle align="center">
         <span class="headline">Add Item</span>
-      </v-card-title>
-      <v-card-text>
-        <v-btn
+      </VCardTitle>
+      <VCardText>
+        <VBtn
           color="green-accent-1"
           v-for="(item, index) in items"
           :key="index"
@@ -39,13 +39,13 @@
               currency: "CAD",
             }).format(item.price)
           }}
-        </v-btn>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="red" @click="dialog = false"> Cancel </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </VBtn>
+      </VCardText>
+      <VCardActions>
+        <VBtn color="red" @click="dialog = false"> Cancel </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script lang="ts">

@@ -1,34 +1,30 @@
 <template>
-  <v-menu rounded>
+  <VMenu rounded>
     <template v-slot:activator="{ props }">
-      <v-btn icon v-bind="props">
-        <v-avatar>
-          <v-img :src="(user?.photoURL as string)" alt="Avatar" />
-        </v-avatar>
-      </v-btn>
+      <VBtn icon v-bind="props">
+        <VAvatar>
+          <VImg :src="(user?.photoURL as string)" alt="Avatar" />
+        </VAvatar>
+      </VBtn>
     </template>
-    <v-card>
-      <v-card-text class="mx-auto text-center">
-        <v-avatar size="large">
-          <v-img :src="(user?.photoURL as string)" alt="Avatar" />
-        </v-avatar>
+    <VCard>
+      <VCardText class="mx-auto text-center">
+        <VAvatar size="large">
+          <VImg :src="(user?.photoURL as string)" alt="Avatar" />
+        </VAvatar>
         <h3>{{ user?.displayName }}</h3>
         <p class="text-caption mt-1">{{ user?.email }}</p>
         <template v-if="admin">
-          <v-divider class="my-3" />
-          <v-btn
-            rounded
-            variant="text"
-            @click="$router.push({ name: 'Admin' })"
-          >
+          <VDivider class="my-3" />
+          <VBtn rounded variant="text" @click="$router.push({ name: 'Admin' })">
             admin menu
-          </v-btn>
+          </VBtn>
         </template>
-        <v-divider class="my-3" />
-        <v-btn rounded variant="text" @click="logout()"> logout </v-btn>
-      </v-card-text>
-    </v-card>
-  </v-menu>
+        <VDivider class="my-3" />
+        <VBtn rounded variant="text" @click="logout()"> logout </VBtn>
+      </VCardText>
+    </VCard>
+  </VMenu>
 </template>
 
 <script lang="ts">
