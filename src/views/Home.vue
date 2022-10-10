@@ -7,6 +7,15 @@
           <v-card-text>
             <v-progress-circular indeterminate />
           </v-card-text>
+          <v-card-actions>
+            <v-btn
+              color="primary"
+              variant="text"
+              @click="$router.push({ name: 'User' })"
+            >
+              stuck? click here
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -18,13 +27,13 @@ import { defineComponent } from "vue";
 import { auth } from "@/firebase";
 
 export default defineComponent({
-  name: "Home-view",
+  name: "HomeView",
   mounted() {
     auth.onAuthStateChanged((user) => {
-      if (!user) {
-        this.$router.push("/login");
-      } else {
+      if (user) {
         this.$router.push("/user");
+      } else {
+        this.$router.push("/login");
       }
     });
   },

@@ -1,6 +1,13 @@
 <template>
   <v-app>
-    <nav-bar />
+    <v-app-bar color="blue-lighten-2">
+      <v-app-bar-nav-icon
+        @click="$router.push({ name: 'Home' })"
+        icon="mdi-home"
+      />
+      <v-toolbar-title> JCS Tab Tracker </v-toolbar-title>
+      <user-menu v-if="loggedIn" />
+    </v-app-bar>
     <v-main>
       <router-view />
     </v-main>
@@ -8,13 +15,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import NavBar from "@/components/public/NavBar.vue";
+import { defineComponent, defineAsyncComponent } from "vue";
+import { auth } from "./firebase";
 
 export default defineComponent({
   name: "App",
   components: {
-    NavBar,
+    UserMenu: defineAsyncComponent(
+      () => import("@/components/public/UserMenu.vue")
+    ),
+  },
+  data() {
+    return {
+      loggedIn: false,
+    };
+  },
+  mounted() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.loggedIn = true;
+      } else {
+        this.loggedIn = false;
+      }
+    });
   },
 });
 </script>

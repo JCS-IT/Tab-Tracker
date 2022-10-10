@@ -43,11 +43,11 @@ export default defineComponent({
     Item: defineAsyncComponent(() => import("../components/Item.vue")),
   },
   methods: {
-    async removeItem(item: Item) {
+    async deleteItem(item: Item) {
       this.loading = true;
       try {
-        const removeItem = httpsCallable(functions, "removeItem");
-        await removeItem({ item: item });
+        const deleteItem = httpsCallable(functions, "deleteItem");
+        await deleteItem({ item: item });
       } catch (error) {
         console.log(error);
         this.error = error as string;

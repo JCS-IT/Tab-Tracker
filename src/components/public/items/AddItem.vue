@@ -7,38 +7,44 @@
   >
     Add Item
   </v-btn>
-  <v-dialog v-model="dialog">
-    <v-container fluid align="center">
-      <v-row>
-        <v-col>
-          <v-alert color="error" v-if="error">
-            <v-alert-title>Error Detected</v-alert-title>
-            please check the console for more information.
-          </v-alert>
-          <v-card min-width="300px">
-            <v-card-title>
-              <span class="headline">Add Item</span>
-            </v-card-title>
-            <v-card-text>
-              <v-btn
-                color="green-accent-1"
-                v-for="(item, index) in items"
-                :key="index"
-                :loading="loading[item.name]"
-                :disabled="loading[item.name]"
-                @click="addItem(item)"
-                class="ma-1"
-              >
-                {{ item.name }}: ${{ item.price }}
-              </v-btn>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn color="red" @click="dialog = false"> Cancel </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+  <v-dialog
+    v-model="dialog"
+    :fullscreen="mobile"
+    :max-width="mobile ? width : '500px'"
+    min-width="330px"
+  >
+    <v-alert color="error" v-if="error.code">
+      <v-alert-title>{{ error.code }}</v-alert-title>
+      {{ error.message }}
+    </v-alert>
+    <v-card>
+      <v-card-title align="center">
+        <span class="headline">Add Item</span>
+      </v-card-title>
+      <v-card-text>
+        <v-btn
+          color="green-accent-1"
+          v-for="(item, index) in items"
+          :key="index"
+          :loading="loading[item.name]"
+          :disabled="loading[item.name]"
+          @click="addItem(item)"
+          class="ma-1"
+          width="100%"
+        >
+          {{ item.name }}:
+          {{
+            new Intl.NumberFormat("en-CA", {
+              style: "currency",
+              currency: "CAD",
+            }).format(item.price)
+          }}
+        </v-btn>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="red" @click="dialog = false"> Cancel </v-btn>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
 </template>
 
@@ -47,6 +53,7 @@ import { defineComponent } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, updateDoc, arrayUnion, Timestamp } from "firebase/firestore";
 import type { Item } from "@/types";
+import { useDisplay } from "vuetify";
 
 export default defineComponent({
   name: "AddItem",
@@ -56,11 +63,18 @@ export default defineComponent({
       required: true,
     },
   },
+  setup() {
+    const { mobile, width } = useDisplay();
+    return { mobile, width };
+  },
   data() {
     return {
       dialog: false,
       loading: {} as { [key: string]: boolean },
-      error: false,
+      error: {
+        code: null,
+        message: null,
+      } as { code: string | null; message: string | null },
     };
   },
   methods: {
@@ -74,8 +88,11 @@ export default defineComponent({
             date: Timestamp.now(),
           }),
         });
-      } catch (error) {
-        this.error = true;
+      } catch (error: any) {
+        this.error = {
+          code: error.code,
+          message: error.message,
+        };
         console.error(error);
       } finally {
         this.dialog = false;

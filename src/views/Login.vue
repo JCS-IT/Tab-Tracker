@@ -1,14 +1,36 @@
 <template>
   <v-container class="d-flex justify-center align-center">
-    <v-card color="dark-grey" width="300">
+    <v-card color="dark-grey" :width="alert ? '400' : '300'">
       <v-card-title class="text-center">
         <h1>Login</h1>
       </v-card-title>
-      <div id="firebaseui-auth-container"></div>
-      <v-container id="loader" align="center">
-        loading...
-        <v-progress-circular indeterminate />
-      </v-container>
+      <v-divider />
+      <v-card-text>
+        <v-alert type="error" v-if="alert" variant="outlined" prominent>
+          <v-alert-title>
+            {{ error.status.replace("_", " ") }}
+          </v-alert-title>
+          {{ error.message }}
+          <v-divider />
+          <v-btn
+            variant="text"
+            class="float-right"
+            color="blue"
+            @click="alert = false"
+            >Dismiss</v-btn
+          >
+        </v-alert>
+        <div class="text-center" v-else>
+          <v-btn @click="signIn()">
+            <v-img
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              style="width: 20px; height: 20px; margin-right: 10px"
+              icon
+            />
+            Continue with Google
+          </v-btn>
+        </div>
+      </v-card-text>
     </v-card>
   </v-container>
 </template>
@@ -16,50 +38,48 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { auth } from "@/firebase";
-import { GoogleAuthProvider } from "@firebase/auth";
-import * as firebaseui from "firebaseui";
-import "firebaseui/dist/firebaseui.css";
+import { GoogleAuthProvider, signInWithPopup } from "@firebase/auth";
 
 export default defineComponent({
   name: "Login-view",
   data() {
     return {
-      loggedIn: false,
-      user: {},
+      alert: false,
+      error: {
+        status: "",
+        message: "",
+      } as {
+        message: string;
+        status: string;
+      },
     };
   },
   methods: {
-    showAuthMenu() {
-      let ui = firebaseui.auth.AuthUI.getInstance();
-      if (!ui) {
-        ui = new firebaseui.auth.AuthUI(auth);
-      }
-      const uiConfig = {
-        callbacks: {
-          uiShown: () => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            document.getElementById("loader")!.style.display = "none";
-          },
-        },
-        signinFlow: "popup",
-        signInSuccessUrl: "/",
-        signInOptions: [
-          {
-            provider: GoogleAuthProvider.PROVIDER_ID,
-            clientID:
-              "557593235569-a0jimberq7k4j3s90klgju18msi1fel0.apps.googleusercontent.com",
-          },
-        ],
-        credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
-      };
-      ui.start("#firebaseui-auth-container", uiConfig);
+    signIn() {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
+        .then(() => {
+          this.$router.push("/user");
+        })
+        .catch((error) => {
+          try {
+            const errorMessage = error.message.match(/{.*}/g);
+            const json = JSON.parse(errorMessage);
+            this.error = json.error;
+            this.alert = true;
+          } catch {
+            this.alert = true;
+            this.error = {
+              status: "UNKNOWN_ERROR",
+              message: error.message,
+            };
+          }
+        });
     },
   },
-  mounted() {
+  created() {
     auth.onAuthStateChanged((user) => {
-      if (!user) {
-        this.showAuthMenu();
-      } else {
+      if (user) {
         this.$router.push("/user");
       }
     });

@@ -8,7 +8,6 @@ import vuetify from "vite-plugin-vuetify";
 
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from "vite-plugin-mkcert";
-import { terser } from "rollup-plugin-terser";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -59,7 +58,9 @@ export default defineConfig({
         ],
       },
       workbox: {
-        sourcemap: true,
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -67,7 +68,7 @@ export default defineConfig({
             options: {
               cacheName: "google-fonts-cache",
               expiration: {
-                maxEntries: 10,
+                maxEntries: 1,
                 maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
               cacheableResponse: {
@@ -81,7 +82,7 @@ export default defineConfig({
             options: {
               cacheName: "gstatic-fonts-cache",
               expiration: {
-                maxEntries: 10,
+                maxEntries: 1,
                 maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
               cacheableResponse: {
@@ -91,12 +92,12 @@ export default defineConfig({
           },
           // cache google profile images
           {
-            urlPattern: /^https:\/\/www.googleapis.com\/plus\/v1\/people\/.*/i,
+            urlPattern: /^https:\/\/www\.googleapis.com\/plus\/v1\/people\/.*/i,
             handler: "CacheFirst",
             options: {
               cacheName: "google-profile-cache",
               expiration: {
-                maxEntries: 10,
+                maxEntries: 1,
                 maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
               },
             },
@@ -107,7 +108,7 @@ export default defineConfig({
             options: {
               cacheName: "google-profile-images",
               expiration: {
-                maxEntries: 10,
+                maxEntries: 1,
                 maxAgeSeconds: 60 * 60 * 24 * 30, // <== 1 month
               },
               cacheableResponse: {
@@ -116,17 +117,6 @@ export default defineConfig({
             },
           },
         ],
-      },
-    }),
-    terser({
-      compress: {
-        drop_console: true,
-        unsafe_arrows: true,
-        unsafe_comps: true,
-        passes: 2,
-      },
-      format: {
-        comments: false,
       },
     }),
   ],

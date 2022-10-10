@@ -2,6 +2,15 @@
 lib/**/*.js
 lib/**/*.js.map
 
+# yarn v2
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 # TypeScript v1 declaration files
 typings/
 

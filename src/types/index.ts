@@ -1,7 +1,7 @@
 import type { Timestamp } from "@firebase/firestore";
 
 export type User = {
-  data: {
+  info: {
     email: string;
     displayName: string;
     photoURL: string;

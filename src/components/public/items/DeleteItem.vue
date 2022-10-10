@@ -7,30 +7,33 @@
   >
     <v-icon>mdi-delete</v-icon>
   </v-btn>
-  <v-dialog v-model="dialog" overlay transition="dialog-transition">
-    <v-card>
-      <div class="text-center">
-        <v-card-title>
-          <span class="headline">Delete Item</span>
-        </v-card-title>
-        <v-card-subtitle>
-          {{ item?.name }} at {{ item?.date.toDate().toLocaleString() }}
-        </v-card-subtitle>
-        <v-card-text>
-          <span> Are you sure you want to delete this item? </span>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            color="green"
-            @click="deleteItem"
-            :loading="loading"
-            :disabled="loading"
-          >
-            Delete
-          </v-btn>
-          <v-btn color="red" @click="dialog = false"> Cancel </v-btn>
-        </v-card-actions>
-      </div>
+  <v-dialog
+    v-model="dialog"
+    overlay
+    transition="dialog-transition"
+    max-width="400px"
+  >
+    <v-card class="text-center">
+      <v-card-title>
+        <span class="headline">Delete Item</span>
+      </v-card-title>
+      <v-card-subtitle>
+        {{ item?.name }} at {{ item?.date.toDate().toLocaleString() }}
+      </v-card-subtitle>
+      <v-card-text>
+        <span> Are you sure you want to delete this item? </span>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn
+          color="green"
+          @click="deleteItem"
+          :loading="loading"
+          :disabled="loading"
+        >
+          Delete
+        </v-btn>
+        <v-btn color="red" @click="dialog = false"> Cancel </v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>

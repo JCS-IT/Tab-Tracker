@@ -12,9 +12,6 @@
         "./src/*"
       ]
     },
-    "types": [
-      "pinia-plugin-persist"
-    ]
   },
   "references": [
     {

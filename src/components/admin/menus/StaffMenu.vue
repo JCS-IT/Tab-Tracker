@@ -14,7 +14,7 @@
           <v-list>
             <v-list-item v-for="(user, index) in searchForUser" :key="index">
               <v-list-item-title @click="getUser(user)">
-                {{ user?.data?.displayName }}
+                {{ user?.info?.displayName }}
               </v-list-item-title>
               <v-divider />
             </v-list-item>
@@ -37,10 +37,10 @@
           <v-expansion-panel-text>
             <User
               v-for="user in filterUsers(letter)"
-              :key="user?.data?.email"
+              :key="user?.info?.email"
               :user="user"
               :items="items"
-              :ref="user?.data?.email"
+              :ref="user?.info?.email"
             />
           </v-expansion-panel-text>
         </v-expansion-panel>
@@ -104,7 +104,7 @@ export default defineComponent({
   computed: {
     searchForUser() {
       return this.users.filter((user: User) => {
-        return user.data.displayName
+        return user.info.displayName
           .toLowerCase()
           .includes(this.search.toLowerCase()) as boolean;
       }) as User[];
@@ -113,7 +113,7 @@ export default defineComponent({
   methods: {
     getUser(user: User) {
       this.panels = [];
-      const panel = user.data.displayName.split(" ")[1].toLowerCase().charAt(0);
+      const panel = user.info.displayName.split(" ")[1].toLowerCase().charAt(0);
       this.panels.push(panel);
       const element = document.getElementById(panel);
       if (element) {
@@ -122,12 +122,12 @@ export default defineComponent({
       setTimeout(() => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        this.$refs[user.data.email][0].dialog.user = true;
+        this.$refs[user.info.email][0].dialog = true;
       }, 500);
     },
     filterUsers(letter: string) {
       return this.users?.filter((user: User) => {
-        return user.data.displayName
+        return user.info.displayName
           .split(" ")[1]
           ?.toLowerCase()
           .startsWith(letter);

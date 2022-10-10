@@ -21,7 +21,7 @@
         This will permanently delete this item.
       </v-card-subtitle>
       <v-card-actions>
-        <v-btn @click="removeItem()" color="red" :loading="loading.confirm">
+        <v-btn @click="deleteItem()" color="red" :loading="loading.confirm">
           Delete
         </v-btn>
         <v-btn
@@ -61,10 +61,10 @@ export default defineComponent({
     },
   },
   methods: {
-    async removeItem() {
+    async deleteItem() {
       try {
-        const removeItem = httpsCallable(functions, "removeItem");
-        await removeItem({ item: this.item });
+        const deleteItem = httpsCallable(functions, "deleteItem");
+        await deleteItem({ item: this.item });
         this.dialog = false;
       } catch (error) {
         console.log(error);
