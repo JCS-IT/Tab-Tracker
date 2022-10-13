@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import { auth } from "@/firebase";
+import router from "@/router";
+
+if (auth.currentUser) {
+  router.push({ name: "User" });
+} else {
+  router.push({ name: "Login" });
+}
+</script>
+
 <template>
   <VContainer align="center">
     <VRow>
@@ -21,21 +32,3 @@
     </VRow>
   </VContainer>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import { auth } from "@/firebase";
-
-export default defineComponent({
-  name: "HomeView",
-  mounted() {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.$router.push("/user");
-      } else {
-        this.$router.push("/login");
-      }
-    });
-  },
-});
-</script>

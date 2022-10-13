@@ -72,11 +72,12 @@
   </VDialog>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
 import type { User, Item } from "@/types";
-import { useDisplay } from "vuetify";
+</script>
 
+<script lang="ts">
 export default defineComponent({
   name: "UserComponent",
   components: {
@@ -84,10 +85,6 @@ export default defineComponent({
       () => import("./prompt/user/ToggleAdmin.vue")
     ),
     ClearTab: defineAsyncComponent(() => import("./prompt/user/ClearTab.vue")),
-  },
-  setup() {
-    const { mobile } = useDisplay();
-    return { mobile };
   },
   data() {
     return {

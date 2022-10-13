@@ -88,12 +88,14 @@
   </VContainer>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
 import type { User, Item } from "@/types";
+</script>
 
+<script lang="ts">
 let itemSub: () => void;
 let tabSub: () => void;
 

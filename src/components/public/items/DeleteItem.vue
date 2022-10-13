@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { defineComponent } from "vue";
+import { auth, db } from "@/firebase";
+import { doc, updateDoc, arrayRemove } from "firebase/firestore";
+</script>
+
 <template>
   <VBtn color="red" :loading="dialog" :disabled="dialog" @click="dialog = true">
     <VIcon>mdi-delete</VIcon>
@@ -6,7 +12,7 @@
     v-model="dialog"
     overlay
     transition="dialog-transition"
-    maxWidth="400px"
+    max-width="400px"
   >
     <VCard class="text-center">
       <VCardTitle>
@@ -34,20 +40,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { auth, db } from "@/firebase";
-import { doc, updateDoc, arrayRemove } from "firebase/firestore";
-import { useDisplay } from "vuetify";
-
 export default defineComponent({
   name: "DeleteItem",
   props: {
     item: Object,
     tab: Object,
-  },
-  setup() {
-    const { mobile } = useDisplay();
-    return { mobile };
   },
   data() {
     return {

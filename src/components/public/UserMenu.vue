@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import { auth } from "@/firebase";
+import type { User } from "firebase/auth";
+
+const user = ref<User | null>(null);
+const admin = ref(false);
+auth.onAuthStateChanged((currentUser) => {
+  currentUser?.getIdTokenResult().then((idTokenResult) => {
+    admin.value = idTokenResult.claims.admin;
+  });
+  user.value = currentUser;
+});
+</script>
+
 <template>
   <VMenu rounded>
     <template v-slot:activator="{ props }">
@@ -21,38 +36,8 @@
           </VBtn>
         </template>
         <VDivider class="my-3" />
-        <VBtn rounded variant="text" @click="logout()"> logout </VBtn>
+        <VBtn rounded variant="text" @click="auth.signOut"> logout </VBtn>
       </VCardText>
     </VCard>
   </VMenu>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import { auth } from "@/firebase";
-import type { User } from "firebase/auth";
-
-export default defineComponent({
-  name: "UserMenu",
-  data() {
-    return {
-      user: null as User | null,
-      admin: false as unknown,
-    };
-  },
-  methods: {
-    logout() {
-      auth.signOut();
-      this.$router.push({ name: "Login" });
-    },
-  },
-  mounted() {
-    auth.onAuthStateChanged((user) => {
-      this.user = user;
-      user?.getIdTokenResult().then((token) => {
-        this.admin = token.claims.admin;
-      });
-    });
-  },
-});
-</script>

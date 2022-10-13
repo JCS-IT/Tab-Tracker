@@ -49,15 +49,14 @@
   </VContainer>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
 import { auth, db } from "@/firebase";
 import type { User, Item } from "@/types";
 import { doc, collection, onSnapshot } from "@firebase/firestore";
+</script>
 
-let userSnap: () => void;
-let itemSnap: () => void;
-
+<script lang="ts">
 export default defineComponent({
   name: "StaffMenu",
   components: {
@@ -136,6 +135,8 @@ export default defineComponent({
   },
   created() {
     auth.onAuthStateChanged((user) => {
+      let userSnap = () => {};
+      let itemSnap = () => {};
       if (user) {
         userSnap = onSnapshot(collection(db, "users"), (snap) => {
           this.users = [];

@@ -32,12 +32,14 @@
   </VCard>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
 import { functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
 import type { Item } from "@/types";
+</script>
 
+<script lang="ts">
 export default defineComponent({
   name: "ItemComponent",
   data() {

@@ -13,17 +13,23 @@
   </VContainer>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
 import { auth, db, functions } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { httpsCallable } from "@firebase/functions";
 import type { Item } from "@/types";
+</script>
 
-let itemSub: () => void;
-
+<script lang="ts">
 export default defineComponent({
   name: "ItemMenu",
+  components: {
+    AddItem: defineAsyncComponent(
+      () => import("../components/prompt/items/AddItem.vue")
+    ),
+    Item: defineAsyncComponent(() => import("../components/Item.vue")),
+  },
   data() {
     return {
       items: [] as Item[],
@@ -35,12 +41,6 @@ export default defineComponent({
       dialog: false,
       error: null as string | null,
     };
-  },
-  components: {
-    AddItem: defineAsyncComponent(
-      () => import("../components/prompt/items/AddItem.vue")
-    ),
-    Item: defineAsyncComponent(() => import("../components/Item.vue")),
   },
   methods: {
     async deleteItem(item: Item) {
@@ -59,6 +59,7 @@ export default defineComponent({
   },
   created() {
     auth.onAuthStateChanged((user) => {
+      let itemSub = () => {};
       if (user) {
         itemSub = onSnapshot(doc(db, "admin/items"), (doc) => {
           if (doc.exists()) {

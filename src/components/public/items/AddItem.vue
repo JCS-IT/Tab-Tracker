@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import { defineComponent } from "vue";
+import { auth, db } from "@/firebase";
+import { doc, updateDoc, arrayUnion, Timestamp } from "firebase/firestore";
+import type { Item } from "@/types";
+import { useDisplay } from "vuetify";
+
+const { mobile, width } = useDisplay();
+</script>
+
 <template>
   <VBtn
     color="green-lighten-2"
@@ -49,12 +59,6 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { auth, db } from "@/firebase";
-import { doc, updateDoc, arrayUnion, Timestamp } from "firebase/firestore";
-import type { Item } from "@/types";
-import { useDisplay } from "vuetify";
-
 export default defineComponent({
   name: "AddItem",
   props: {
@@ -62,10 +66,6 @@ export default defineComponent({
       type: Array as () => Item[],
       required: true,
     },
-  },
-  setup() {
-    const { mobile, width } = useDisplay();
-    return { mobile, width };
   },
   data() {
     return {

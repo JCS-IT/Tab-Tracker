@@ -48,11 +48,13 @@
   </VDialog>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from "vue";
 import { functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
+</script>
 
+<script lang="ts">
 export default defineComponent({
   name: "AddItem",
   data() {
