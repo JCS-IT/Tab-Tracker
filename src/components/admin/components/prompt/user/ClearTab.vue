@@ -26,21 +26,44 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent } from "vue";
+import { ref, defineProps } from "vue";
 import { functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
+
+const props = defineProps<{
+  name: string | undefined;
+  email: string | undefined;
+}>();
+
+let dialog = ref(false);
+let loading = ref(false);
+let error = ref(null as Error | null);
+
+const clearTab = async () => {
+  loading.value = true;
+  try {
+    const clearTab = httpsCallable(functions, "clearTab");
+    await clearTab({ email: props.email });
+    dialog.value = false;
+  } catch (err) {
+    error.value = err as Error;
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
-<script lang="ts">
+<!-- <script lang="ts">
 export default defineComponent({
   name: "ClearTab",
   props: {
     email: {
-      type: String,
+      type: String as () => string | null | undefined,
       required: true,
     },
     name: {
-      type: String,
+      type: String as () => string | null | undefined,
       required: true,
     },
   },
@@ -66,4 +89,4 @@ export default defineComponent({
     },
   },
 });
-</script>
+</script> -->

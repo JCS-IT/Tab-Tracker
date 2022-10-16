@@ -1,7 +1,39 @@
 <script setup lang="ts">
-import { defineComponent } from "vue";
+import { ref, defineProps } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, updateDoc, arrayRemove } from "firebase/firestore";
+import type { TabItem } from "@/types";
+
+let dialog = ref(false);
+let loading = ref(false);
+let error = ref({
+  status: false,
+  message: "",
+});
+
+const props = defineProps<{
+  item: TabItem;
+}>();
+
+const deleteItem = async () => {
+  loading.value = true;
+  try {
+    await updateDoc(doc(db, `users/${auth.currentUser?.uid}`), {
+      tab: arrayRemove(props.item),
+    });
+  } catch (err) {
+    error.value = {
+      // @ts-ignore
+      status: err.code,
+      // @ts-ignore
+      message: err.message,
+    };
+    console.error(err);
+  } finally {
+    loading.value = false;
+    dialog.value = false;
+  }
+};
 </script>
 
 <template>
@@ -15,11 +47,20 @@ import { doc, updateDoc, arrayRemove } from "firebase/firestore";
     max-width="400px"
   >
     <VCard class="text-center">
+      <VAlert
+        v-if="error.status"
+        type="error"
+        :value="error"
+        dismissible
+        @input="error.status = false"
+      >
+        {{ error.message }}
+      </VAlert>
       <VCardTitle>
         <span class="headline">Delete Item</span>
       </VCardTitle>
       <VCardSubtitle>
-        {{ item?.name }} at {{ item?.date.toDate().toLocaleString() }}
+        {{ item?.name }} at {{ props.item?.date.toDate().toLocaleString() }}
       </VCardSubtitle>
       <VCardText>
         <span> Are you sure you want to delete this item? </span>
@@ -38,36 +79,3 @@ import { doc, updateDoc, arrayRemove } from "firebase/firestore";
     </VCard>
   </VDialog>
 </template>
-
-<script lang="ts">
-export default defineComponent({
-  name: "DeleteItem",
-  props: {
-    item: Object,
-    tab: Object,
-  },
-  data() {
-    return {
-      dialog: false,
-      loading: false,
-      error: false,
-    };
-  },
-  methods: {
-    async deleteItem() {
-      this.loading = true;
-      try {
-        await updateDoc(doc(db, `users/${auth.currentUser?.uid}`), {
-          tab: arrayRemove(this.item),
-        });
-      } catch (error) {
-        this.error = true;
-        console.error(error);
-      } finally {
-        this.loading = false;
-        this.dialog = false;
-      }
-    },
-  },
-});
-</script>

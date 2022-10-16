@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <VCard
     width="200px"
@@ -8,7 +9,7 @@
       {{ error }}
     </VAlert>
     <VCardTitle>
-      {{ item.name }}
+      {{ input.name }}
     </VCardTitle>
     <VCardText class="pb-0">
       <VForm>
@@ -16,7 +17,7 @@
           label="Price"
           variant="outlined"
           type="number"
-          v-model="item.price"
+          v-model="input.price"
           prefix="$"
           :rules="rules.price"
           @keyup.enter="updateItem()"
@@ -27,19 +28,57 @@
       <VBtn @click="updateItem()" color="green" :loading="loading.update">
         Update
       </VBtn>
-      <DeleteItem :item="item" />
+      <DeleteItem :item="input" />
     </VCardActions>
   </VCard>
 </template>
 
 <script setup lang="ts">
-import { defineComponent, defineAsyncComponent } from "vue";
+import { defineAsyncComponent, ref, defineProps } from "vue";
 import { functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
 import type { Item } from "@/types";
+
+const DeleteItem = defineAsyncComponent(
+  () => import("./prompt/items/DeleteItem.vue")
+);
+
+const props = defineProps<{
+  input: Item;
+  items: Item[];
+}>();
+
+let loading = ref({
+  update: false,
+  delete: false,
+  dialog: false,
+});
+
+let error = ref(null as string | null);
+
+const rules = {
+  price: [(v: number) => !!v || "Price is required"],
+};
+
+const updateItem = async () => {
+  loading.value.update = true;
+  try {
+    await httpsCallable(
+      functions,
+      "updateItem"
+    )({
+      items: props.items,
+    });
+  } catch (err) {
+    console.error(err);
+    error.value = err as string;
+  } finally {
+    loading.value.update = false;
+  }
+};
 </script>
 
-<script lang="ts">
+<!-- <script lang="ts">
 export default defineComponent({
   name: "ItemComponent",
   data() {
@@ -95,4 +134,4 @@ export default defineComponent({
     ),
   },
 });
-</script>
+</script> -->

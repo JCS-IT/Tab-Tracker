@@ -1,8 +1,88 @@
+<script setup lang="ts">
+import { computed, defineAsyncComponent, ref } from "vue";
+import { auth, db } from "@/firebase";
+import { doc, onSnapshot, Timestamp } from "firebase/firestore";
+import type { User, Item } from "@/types";
+import { onBeforeRouteLeave } from "vue-router";
+
+// components
+const AddItem = defineAsyncComponent(
+  () => import("@/components/public/items/AddItem.vue")
+);
+const DeleteItem = defineAsyncComponent(
+  () => import("@/components/public/items/DeleteItem.vue")
+);
+
+// props
+const page = ref(1);
+const perPage = 10;
+const user = ref<User | null>(null);
+const items = ref<Item[]>([]);
+
+const itemSub = onSnapshot(doc(db, "admin/items"), (doc) => {
+  items.value = doc.data()?.food as Item[];
+});
+
+// @ts-expect-error
+const userSub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+  user.value = doc.data() as User;
+  user.value.tab.reverse();
+});
+
+onBeforeRouteLeave(() => {
+  itemSub();
+  userSub();
+});
+
+// computed properties
+const count = () => {
+  const total = {} as { [key: string]: number };
+  items.value.forEach((item) => {
+    total[item.name] = 0;
+  });
+  user.value?.tab.forEach((item) => {
+    total[item.name]++;
+  });
+  return total;
+};
+
+const total = () => {
+  let total = 0;
+  user.value?.tab?.forEach((item) => {
+    total += item.price;
+  });
+  return new Intl.NumberFormat("en-CA", {
+    style: "currency",
+    currency: "CAD",
+  }).format(total);
+};
+
+const visibleItems = computed(() => {
+  return user.value?.tab.slice(
+    (page.value - 1) * perPage,
+    page.value * perPage
+  );
+});
+
+const isCurrentDate = (date: Timestamp) => {
+  const now = new Date();
+  const diff = now.getTime() - date.toDate().getTime();
+  return diff < 300000;
+};
+
+// methods
+const MathTime = () => {
+  if (user.value?.tab.length) {
+    return Math.ceil(user.value.tab.length / perPage);
+  }
+};
+</script>
+
 <template>
   <VContainer align="center">
     <VRow>
       <VCol>
-        <h1>{{ user.info?.displayName }}'s Tab</h1>
+        <h1>{{ user?.info?.displayName }}'s Tab</h1>
       </VCol>
     </VRow>
     <VRow>
@@ -17,7 +97,7 @@
             <VExpansionPanelTitle>
               Tab
               <VSpacer />
-              Total: {{ total }}
+              Total: {{ total() }}
             </VExpansionPanelTitle>
             <VExpansionPanelText>
               <VTable density="compact">
@@ -30,9 +110,9 @@
                 </thead>
                 <tbody>
                   <template v-for="(item, index) in items" :key="index">
-                    <tr v-if="count[item.name] > 0">
+                    <tr v-if="count()[item.name] > 0">
                       <td>{{ item.name }}</td>
-                      <td>{{ count[item.name] }}</td>
+                      <td>{{ count()[item.name] }}</td>
                       <td>
                         {{
                           new Intl.NumberFormat("en-CA", {
@@ -50,10 +130,7 @@
           <VExpansionPanel>
             <VExpansionPanelTitle> History </VExpansionPanelTitle>
             <VExpansionPanelText class="pa-0">
-              <VPagination
-                v-model="page"
-                :length="Math.ceil(user.tab.length / perPage)"
-              />
+              <VPagination v-model="page" :length="MathTime()" />
               <VTable>
                 <thead>
                   <tr>
@@ -64,9 +141,9 @@
                 </thead>
                 <tbody>
                   <template v-for="(item, index) in visibleItems" :key="index">
-                    <tr v-if="count[item.name] > 0">
+                    <tr v-if="count()[item.name] > 0">
                       <td>{{ item.name }}</td>
-                      <td>{{ count[item.name] }}</td>
+                      <td>{{ count()[item.name] }}</td>
                       <td>
                         {{
                           new Intl.NumberFormat("en-CA", {
@@ -89,98 +166,3 @@
     </VRow>
   </VContainer>
 </template>
-
-<script setup lang="ts">
-import { defineComponent, defineAsyncComponent } from "vue";
-import { auth, db } from "@/firebase";
-import {
-  doc,
-  onSnapshot,
-  Timestamp,
-  type Unsubscribe,
-} from "firebase/firestore";
-import type { User, Item } from "@/types";
-</script>
-
-<script lang="ts">
-let itemSub: Unsubscribe;
-let tabSub: Unsubscribe;
-
-export default defineComponent({
-  name: "UserView",
-  components: {
-    AddItem: defineAsyncComponent(
-      () => import("@/components/public/items/AddItem.vue")
-    ),
-    DeleteItem: defineAsyncComponent(
-      () => import("@/components/public/items/DeleteItem.vue")
-    ),
-  },
-  data() {
-    return {
-      user: {} as User,
-      items: [] as Item[],
-      admin: false as boolean,
-      page: 1 as number,
-      perPage: 10 as number,
-    };
-  },
-  computed: {
-    count() {
-      const total = {} as { [key: string]: number };
-      this.items.forEach((item) => {
-        total[item.name] = 0;
-      });
-      this.user.tab.forEach((item) => {
-        total[item.name]++;
-      });
-      return total;
-    },
-    total() {
-      let total = 0;
-      this.user?.tab?.forEach((item) => {
-        total += item.price;
-      });
-      return new Intl.NumberFormat("en-CA", {
-        style: "currency",
-        currency: "CAD",
-      }).format(total);
-    },
-    visibleItems() {
-      return this.user.tab.slice(
-        (this.page - 1) * this.perPage,
-        this.page * this.perPage
-      );
-    },
-  },
-  methods: {
-    isCurrentDate(date: Timestamp) {
-      const now = new Date();
-      const diff = now.getTime() - date.toDate().getTime();
-      return diff < 300000;
-    },
-  },
-  mounted() {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        tabSub = onSnapshot(doc(db, "users", user.uid), (doc) => {
-          this.user = doc.data() as User;
-          this.user.tab.reverse();
-        });
-        itemSub = onSnapshot(doc(db, "admin/items"), (doc) => {
-          if (doc.exists()) {
-            this.items = doc.data().food;
-          }
-        });
-      } else {
-        tabSub();
-        itemSub();
-      }
-    });
-  },
-  beforeUnmount() {
-    tabSub();
-    itemSub();
-  },
-});
-</script>

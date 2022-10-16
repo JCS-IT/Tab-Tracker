@@ -1,8 +1,55 @@
+<script setup lang="ts">
+import { defineAsyncComponent, ref, computed, defineProps } from "vue";
+import type { User, Item } from "@/types";
+
+const ToggleAdmin = defineAsyncComponent(
+  () => import("./prompt/user/ToggleAdmin.vue")
+);
+const ClearTab = defineAsyncComponent(
+  () => import("./prompt/user/ClearTab.vue")
+);
+
+const props = defineProps<{
+  user: User | null;
+  items: Item[];
+}>();
+
+const dialog = ref(false);
+
+const count = computed(() => {
+  const count = {} as Record<string, number>;
+  props.user?.tab.forEach((item) => {
+    if (count[item.name]) {
+      count[item.name] += 1;
+    } else {
+      count[item.name] = 1;
+    }
+  });
+  return count;
+});
+
+const total = computed(() => {
+  let total = 0;
+  props.user?.tab.forEach((item) => {
+    total += item.price;
+  });
+  return total;
+});
+
+const checkTabLength = () => {
+  if (props.user?.tab.length) {
+    return props.user?.tab.length > 0;
+  } else {
+    return 0;
+  }
+};
+</script>
+
 <template v-if="user != null">
   <VTooltip :text="user?.info.displayName">
     <template v-slot:activator="{ props }">
       <VBtn
-        :ref="user.info.displayName"
+        :ref="user?.info.displayName"
         icon
         v-bind="props"
         @click="dialog = true"
@@ -20,7 +67,7 @@
         <VRow>
           <VCol>
             <VAvatar>
-              <VImg :src="user.info.photoURL" alt="User Avatar" />
+              <VImg :src="user?.info.photoURL" alt="User Avatar" />
             </VAvatar>
           </VCol>
           <VCol>
@@ -63,62 +110,11 @@
       <VCardActions>
         <VBtn color="primary" @click="dialog = false">Cancel</VBtn>
         <ClearTab
-          :email="user.info.email"
-          :name="user.info.displayName"
-          v-if="user.tab.length > 0"
+          :email="user?.info.email"
+          :name="user?.info.displayName"
+          v-if="checkTabLength()"
         />
       </VCardActions>
     </VCard>
   </VDialog>
 </template>
-
-<script setup lang="ts">
-import { defineComponent, defineAsyncComponent } from "vue";
-import type { User, Item } from "@/types";
-</script>
-
-<script lang="ts">
-export default defineComponent({
-  name: "UserComponent",
-  components: {
-    ToggleAdmin: defineAsyncComponent(
-      () => import("./prompt/user/ToggleAdmin.vue")
-    ),
-    ClearTab: defineAsyncComponent(() => import("./prompt/user/ClearTab.vue")),
-  },
-  data() {
-    return {
-      dialog: false,
-      loading: false,
-    };
-  },
-  computed: {
-    count() {
-      const count: { [key: string]: number } = {};
-      this.user?.tab.forEach((item) => {
-        if (count[item.name]) {
-          count[item.name]++;
-        } else {
-          count[item.name] = 1;
-        }
-      });
-      return count;
-    },
-    total() {
-      return this.user.tab.reduce((total, item) => {
-        return total + item.price;
-      }, 0);
-    },
-  },
-  props: {
-    user: {
-      type: Object as () => User,
-      required: true,
-    },
-    items: {
-      type: Array as () => Item[],
-      required: true,
-    },
-  },
-});
-</script>

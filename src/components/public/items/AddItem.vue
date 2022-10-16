@@ -1,11 +1,48 @@
 <script setup lang="ts">
-import { defineComponent } from "vue";
+import { ref, defineProps } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, updateDoc, arrayUnion, Timestamp } from "firebase/firestore";
 import type { Item } from "@/types";
 import { useDisplay } from "vuetify";
 
 const { mobile, width } = useDisplay();
+const props = defineProps<{
+  items: Item[];
+}>();
+
+let dialog = ref(false);
+let loading = ref({} as Record<string, boolean>);
+let error = ref({
+  code: null,
+  message: null,
+});
+
+props.items.forEach((item) => {
+  loading.value[item.name] = false;
+});
+
+const addItem = async (item: Item) => {
+  loading.value[item.name] = true;
+  try {
+    await updateDoc(doc(db, `users/${auth.currentUser?.uid}`), {
+      tab: arrayUnion({
+        ...item,
+        date: Timestamp.now(),
+      }),
+    });
+  } catch (err) {
+    error.value = {
+      // @ts-ignore
+      code: err.code,
+      // @ts-ignore
+      message: err.message,
+    };
+    console.error(err);
+  } finally {
+    loading.value[item.name] = false;
+    dialog.value = false;
+  }
+};
 </script>
 
 <template>
@@ -57,53 +94,3 @@ const { mobile, width } = useDisplay();
     </VCard>
   </VDialog>
 </template>
-
-<script lang="ts">
-export default defineComponent({
-  name: "AddItem",
-  props: {
-    items: {
-      type: Array as () => Item[],
-      required: true,
-    },
-  },
-  data() {
-    return {
-      dialog: false,
-      loading: {} as { [key: string]: boolean },
-      error: {
-        code: null,
-        message: null,
-      } as { code: string | null; message: string | null },
-    };
-  },
-  methods: {
-    async addItem(item: Item) {
-      this.loading[item.name] = true;
-      try {
-        await updateDoc(doc(db, `users/${auth.currentUser?.uid}`), {
-          tab: arrayUnion({
-            name: item.name,
-            price: item.price,
-            date: Timestamp.now(),
-          }),
-        });
-      } catch (error: any) {
-        this.error = {
-          code: error.code,
-          message: error.message,
-        };
-        console.error(error);
-      } finally {
-        this.dialog = false;
-        this.loading[item.name] = false;
-      }
-    },
-  },
-  mounted() {
-    this.items.forEach((item) => {
-      this.loading[item.name] = false;
-    });
-  },
-});
-</script>

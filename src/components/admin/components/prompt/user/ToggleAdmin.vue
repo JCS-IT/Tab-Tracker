@@ -24,10 +24,10 @@
     >
       <VCardTitle>Are you sure?</VCardTitle>
       <VCardSubtitle>
-        This will {{ user.roles.admin ? "remove" : "add" }} the user as an
+        This will {{ user?.roles.admin ? "remove" : "add" }} the user as an
         administrator.
       </VCardSubtitle>
-      <VCardText v-if="!user.roles.admin">
+      <VCardText v-if="!user?.roles.admin">
         When a user is an administrator they can:
         <VList>
           <VListItem v-for="(item, index) in list" :key="item">
@@ -39,7 +39,7 @@
         <VBtn
           color="primary"
           text
-          @click="toggleAdmin(user.info.email)"
+          @click="toggleAdmin(user?.info.email)"
           :loading="loading.dialog"
         >
           OK
@@ -62,7 +62,7 @@ export default defineComponent({
   name: "TogglePerms",
   props: {
     user: {
-      type: Object as () => User,
+      type: Object as () => User | null,
       required: true,
     },
   },
@@ -85,13 +85,13 @@ export default defineComponent({
     };
   },
   methods: {
-    async toggleAdmin(email: string) {
+    async toggleAdmin(email: string | null | undefined) {
       this.loading.dialog = true;
       try {
         const toggleRole = httpsCallable(functions, "toggleAdmin");
         await toggleRole({
           email: email,
-          admin: !this.user.roles.admin,
+          admin: !this.user?.roles.admin,
         });
       } catch (err) {
         this.$emit("error", err);
@@ -104,19 +104,19 @@ export default defineComponent({
       this.loading.switch = false;
     },
     message() {
-      if (this.user.info.email == auth.currentUser?.email) {
+      if (this.user?.info.email == auth.currentUser?.email) {
         return {
           disabled: true,
           message: "You cannot change your own permissions",
         };
       }
-      if (this.user.roles.admin) {
+      if (this.user?.roles.admin) {
         return {
           disabled: false,
           message: "Click to remove admin permissions",
         };
       }
-      if (this.user.roles.dev) {
+      if (this.user?.roles.dev) {
         return {
           disabled: true,
           message: "This user is a developer",

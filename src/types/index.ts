@@ -28,3 +28,9 @@ export type Item = {
   name: string;
   price: number;
 };
+
+export type TabItem = {
+  name: string;
+  price: number;
+  date: Timestamp;
+};
