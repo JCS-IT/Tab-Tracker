@@ -35,13 +35,9 @@
             <b>{{ letter.toUpperCase() }}</b>
           </VExpansionPanelTitle>
           <VExpansionPanelText>
-            <User
-              v-for="user in filterUsers(letter)"
-              :key="user?.info?.email"
-              :user="user"
-              :items="items"
-              :ref="user?.info?.email"
-            />
+            <template v-for="user in filterUsers(letter)" :key="user">
+              <User :user="user" :items="items" :ref="user?.info?.email" />
+            </template>
           </VExpansionPanelText>
         </VExpansionPanel>
       </VExpansionPanels>
