@@ -52,7 +52,7 @@
             <VExpansionPanelText class="pa-0">
               <VPagination
                 v-model="page"
-                :length="Math.ceil(items.length / 10)"
+                :length="Math.ceil(user.tab.length / perPage)"
               />
               <VTable>
                 <thead>
@@ -62,9 +62,8 @@
                     <th>Price</th>
                   </tr>
                 </thead>
-
-                <!-- <tbody>
-                  <template v-for="(item, index) in user.tab" :key="index">
+                <tbody>
+                  <template v-for="(item, index) in visibleItems" :key="index">
                     <tr v-if="count[item.name] > 0">
                       <td>{{ item.name }}</td>
                       <td>{{ count[item.name] }}</td>
@@ -81,7 +80,7 @@
                       </td>
                     </tr>
                   </template>
-                </tbody> -->
+                </tbody>
               </VTable>
             </VExpansionPanelText>
           </VExpansionPanel>
@@ -118,6 +117,7 @@ export default defineComponent({
       items: [] as Item[],
       admin: false as boolean,
       page: 1 as number,
+      perPage: 10 as number,
     };
   },
   computed: {
@@ -140,6 +140,12 @@ export default defineComponent({
         style: "currency",
         currency: "CAD",
       }).format(total);
+    },
+    visibleItems() {
+      return this.user.tab.slice(
+        (this.page - 1) * this.perPage,
+        this.page * this.perPage
+      );
     },
   },
   methods: {
