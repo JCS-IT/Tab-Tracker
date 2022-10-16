@@ -50,36 +50,39 @@
           <VExpansionPanel>
             <VExpansionPanelTitle> History </VExpansionPanelTitle>
             <VExpansionPanelText class="pa-0">
-              <VLazy>
-                <VTable>
-                  <thead>
-                    <tr>
-                      <th>Item</th>
-                      <th>Quantity</th>
-                      <th>Price</th>
+              <VPagination
+                v-model="page"
+                :length="Math.ceil(items.length / 10)"
+              />
+              <VTable>
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+
+                <!-- <tbody>
+                  <template v-for="(item, index) in user.tab" :key="index">
+                    <tr v-if="count[item.name] > 0">
+                      <td>{{ item.name }}</td>
+                      <td>{{ count[item.name] }}</td>
+                      <td>
+                        {{
+                          new Intl.NumberFormat("en-CA", {
+                            style: "currency",
+                            currency: "CAD",
+                          }).format(item.price)
+                        }}
+                      </td>
+                      <td v-if="isCurrentDate(item.date)">
+                        <DeleteItem :item="item" />
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    <template v-for="(item, index) in user.tab" :key="index">
-                      <tr v-if="count[item.name] > 0">
-                        <td>{{ item.name }}</td>
-                        <td>{{ count[item.name] }}</td>
-                        <td>
-                          {{
-                            new Intl.NumberFormat("en-CA", {
-                              style: "currency",
-                              currency: "CAD",
-                            }).format(item.price)
-                          }}
-                        </td>
-                        <td v-if="isCurrentDate(item.date)">
-                          <DeleteItem :item="item" />
-                        </td>
-                      </tr>
-                    </template>
-                  </tbody>
-                </VTable>
-              </VLazy>
+                  </template>
+                </tbody> -->
+              </VTable>
             </VExpansionPanelText>
           </VExpansionPanel>
         </VExpansionPanels>
@@ -114,6 +117,7 @@ export default defineComponent({
       user: {} as User,
       items: [] as Item[],
       admin: false as boolean,
+      page: 1 as number,
     };
   },
   computed: {
