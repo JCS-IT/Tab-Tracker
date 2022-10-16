@@ -1,100 +1,92 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import { functions } from "@/firebase";
+import { httpsCallable } from "@firebase/functions";
+
+let dialog = ref(false);
+let loading = ref(false);
+let error = ref(null as string | null);
+const rules = {
+  name: [(v: string) => !!v || "Item name is required"],
+  price: [
+    (v: number) => !!v || "Item price is required",
+    (v: number) => v > 0 || "Item price must be greater than 0",
+  ],
+};
+
+let input = ref({
+  name: "",
+  price: null as number | null,
+});
+
+const itemInput = ref(null);
+
+const addItem = async () => {
+  // @ts-expect-error
+  const inputValidation = await itemInput.value?.validate();
+  if (inputValidation.valid === false) return;
+  loading.value = true;
+  try {
+    const addItem = httpsCallable(functions, "addItem");
+    await addItem({ item: input.value });
+    input.value.name = "";
+    input.value.price = null;
+    dialog.value = false;
+  } catch (err) {
+    console.error(err);
+    error.value = err as string;
+  } finally {
+    loading.value = false;
+  }
+};
+</script>
+
 <template>
-  <v-btn color="green-lighten-2" @click="dialog = true"> Add Item </v-btn>
-  <v-dialog v-model="dialog" persistent>
-    <v-card width="300px" :loading="loading" :disabled="loading">
-      <v-alert v-if="error">
-        <v-alert-title>Error Occurred</v-alert-title>
+  <VBtn color="green-lighten-2" @click="dialog = true"> Add Item </VBtn>
+  <VDialog v-model="dialog" persistent width="300px">
+    <VCard :loading="loading" :disabled="loading">
+      <VAlert v-if="error">
+        <VAlertTitle>Error Occurred</VAlertTitle>
         {{ error }}
-      </v-alert>
-      <v-card-title>
+      </VAlert>
+      <VCardTitle>
         <span class="headline">Add Item</span>
-      </v-card-title>
-      <v-card-text>
-        <v-form ref="item" lazy-validation>
-          <v-text-field
+      </VCardTitle>
+      <VCardText>
+        <VForm ref="itemInput" lazy-validation>
+          <VTextField
             label="Item Name"
             variant="outlined"
-            v-model="item.name"
+            v-model="input.name"
             :rules="rules.name"
             @keyup.enter="addItem"
           />
-          <v-text-field
+          <VTextField
             label="Item Price"
             variant="outlined"
             type="number"
-            v-model="item.price"
+            v-model="input.price"
             prefix="$"
             :rules="rules.price"
             @keyup.enter="addItem"
           />
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="green-lighten-2" @click="addItem" :loading="loading">
+        </VForm>
+      </VCardText>
+      <VCardActions>
+        <VBtn color="green-lighten-2" @click="addItem" :loading="loading">
           Submit
-        </v-btn>
-        <v-btn
+        </VBtn>
+        <VBtn
           color="red"
           @click="
-            item.name = '';
-            item.price = null;
+            input.name = '';
+            input.price = null;
             dialog = false;
           "
         >
           Cancel
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import { functions } from "@/firebase";
-import { httpsCallable } from "@firebase/functions";
-
-export default defineComponent({
-  name: "AddItem",
-  data() {
-    return {
-      dialog: false,
-      item: {
-        name: "" as string,
-        price: null as number | null,
-      },
-      loading: false,
-      error: null as string | null,
-      rules: {
-        name: [(v: unknown) => !!v || "Name is required"],
-        price: [(v: unknown) => !!v || "Price is required"],
-      },
-    };
-  },
-  methods: {
-    async addItem() {
-      this.loading = true;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      const checkValid = await this.$refs.item.validate();
-      if (!checkValid.valid) {
-        this.loading = false;
-        return;
-      }
-      try {
-        const addItem = httpsCallable(functions, "addItem");
-        await addItem({ item: this.item });
-        this.dialog = false;
-        this.item = {
-          name: "",
-          price: 0,
-        };
-      } catch (error) {
-        console.log(error);
-        this.error = error as string;
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
-});
-</script>

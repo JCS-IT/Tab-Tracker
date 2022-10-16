@@ -1,43 +1,84 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <v-card
+  <VCard
     width="200px"
     :loading="loading.update || loading.delete"
     :disabled="loading.update"
   >
-    <v-alert v-if="error != null">
+    <VAlert v-if="error != null">
       {{ error }}
-    </v-alert>
-    <v-card-title>
-      {{ item.name }}
-    </v-card-title>
-    <v-card-text class="pb-0">
-      <v-form>
-        <v-text-field
+    </VAlert>
+    <VCardTitle>
+      {{ input.name }}
+    </VCardTitle>
+    <VCardText class="pb-0">
+      <VForm>
+        <VTextField
           label="Price"
           variant="outlined"
           type="number"
-          v-model="item.price"
+          v-model="input.price"
           prefix="$"
           :rules="rules.price"
           @keyup.enter="updateItem()"
         />
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn @click="updateItem()" color="green" :loading="loading.update">
+      </VForm>
+    </VCardText>
+    <VCardActions>
+      <VBtn @click="updateItem()" color="green" :loading="loading.update">
         Update
-      </v-btn>
-      <delete-item :item="item" />
-    </v-card-actions>
-  </v-card>
+      </VBtn>
+      <DeleteItem :item="input" />
+    </VCardActions>
+  </VCard>
 </template>
 
-<script lang="ts">
-import { defineComponent, defineAsyncComponent } from "vue";
+<script setup lang="ts">
+import { defineAsyncComponent, ref, defineProps } from "vue";
 import { functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
 import type { Item } from "@/types";
 
+const DeleteItem = defineAsyncComponent(
+  () => import("./prompt/items/DeleteItem.vue")
+);
+
+const props = defineProps<{
+  input: Item;
+  items: Item[];
+}>();
+
+let loading = ref({
+  update: false,
+  delete: false,
+  dialog: false,
+});
+
+let error = ref(null as string | null);
+
+const rules = {
+  price: [(v: number) => !!v || "Price is required"],
+};
+
+const updateItem = async () => {
+  loading.value.update = true;
+  try {
+    await httpsCallable(
+      functions,
+      "updateItem"
+    )({
+      items: props.items,
+    });
+  } catch (err) {
+    console.error(err);
+    error.value = err as string;
+  } finally {
+    loading.value.update = false;
+  }
+};
+</script>
+
+<!-- <script lang="ts">
 export default defineComponent({
   name: "ItemComponent",
   data() {
@@ -93,4 +134,4 @@ export default defineComponent({
     ),
   },
 });
-</script>
+</script> -->

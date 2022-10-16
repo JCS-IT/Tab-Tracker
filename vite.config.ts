@@ -18,6 +18,10 @@ export default defineConfig({
       "Referrer-Policy": "no-referrer",
     },
   },
+  define: {
+    __VUE_OPTIONS_API__: true,
+    __VUE_PROD_DEVTOOLS__: false,
+  },
   plugins: [
     vue(),
     vuetify({ autoImport: true }),

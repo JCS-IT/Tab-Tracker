@@ -1,81 +1,81 @@
+<script setup lang="ts">
+import { ref, defineProps } from "vue";
+import { auth, db } from "@/firebase";
+import { doc, updateDoc, arrayRemove } from "firebase/firestore";
+import type { TabItem } from "@/types";
+
+let dialog = ref(false);
+let loading = ref(false);
+let error = ref({
+  status: false,
+  message: "",
+});
+
+const props = defineProps<{
+  item: TabItem;
+}>();
+
+const deleteItem = async () => {
+  loading.value = true;
+  try {
+    await updateDoc(doc(db, `users/${auth.currentUser?.uid}`), {
+      tab: arrayRemove(props.item),
+    });
+  } catch (err) {
+    error.value = {
+      // @ts-ignore
+      status: err.code,
+      // @ts-ignore
+      message: err.message,
+    };
+    console.error(err);
+  } finally {
+    loading.value = false;
+    dialog.value = false;
+  }
+};
+</script>
+
 <template>
-  <v-btn
-    color="red"
-    :loading="dialog"
-    :disabled="dialog"
-    @click="dialog = true"
-  >
-    <v-icon>mdi-delete</v-icon>
-  </v-btn>
-  <v-dialog
+  <VBtn color="red" :loading="dialog" :disabled="dialog" @click="dialog = true">
+    <VIcon>mdi-delete</VIcon>
+  </VBtn>
+  <VDialog
     v-model="dialog"
     overlay
     transition="dialog-transition"
     max-width="400px"
   >
-    <v-card class="text-center">
-      <v-card-title>
+    <VCard class="text-center">
+      <VAlert
+        v-if="error.status"
+        type="error"
+        :value="error"
+        dismissible
+        @input="error.status = false"
+      >
+        {{ error.message }}
+      </VAlert>
+      <VCardTitle>
         <span class="headline">Delete Item</span>
-      </v-card-title>
-      <v-card-subtitle>
-        {{ item?.name }} at {{ item?.date.toDate().toLocaleString() }}
-      </v-card-subtitle>
-      <v-card-text>
+      </VCardTitle>
+      <VCardSubtitle>
+        {{ item?.name }} at {{ props.item?.date.toDate().toLocaleString() }}
+      </VCardSubtitle>
+      <VCardText>
         <span> Are you sure you want to delete this item? </span>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn
+      </VCardText>
+      <VCardActions>
+        <VBtn
           color="green"
           @click="deleteItem"
           :loading="loading"
           :disabled="loading"
         >
           Delete
-        </v-btn>
-        <v-btn color="red" @click="dialog = false"> Cancel </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </VBtn>
+        <VBtn color="red" @click="dialog = false"> Cancel </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import { auth, db } from "@/firebase";
-import { doc, updateDoc, arrayRemove } from "firebase/firestore";
-import { useDisplay } from "vuetify";
-
-export default defineComponent({
-  name: "DeleteItem",
-  props: {
-    item: Object,
-    tab: Object,
-  },
-  setup() {
-    const { mobile } = useDisplay();
-    return { mobile };
-  },
-  data() {
-    return {
-      dialog: false,
-      loading: false,
-      error: false,
-    };
-  },
-  methods: {
-    async deleteItem() {
-      this.loading = true;
-      try {
-        await updateDoc(doc(db, `users/${auth.currentUser?.uid}`), {
-          tab: arrayRemove(this.item),
-        });
-      } catch (error) {
-        this.error = true;
-        console.error(error);
-      } finally {
-        this.loading = false;
-        this.dialog = false;
-      }
-    },
-  },
-});
-</script>

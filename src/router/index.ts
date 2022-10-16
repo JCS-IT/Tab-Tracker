@@ -7,17 +7,17 @@ const router = createRouter({
     {
       path: "/",
       name: "Home",
-      component: () => import("../views/Home.vue"),
+      component: () => import("../views/RedirectScreen.vue"),
     },
     {
       path: "/login",
       name: "Login",
-      component: () => import("../views/Login.vue"),
+      component: () => import("../views/LoginScreen.vue"),
     },
     {
       path: "/user",
       name: "User",
-      component: () => import("../views/User.vue"),
+      component: () => import("../views/UserScreen.vue"),
       meta: {
         requiresAuth: true,
       },
@@ -25,7 +25,7 @@ const router = createRouter({
     {
       path: "/admin",
       name: "Admin",
-      component: () => import("../views/Admin.vue"),
+      component: () => import("../views/AdminScreen.vue"),
       meta: {
         requiresAuth: true,
         requiresAdmin: true,
@@ -37,7 +37,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin);
-  const user = await auth.currentUser;
+  const user = auth.currentUser;
   const admin = (await auth.currentUser?.getIdTokenResult())?.claims.admin;
 
   if (requiresAuth && !user) {

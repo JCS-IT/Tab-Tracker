@@ -1,5 +1,5 @@
 <template>
-  <v-dialog
+  <VDialog
     v-model="dialog"
     :max-width="user?.roles.admin ? '350px' : '500px'"
     :overlay="true"
@@ -7,7 +7,7 @@
     transition="dialog-transition"
   >
     <template v-slot:activator="{ props }">
-      <v-switch
+      <VSwitch
         color="primary"
         label="Administrator"
         v-bind="props"
@@ -18,49 +18,51 @@
         :messages="message().message"
       />
     </template>
-    <v-card
+    <VCard
       :loading="loading.dialog"
       :max-height="user?.roles.admin ? '120px' : '340px'"
     >
-      <v-card-title>Are you sure?</v-card-title>
-      <v-card-subtitle>
-        This will {{ user.roles.admin ? "remove" : "add" }} the user as an
+      <VCardTitle>Are you sure?</VCardTitle>
+      <VCardSubtitle>
+        This will {{ user?.roles.admin ? "remove" : "add" }} the user as an
         administrator.
-      </v-card-subtitle>
-      <v-card-text v-if="!user.roles.admin">
+      </VCardSubtitle>
+      <VCardText v-if="!user?.roles.admin">
         When a user is an administrator they can:
-        <v-list>
-          <v-list-item v-for="(item, index) in list" :key="item">
-            <v-list-item-title>{{ index + 1 + ". " + item }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn
+        <VList>
+          <VListItem v-for="(item, index) in list" :key="item">
+            <VListItemTitle>{{ index + 1 + ". " + item }}</VListItemTitle>
+          </VListItem>
+        </VList>
+      </VCardText>
+      <VCardActions>
+        <VBtn
           color="primary"
           text
-          @click="toggleAdmin(user.info.email)"
+          @click="toggleAdmin(user?.info.email)"
           :loading="loading.dialog"
         >
           OK
-        </v-btn>
-        <v-btn color="red" text @click="cancel()"> Cancel </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </VBtn>
+        <VBtn color="red" text @click="cancel()"> Cancel </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from "vue";
 import { auth, functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
 import type { User } from "@/types";
+</script>
 
+<script lang="ts">
 export default defineComponent({
   name: "TogglePerms",
   props: {
     user: {
-      type: Object as () => User,
+      type: Object as () => User | null,
       required: true,
     },
   },
@@ -83,13 +85,13 @@ export default defineComponent({
     };
   },
   methods: {
-    async toggleAdmin(email: string) {
+    async toggleAdmin(email: string | null | undefined) {
       this.loading.dialog = true;
       try {
         const toggleRole = httpsCallable(functions, "toggleAdmin");
         await toggleRole({
           email: email,
-          admin: !this.user.roles.admin,
+          admin: !this.user?.roles.admin,
         });
       } catch (err) {
         this.$emit("error", err);
@@ -102,19 +104,19 @@ export default defineComponent({
       this.loading.switch = false;
     },
     message() {
-      if (this.user.info.email == auth.currentUser?.email) {
+      if (this.user?.info.email == auth.currentUser?.email) {
         return {
           disabled: true,
           message: "You cannot change your own permissions",
         };
       }
-      if (this.user.roles.admin) {
+      if (this.user?.roles.admin) {
         return {
           disabled: false,
           message: "Click to remove admin permissions",
         };
       }
-      if (this.user.roles.dev) {
+      if (this.user?.roles.dev) {
         return {
           disabled: true,
           message: "This user is a developer",

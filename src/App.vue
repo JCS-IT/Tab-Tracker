@@ -1,43 +1,27 @@
-<template>
-  <v-app>
-    <v-app-bar color="blue-lighten-2">
-      <v-app-bar-nav-icon
-        @click="$router.push({ name: 'Home' })"
-        icon="mdi-home"
-      />
-      <v-toolbar-title> JCS Tab Tracker </v-toolbar-title>
-      <user-menu v-if="loggedIn" />
-    </v-app-bar>
-    <v-main>
-      <router-view />
-    </v-main>
-  </v-app>
-</template>
+<script setup lang="ts">
+import { defineAsyncComponent } from "vue";
+import { auth } from "@/firebase";
 
-<script lang="ts">
-import { defineComponent, defineAsyncComponent } from "vue";
-import { auth } from "./firebase";
-
-export default defineComponent({
-  name: "App",
-  components: {
-    UserMenu: defineAsyncComponent(
-      () => import("@/components/public/UserMenu.vue")
-    ),
-  },
-  data() {
-    return {
-      loggedIn: false,
-    };
-  },
-  mounted() {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.loggedIn = true;
-      } else {
-        this.loggedIn = false;
-      }
-    });
-  },
-});
+const UserMenu = defineAsyncComponent(
+  () => import("@/components/public/UserMenu.vue")
+);
 </script>
+
+<template>
+  <VApp>
+    <VAppBar color="blue-lighten-2">
+      <VAppBarNavIcon @click="$router.push({ name: 'Home' })" icon="mdi-home" />
+      <VToolbarTitle>JCS Tabs</VToolbarTitle>
+      <UserMenu
+        v-if="
+          auth.onAuthStateChanged((user) => {
+            return user ? true : false;
+          })
+        "
+      />
+    </VAppBar>
+    <VMain>
+      <RouterView />
+    </VMain>
+  </VApp>
+</template>

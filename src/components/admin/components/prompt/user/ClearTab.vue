@@ -1,44 +1,69 @@
 <template>
-  <v-dialog v-model="dialog" max-width="300px">
+  <VDialog v-model="dialog" max-width="300px">
     <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" color="red" :loading="dialog"> Clear Tab </v-btn>
+      <VBtn v-bind="props" color="red" :loading="dialog"> Clear Tab </VBtn>
     </template>
-    <v-card :disabled="loading" :loading="loading">
-      <v-card-title>Are you sure?</v-card-title>
-      <v-card-subtitle>this action cannot be undone.</v-card-subtitle>
-      <v-card-text>
+    <VCard :disabled="loading" :loading="loading">
+      <VCardTitle>Are you sure?</VCardTitle>
+      <VCardSubtitle>this action cannot be undone.</VCardSubtitle>
+      <VCardText>
         Are you sure you want to clear the tab for <strong>{{ name }}</strong
         >?
-      </v-card-text>
-      <v-card-actions>
-        <v-btn
+      </VCardText>
+      <VCardActions>
+        <VBtn
           color="error"
           @click="clearTab()"
           :disabled="loading"
           :loading="loading"
         >
           Confirm
-        </v-btn>
-        <v-btn color="primary" @click="dialog = false">Cancel</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </VBtn>
+        <VBtn color="primary" @click="dialog = false">Cancel</VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref, defineProps } from "vue";
 import { functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
 
+const props = defineProps<{
+  name: string | undefined;
+  email: string | undefined;
+}>();
+
+let dialog = ref(false);
+let loading = ref(false);
+let error = ref(null as Error | null);
+
+const clearTab = async () => {
+  loading.value = true;
+  try {
+    const clearTab = httpsCallable(functions, "clearTab");
+    await clearTab({ email: props.email });
+    dialog.value = false;
+  } catch (err) {
+    error.value = err as Error;
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+};
+</script>
+
+<!-- <script lang="ts">
 export default defineComponent({
   name: "ClearTab",
   props: {
     email: {
-      type: String,
+      type: String as () => string | null | undefined,
       required: true,
     },
     name: {
-      type: String,
+      type: String as () => string | null | undefined,
       required: true,
     },
   },
@@ -64,4 +89,4 @@ export default defineComponent({
     },
   },
 });
-</script>
+</script> -->
