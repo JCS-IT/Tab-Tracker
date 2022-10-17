@@ -4,9 +4,9 @@ import { auth, db } from "@/firebase";
 import { doc, updateDoc, arrayRemove } from "firebase/firestore";
 import type { TabItem } from "@/types";
 
-let dialog = ref(false);
-let loading = ref(false);
-let error = ref({
+const dialog = ref(false);
+const loading = ref(false);
+const error = ref({
   status: false,
   message: "",
 });

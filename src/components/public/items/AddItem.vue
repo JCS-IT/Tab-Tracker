@@ -10,9 +10,9 @@ const props = defineProps<{
   items: Item[];
 }>();
 
-let dialog = ref(false);
-let loading = ref({} as Record<string, boolean>);
-let error = ref({
+const dialog = ref(false);
+const loading = ref({} as Record<string, boolean>);
+const error = ref({
   code: null,
   message: null,
 });

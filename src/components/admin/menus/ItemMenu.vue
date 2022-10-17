@@ -11,7 +11,7 @@ const ItemComponent = defineAsyncComponent(
   () => import("../components/ItemComponent.vue")
 );
 
-let items = ref<Item[]>([]);
+const items = ref<Item[]>([]);
 
 const itemSnap = onSnapshot(doc(db, "admin/items"), (doc) => {
   if (doc.exists()) {

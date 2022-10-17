@@ -38,10 +38,10 @@ const UserComponent = defineAsyncComponent(
   () => import("@/components/admin/components/UserComponent.vue")
 );
 
-let users = ref<User[]>([]);
-let panels = ref<string[]>([]);
-let items = ref<Item[]>([]);
-let letters = [
+const users = ref<User[]>([]);
+const panels = ref<string[]>([]);
+const items = ref<Item[]>([]);
+const letters = [
   "a",
   "b",
   "c",

@@ -35,9 +35,9 @@ const props = defineProps<{
   email: string | undefined;
 }>();
 
-let dialog = ref(false);
-let loading = ref(false);
-let error = ref(null as Error | null);
+const dialog = ref(false);
+const loading = ref(false);
+const error = ref(null as Error | null);
 
 const clearTab = async () => {
   loading.value = true;

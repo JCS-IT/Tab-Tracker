@@ -4,12 +4,12 @@ import { functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
 import type { Item } from "@/types";
 
-let loading = ref({
+const loading = ref({
   pending: false,
   confirm: false,
 });
-let dialog = ref(false);
-let error = ref(null as string | null);
+const dialog = ref(false);
+const error = ref(null as string | null);
 
 const props = defineProps<{
   item: Item;

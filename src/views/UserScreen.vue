@@ -4,6 +4,7 @@ import { auth, db } from "@/firebase";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
 import type { User, Item } from "@/types";
 import { onBeforeRouteLeave } from "vue-router";
+// import { total } from "@/utils/calculations";
 
 // components
 const AddItem = defineAsyncComponent(

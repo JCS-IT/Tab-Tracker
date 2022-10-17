@@ -48,13 +48,13 @@ const props = defineProps<{
   items: Item[];
 }>();
 
-let loading = ref({
+const loading = ref({
   update: false,
   delete: false,
   dialog: false,
 });
 
-let error = ref(null as string | null);
+const error = ref(null as string | null);
 
 const rules = {
   price: [(v: number) => !!v || "Price is required"],

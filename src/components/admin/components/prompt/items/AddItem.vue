@@ -3,9 +3,9 @@ import { ref } from "vue";
 import { functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
 
-let dialog = ref(false);
-let loading = ref(false);
-let error = ref(null as string | null);
+const dialog = ref(false);
+const loading = ref(false);
+const error = ref(null as string | null);
 const rules = {
   name: [(v: string) => !!v || "Item name is required"],
   price: [
@@ -14,7 +14,7 @@ const rules = {
   ],
 };
 
-let input = ref({
+const input = ref({
   name: "",
   price: null as number | null,
 });
