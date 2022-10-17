@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, defineProps } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 import { functions } from "@/firebase";
 import { httpsCallable } from "@firebase/functions";
 import type { Item } from "@/types";

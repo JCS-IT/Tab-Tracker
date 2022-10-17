@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, ref, computed, defineProps } from "vue";
+import { defineAsyncComponent, ref, computed } from "vue";
 import type { User, Item } from "@/types";
 
 const ToggleAdmin = defineAsyncComponent(

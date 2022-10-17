@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps } from "vue";
+import { ref } from "vue";
 import { auth, db } from "@/firebase";
 import { doc, updateDoc, arrayRemove } from "firebase/firestore";
 import type { TabItem } from "@/types";
