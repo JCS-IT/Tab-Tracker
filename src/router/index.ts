@@ -18,35 +18,29 @@ const router = createRouter({
       path: "/user",
       name: "User",
       component: () => import("../views/UserScreen.vue"),
-      meta: {
-        requiresAuth: true,
-      },
     },
     {
       path: "/admin",
       name: "Admin",
       component: () => import("../views/AdminScreen.vue"),
-      meta: {
-        requiresAuth: true,
-        requiresAdmin: true,
-      },
     },
   ],
 });
 
-router.beforeEach(async (to, from, next) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin);
-  const user = auth.currentUser;
-  const admin = (await auth.currentUser?.getIdTokenResult())?.claims.admin;
+router.beforeResolve(async (to) => {
+  const admin = await auth.currentUser
+    ?.getIdTokenResult()
+    .then((idTokenResult) => {
+      return idTokenResult.claims.admin;
+    });
 
-  if (requiresAuth && !user) {
-    next("/login");
+  if (to.name !== "Login" && !auth.currentUser) {
+    return { name: "Login" };
   }
-  if (requiresAdmin && !admin) {
-    next("/user");
+
+  if (to.name === "Admin" && !admin) {
+    return { name: "User" };
   }
-  next();
 });
 
 export default router;
