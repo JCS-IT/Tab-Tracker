@@ -7,7 +7,7 @@
     </VRow>
     <VRow>
       <VCol>
-        <AddItem />
+        <AddItem :items="items" />
       </VCol>
     </VRow>
     <VRow>
