@@ -22,6 +22,18 @@ export default defineConfig({
     __VUE_OPTIONS_API__: true,
     __VUE_PROD_DEVTOOLS__: false,
   },
+  build: {
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+      format: {
+        comments: false,
+      },
+    },
+  },
   plugins: [
     vue(),
     vuetify({ autoImport: true }),
