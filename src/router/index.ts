@@ -19,10 +19,27 @@ const router = createRouter({
       name: "User",
       component: () => import("../pages/UserPage.vue"),
     },
+    {
+      path: "/admin",
+      name: "Admin",
+      component: () => import("../pages/AdminPage.vue"),
+      children: [
+        {
+          path: "users",
+          name: "AdminUsers",
+          component: () => import("../pages/views/AdminUsersView.vue"),
+        },
+        {
+          path: "items",
+          name: "AdminItems",
+          component: () => import("../pages/views/AdminItemsView.vue"),
+        },
+      ],
+    },
   ],
 });
 
-router.beforeResolve((to, from) => {
+router.beforeEach((to, from) => {
   if (to.name != "Login" && !auth.currentUser) {
     return { name: "Login" };
   }
