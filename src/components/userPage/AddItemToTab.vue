@@ -33,12 +33,27 @@
         <span>Add Item</span>
       </VCardTitle>
       <VCardText>
-        <VBtn v-for="item in items" :key="item.name" @click="addItem(item)">
-          {{ item.name }}
+        <VBtn
+          color="green-accent-1"
+          v-for="(item, index) in items"
+          :key="index"
+          :loading="loading[item.name]"
+          :disabled="loading[item.name]"
+          @click="addItem(item)"
+          class="ma-1"
+          width="100%"
+        >
+          {{ item.name }}:
+          {{
+            new Intl.NumberFormat("en-CA", {
+              style: "currency",
+              currency: "CAD",
+            }).format(item.price)
+          }}
         </VBtn>
       </VCardText>
       <VCardActions>
-        <VBtn color="red" @click="cancel()"> Cancel </VBtn>
+        <VBtn color="red" @click="close()"> Cancel </VBtn>
       </VCardActions>
     </VCard>
   </VDialog>
@@ -77,13 +92,14 @@ const addItem = async (item: Item) => {
         date: Timestamp.now(),
       }),
     });
+    close();
   } catch (err) {
     const { code, message } = err as { code: string; message: string };
     error.value = { code, message };
   }
 };
 
-const cancel = () => {
+const close = () => {
   dialog.value = false;
   loading.value = {};
   error.value = {
