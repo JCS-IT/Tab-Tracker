@@ -17,5 +17,9 @@ service cloud.firestore {
     match /admin/items {
       allow read: if request.auth != null;
     }
+    match /feedback/{feedbackId} {
+      allow read: if checkEmail();
+      allow create: if checkEmail();
+    }
   }
 }

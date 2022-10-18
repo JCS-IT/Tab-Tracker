@@ -135,7 +135,6 @@ const MathTime = () => {
                 <thead>
                   <tr>
                     <th>Item</th>
-                    <th>Quantity</th>
                     <th>Price</th>
                   </tr>
                 </thead>
@@ -143,7 +142,6 @@ const MathTime = () => {
                   <template v-for="(item, index) in visibleItems" :key="index">
                     <tr v-if="count()[item.name] > 0">
                       <td>{{ item.name }}</td>
-                      <td>{{ count()[item.name] }}</td>
                       <td>
                         {{
                           new Intl.NumberFormat("en-CA", {

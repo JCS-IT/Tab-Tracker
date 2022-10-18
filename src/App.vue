@@ -5,6 +5,10 @@ import { auth } from "@/firebase";
 const UserMenu = defineAsyncComponent(
   () => import("@/components/public/UserMenu.vue")
 );
+
+const FeedBack = defineAsyncComponent(
+  () => import("@/components/public/FeedBack.vue")
+);
 </script>
 
 <template>
@@ -23,5 +27,8 @@ const UserMenu = defineAsyncComponent(
     <VMain>
       <RouterView />
     </VMain>
+    <VFooter absolute app inset color="blue-lighten-2">
+      <FeedBack />
+    </VFooter>
   </VApp>
 </template>
