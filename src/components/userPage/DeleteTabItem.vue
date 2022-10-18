@@ -70,7 +70,7 @@ const deleteItem = async () => {
     }
     const userDoc = doc(db, "users", user.uid);
     await updateDoc(userDoc, {
-      items: arrayRemove(props.item),
+      tab: arrayRemove(props.item),
     });
     dialog.value = false;
   } catch (err) {

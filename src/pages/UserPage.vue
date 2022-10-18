@@ -67,7 +67,7 @@
                         }}
                       </td>
                       <td>{{ item.date.toDate().toLocaleDateString() }}</td>
-                      <DeleteItem :item="item" />
+                      <DeleteItem :item="item" v-if="canDelete(item.date)" />
                     </tr>
                   </template>
                 </tbody>
