@@ -47,12 +47,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { auth, db } from "utils/firebase";
-import { doc, arrayUnion } from "firebase/firestore";
+import { doc, arrayUnion, updateDoc, Timestamp } from "firebase/firestore";
 import type { Item } from "types";
 import { useDisplay } from "vuetify";
 
 const dialog = ref(false);
-const loading = ref({});
+const loading = ref({} as Record<string, boolean>);
 const error = ref({
   code: null as string | null,
   message: null as string | null,
@@ -66,6 +66,22 @@ const props = defineProps<{
 props.items.forEach((item) => {
   loading.value[item.name] = false;
 });
+
+const addItem = async (item: Item) => {
+  loading.value[item.name] = true;
+  if (!auth.currentUser) return;
+  try {
+    await updateDoc(doc(db, "users", auth.currentUser?.uid), {
+      tab: arrayUnion({
+        ...item,
+        date: Timestamp.now(),
+      }),
+    });
+  } catch (err) {
+    const { code, message } = err as { code: string; message: string };
+    error.value = { code, message };
+  }
+};
 
 const cancel = () => {
   dialog.value = false;
