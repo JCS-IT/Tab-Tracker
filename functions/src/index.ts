@@ -1,12 +1,9 @@
-import { initializeApp } from "firebase-admin/app";
+import * as functions from "firebase-functions";
 
-initializeApp();
-
-// User functions
-export { clearTab, toggleRole } from "./user/user";
-
-// Item functions
-export { addItem, deleteItem, updateItem } from "./items";
-
-// Auth functions
-export { beforeCreate, onCreate, onDelete } from "./user/auth";
+// // Start writing Firebase Functions
+// // https://firebase.google.com/docs/functions/typescript
+//
+// export const helloWorld = functions.https.onRequest((request, response) => {
+//   functions.logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });

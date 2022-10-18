@@ -10,8 +10,14 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
-    },
+      ],
+      "utils/*": [
+        "./src/utils/*"
+      ],
+      "types": [
+        "./src/types"
+      ],
+    }
   },
   "references": [
     {
