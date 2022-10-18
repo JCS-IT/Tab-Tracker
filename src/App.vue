@@ -22,9 +22,8 @@
 import { defineAsyncComponent } from "vue";
 import { auth } from "utils/firebase";
 import { useRouter } from "vue-router";
-import FeedBack from "./components/FeedBack.vue";
 
-const Feedback = defineAsyncComponent(
+const FeedBack = defineAsyncComponent(
   () => import("@/components/FeedBack.vue")
 );
 

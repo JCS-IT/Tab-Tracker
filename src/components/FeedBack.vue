@@ -56,14 +56,14 @@ const submit = async () => {
   console.log(valid);
   if (!valid) return;
   loading.value = true;
-  // if (auth.currentUser) {
-  //   await addDoc(collection(db, "feedback"), {
-  //     date: Timestamp.now(),
-  //     email: auth.currentUser?.email,
-  //     name: auth.currentUser?.displayName,
-  //     text: input.value.text,
-  //   });
-  // }
+  if (auth.currentUser) {
+    await addDoc(collection(db, "feedback"), {
+      date: Timestamp.now(),
+      email: auth.currentUser?.email,
+      name: auth.currentUser?.displayName,
+      text: input.value.text,
+    });
+  }
 };
 
 const cancel = () => {
