@@ -6,12 +6,10 @@
     <VMain>
       <RouterView />
     </VMain>
-    <VFooter absolute app color="blue-lighten-2">
+    <VFooter app color="blue-lighten-2" height="64px">
       <VContainer>
-        <VRow>
-          <VCol cols="12" class="text-center">
-            <FeedBack />
-          </VCol>
+        <VRow justify="center" no-gutters>
+          <FeedBack />
         </VRow>
       </VContainer>
     </VFooter>
