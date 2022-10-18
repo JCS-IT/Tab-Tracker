@@ -6,6 +6,11 @@
       </VCol>
     </VRow>
     <VRow>
+      <VCol>
+        <AddItem />
+      </VCol>
+    </VRow>
+    <VRow>
       <VCol cols="12">
         <VExpansionPanels>
           <VExpansionPanel>
@@ -88,11 +93,11 @@ import type { User, Item } from "types";
 import { onBeforeRouteLeave } from "vue-router";
 
 // components
-// const AddItem = defineAsyncComponent(
-//   () => import("@/components/public/items/AddItem.vue")
-// );
+const AddItem = defineAsyncComponent(
+  () => import("@/components/userPage/AddItemToTab.vue")
+);
 const DeleteItem = defineAsyncComponent(
-  () => import("@/components/userPage/DeleteTabItem.vue")
+  () => import("@/components/userPage/DeleteItemFromTab.vue")
 );
 
 // props
