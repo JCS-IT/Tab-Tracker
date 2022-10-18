@@ -37,7 +37,6 @@ const signIn = () => {
       </VCardTitle>
       <VDivider />
       <VCardText>
-        {{ error }}
         <VAlert type="error" v-if="alert" variant="outlined" prominent>
           <VAlertTitle>
             {{ error.status.replace("_", " ") }}
