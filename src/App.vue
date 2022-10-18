@@ -1,6 +1,10 @@
 <template>
   <VApp>
+    <VToolbar color="blue-lighten-2">
+      <VToolbarTitle> JCS Tabs </VToolbarTitle>
+    </VToolbar>
     <VMain>
+      <notifications class="ma-4" />
       <RouterView />
     </VMain>
   </VApp>
