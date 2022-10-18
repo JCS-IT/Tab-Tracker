@@ -86,11 +86,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from "vue";
+import { computed, defineAsyncComponent, onBeforeUnmount, ref } from "vue";
 import { auth, db } from "utils/firebase";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
 import type { User, Item } from "types";
-import { onBeforeRouteLeave } from "vue-router";
 
 // components
 const AddItem = defineAsyncComponent(
@@ -114,7 +113,8 @@ const userSub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
   user.value = doc.data() as User;
   user.value.tab.reverse();
 });
-onBeforeRouteLeave(() => {
+
+onBeforeUnmount(() => {
   itemSub();
   userSub();
 });

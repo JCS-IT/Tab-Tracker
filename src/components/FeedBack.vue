@@ -1,34 +1,40 @@
 <template>
   <VDialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ props }">
-      <VBtn color="green-lighten-2" dark v-bind="props">Feedback</VBtn>
+      <VBtn v-bind="props" color="green-lighten-2" @click="dialog = true">
+        Feedback
+      </VBtn>
     </template>
-    <VCard :loading="loading" :disabled="loading">
+    <VCard :loading="loading">
       <VAlert
-        v-if="error"
+        v-if="error.code"
         type="error"
         dismissible
         transition="scale-transition"
         elevation="2"
         color="red"
       >
-        {{ error }}
+        <VAlertTitle>
+          {{ error.code }}
+        </VAlertTitle>
+        {{ error.message }}
       </VAlert>
-      <VCardTitle class="headline">Feedback</VCardTitle>
+      <VCardTitle class="headline">Feedback Submission</VCardTitle>
       <VCardText>
-        <VForm ref="input" lazy-validation>
+        <VForm ref="inputForm">
           <VTextarea
             v-model="input.text"
-            :rules="rules"
             label="Feedback"
-            placeholder="Enter your feedback here"
-            required
+            placeholder="Enter your feedback here..."
+            outlined
+            rows="5"
+            :rules="rules.text"
           />
         </VForm>
       </VCardText>
       <VCardActions>
-        <VBtn color="green-lighten-2" text @click="submit()">Submit</VBtn>
-        <VBtn color="red-lighten-2" text @click="cancel()">Cancel</VBtn>
+        <VBtn color="green-lighten-2" text @click="submit">Submit</VBtn>
+        <VBtn color="error" text @click="dialog = false">Cancel</VBtn>
       </VCardActions>
     </VCard>
   </VDialog>
@@ -37,39 +43,61 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { auth, db } from "utils/firebase";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { addDoc, Timestamp, collection } from "firebase/firestore";
 
 const dialog = ref(false);
+
 const input = ref({
   text: "",
 });
-const loading = ref(false);
-const error = ref("Hello World");
-const rules = [
-  (v: string) => !!v || "Field cannot be empty",
-  (v: string) => v.length >= 10 || "Min 10 characters",
-];
 
+const inputForm = ref(null);
+
+const loading = ref(false);
+
+const error = ref({
+  code: null,
+  message: null,
+} as { code: string | null; message: string | null });
+
+const rules = {
+  text: [(v: string) => !!v || "Field cannot be empty"],
+};
 const submit = async () => {
-  // @ts-ignore
-  const { valid } = await input.value.validate();
-  console.log(valid);
+  // @ts-expect-error
+  const { valid } = await inputForm.value.validate();
+
   if (!valid) return;
+
   loading.value = true;
-  if (auth.currentUser) {
+
+  try {
     await addDoc(collection(db, "feedback"), {
-      date: Timestamp.now(),
-      email: auth.currentUser?.email,
       name: auth.currentUser?.displayName,
+      email: auth.currentUser?.email,
+      date: Timestamp.now(),
       text: input.value.text,
     });
+
+    close();
+  } catch (err) {
+    const { code, message } = err as { code: string; message: string };
+    error.value = { code, message };
+
+    console.log(error);
+  } finally {
+    loading.value = false;
   }
 };
 
-const cancel = () => {
-  dialog.value = false;
+const close = () => {
   input.value.text = "";
-  loading.value = false;
-  error.value = "";
+
+  error.value = {
+    code: null,
+    message: null,
+  };
+
+  dialog.value = false;
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <VDialog v-model="dialog" max-width="400px" align="center">
-    <template v-slot:activator="{ props }">
+    <template #:activator="{ props }">
       <VBtn v-bind="props" color="red" depressed @click="dialog = true">
         <VIcon>mdi-delete</VIcon>
       </VBtn>

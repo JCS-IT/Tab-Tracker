@@ -6,11 +6,24 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    router.push("/user");
+  }
+});
+
 const alert = ref(false);
 const error = ref({
   message: "",
   status: "",
 });
+
+const ignoreErrorCode = [
+  "auth/account-exists-with-different-credential",
+  "auth/credential-already-in-use",
+  "auth/cancelled-popup-request",
+  "auth/popup-closed-by-user",
+];
 
 const provider = new GoogleAuthProvider();
 const signIn = () => {
@@ -18,13 +31,20 @@ const signIn = () => {
     .then((result) => {
       const user = result.user;
       console.log(user);
-      router.push("/");
+      router.push("/user");
     })
     .catch((err) => {
-      alert.value = true;
-      const { error } = JSON.parse(err.message.match(/{.*}/g));
-      console.log(error);
-      error.value = error;
+      if (!ignoreErrorCode.includes(err.code)) {
+        try {
+          const { error } = JSON.parse(err.message.match(/{.*}/g));
+          error.value = error;
+        } catch {
+          error.value = {
+            message: err.message,
+            status: err.code,
+          };
+        }
+      }
     });
 };
 </script>
