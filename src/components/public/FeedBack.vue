@@ -18,13 +18,14 @@
       </VAlert>
       <VCardTitle class="headline">Feedback Submission</VCardTitle>
       <VCardText>
-        <VForm>
+        <VForm ref="input">
           <VTextarea
-            v-model="text"
+            v-model="input.text"
             label="Feedback"
             placeholder="Enter your feedback here..."
             outlined
             rows="5"
+            :rules="rules.text"
           />
         </VForm>
       </VCardText>
@@ -42,20 +43,28 @@ import { auth, db } from "@/firebase";
 import { addDoc, Timestamp, collection } from "firebase/firestore";
 
 const dialog = ref(false);
-const text = ref("");
+const input = ref({
+  text: "",
+});
 const loading = ref(false);
 const error = ref("");
+const rules = {
+  text: [(v: string) => !!v || "Field cannot be empty"],
+};
 
 const submit = async () => {
+  // @ts-expect-error
+  const inputValidation = await input.value?.validate();
+  if (inputValidation.valid === false) return;
   loading.value = true;
   try {
     await addDoc(collection(db, "feedback"), {
       name: auth.currentUser?.displayName,
       email: auth.currentUser?.email,
       date: Timestamp.now(),
-      text: text.value,
+      text: input.value.text,
     });
-    text.value = "";
+    input.value.text = "";
     error.value = "";
     dialog.value = false;
   } catch (err) {
