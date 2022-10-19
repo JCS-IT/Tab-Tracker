@@ -1,15 +1,21 @@
 <template>
-  <VContainer fluid align="center">
-    <VRow>
+  <VContainer fluid>
+    <VRow class="text-center">
       <VCol>
         <AddItem />
       </VCol>
     </VRow>
-    <VRow>
-      <VCol v-for="(item, index) in items" :key="index">
-        <VLazy>
-          <ItemComponent :items="items" :input="item" />
-        </VLazy>
+    <VRow class="text-center">
+      <VCol>
+        <VPagination
+          v-model="page"
+          :length="Math.ceil(items.length / perPage)"
+        />
+      </VCol>
+    </VRow>
+    <VRow align="center">
+      <VCol v-for="(item, index) in visibleItems()" :key="index">
+        <ItemComponent :items="items" :input="item" />
       </VCol>
     </VRow>
   </VContainer>
@@ -31,6 +37,13 @@ const ItemComponent = defineAsyncComponent(
 
 // data
 const items = ref([] as Item[]);
+const page = ref(1);
+const perPage = 100;
+
+const visibleItems = () => {
+  return items.value.slice((page.value - 1) * perPage, page.value * perPage);
+};
+
 const itemSnap = onSnapshot(doc(db, "admin/items"), (doc) => {
   if (doc.exists()) {
     items.value = doc.data().food as Item[];
