@@ -23,7 +23,7 @@
       <VCardText>
         <VForm ref="inputForm">
           <VTextarea
-            v-model="input.text"
+            v-model="input"
             label="Feedback"
             placeholder="Enter your feedback here..."
             outlined
@@ -47,9 +47,7 @@ import { addDoc, Timestamp, collection } from "firebase/firestore";
 
 const dialog = ref(false);
 
-const input = ref({
-  text: "",
-});
+const input = ref("");
 
 const inputForm = ref(null);
 
@@ -76,7 +74,7 @@ const submit = async () => {
       name: auth.currentUser?.displayName,
       email: auth.currentUser?.email,
       date: Timestamp.now(),
-      text: input.value.text,
+      text: input.value,
     });
 
     close();
