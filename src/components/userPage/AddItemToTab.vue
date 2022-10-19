@@ -5,7 +5,7 @@
     :max-Width="mobile ? width : '500px'"
     min-width="300px"
   >
-    <template #:activator="{ props }">
+    <template #activator="{ props }">
       <VBtn
         color="green-lighten-2"
         v-bind="props"
