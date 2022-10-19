@@ -56,6 +56,7 @@
                   <tr>
                     <td>Item</td>
                     <td>Price</td>
+                    <td>Date</td>
                     <td>Time</td>
                   </tr>
                 </thead>
@@ -71,7 +72,12 @@
                           }).format(item.price)
                         }}
                       </td>
-                      <td>{{ item.date.toDate().toLocaleDateString() }}</td>
+                      <td>
+                        {{ item.date.toDate().toLocaleDateString() }}
+                      </td>
+                      <td>
+                        {{ item.date.toDate().toLocaleTimeString() }}
+                      </td>
                       <DeleteItem :item="item" v-if="canDelete(item.date)" />
                     </tr>
                   </template>
