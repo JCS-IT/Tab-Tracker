@@ -1,8 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { auth } from "utils/firebase";
-import AdminItemsView from "@/pages/views/AdminItemsView.vue";
-import AdminItemsViewVue from "@/pages/views/AdminItemsView.vue";
-import AdminStaffViewVue from "@/pages/views/AdminStaffView.vue";
 
 const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -29,11 +26,11 @@ const router = createRouter({
       children: [
         {
           path: "staff",
-          component: AdminStaffViewVue,
+          component: () => import("@/pages/admin/StaffPage.vue"),
         },
         {
           path: "items",
-          component: AdminItemsViewVue,
+          component: () => import("@/pages/admin/ItemsPage.vue"),
         },
       ],
     },
