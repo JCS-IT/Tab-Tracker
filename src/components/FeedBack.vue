@@ -89,7 +89,7 @@ const submit = async () => {
 };
 
 const close = () => {
-  input.value.text = "";
+  input.value = "";
 
   error.value = {
     code: null,

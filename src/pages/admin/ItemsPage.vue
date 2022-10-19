@@ -1,5 +1,5 @@
 <template>
-  <VContainer fluid>
+  <VContainer fluid v-if="items.length > 0 && visibleItems().length > 0">
     <VRow class="text-center">
       <VCol>
         <AddItem />
@@ -16,6 +16,13 @@
     <VRow align="center">
       <VCol v-for="(item, index) in visibleItems()" :key="index">
         <ItemComponent :items="items" :input="item" />
+      </VCol>
+    </VRow>
+  </VContainer>
+  <VContainer v-else fluid align="center">
+    <VRow>
+      <VCol cols="12">
+        <VProgressLinear indeterminate />
       </VCol>
     </VRow>
   </VContainer>

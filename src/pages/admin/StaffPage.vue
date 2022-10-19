@@ -74,7 +74,7 @@ const filterUsers = (letter: string) => {
 </script>
 
 <template>
-  <VContainer fluid>
+  <VContainer fluid v-if="users !== null && items !== null">
     <VRow>
       <VExpansionPanels v-model="panels" multiple>
         <template v-for="letter in letters" :key="letter">
@@ -103,6 +103,13 @@ const filterUsers = (letter: string) => {
           </VExpansionPanel>
         </template>
       </VExpansionPanels>
+    </VRow>
+  </VContainer>
+  <VContainer v-else fluid align="center">
+    <VRow>
+      <VCol cols="12">
+        <VProgressLinear indeterminate />
+      </VCol>
     </VRow>
   </VContainer>
 </template>

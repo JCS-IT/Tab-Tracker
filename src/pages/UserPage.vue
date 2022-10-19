@@ -1,5 +1,5 @@
 <template>
-  <VContainer align="center">
+  <VContainer align="center" v-if="user !== null && items !== null">
     <VRow>
       <VCol>
         <h1>{{ user?.info.displayName }}'s Tab</h1>
@@ -86,6 +86,13 @@
             </VExpansionPanelText>
           </VExpansionPanel>
         </VExpansionPanels>
+      </VCol>
+    </VRow>
+  </VContainer>
+  <VContainer v-else fluid align="center">
+    <VRow>
+      <VCol cols="12">
+        <VProgressLinear indeterminate />
       </VCol>
     </VRow>
   </VContainer>

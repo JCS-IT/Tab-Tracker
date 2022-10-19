@@ -29,7 +29,7 @@ const UserProfile = defineAsyncComponent(
 <template>
   <VApp>
     <VAppBar color="blue-lighten-2">
-      <VAppBarNavIcon @click="$router.push({ name: 'Home' })" icon="mdi-home" />
+      <VAppBarNavIcon @click="$router.push('/')" icon="mdi-home" />
       <VAppBarTitle> JCS Tabs </VAppBarTitle>
       <UserProfile v-if="loggedIn" />
     </VAppBar>

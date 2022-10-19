@@ -50,37 +50,39 @@ const signIn = () => {
 </script>
 
 <template>
-  <VContainer class="d-flex justify-center align-center">
-    <VCard color="dark-grey" width="400" class="text-center">
-      <VCardTitle class="text-center">
-        <h1>Login</h1>
-      </VCardTitle>
-      <VDivider />
-      <VCardText>
-        <VAlert type="error" v-if="alert" variant="outlined" prominent>
-          <VAlertTitle>
-            {{ error.status.replace("_", " ") }}
-          </VAlertTitle>
-          {{ error.message }}
-          <VDivider />
-          <VBtn
-            variant="text"
-            class="float-right"
-            color="blue"
-            @click="alert = false"
-          >
-            Dismiss
+  <VContainer fluid>
+    <VRow justify="center">
+      <VCard color="dark-grey" width="300" class="text-center mt-45">
+        <VCardTitle class="text-center">
+          <h1>Login</h1>
+        </VCardTitle>
+        <VDivider />
+        <VCardText>
+          <VAlert type="error" v-if="alert" variant="outlined" prominent>
+            <VAlertTitle>
+              {{ error.status.replace("_", " ") }}
+            </VAlertTitle>
+            {{ error.message }}
+            <VDivider />
+            <VBtn
+              variant="text"
+              class="float-right"
+              color="blue"
+              @click="alert = false"
+            >
+              Dismiss
+            </VBtn>
+          </VAlert>
+          <VBtn @click="signIn()" v-else>
+            <VImg
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              style="width: 20px; height: 20px; margin-right: 10px"
+              icon
+            />
+            Continue with Google
           </VBtn>
-        </VAlert>
-        <VBtn @click="signIn()" v-else>
-          <VImg
-            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-            style="width: 20px; height: 20px; margin-right: 10px"
-            icon
-          />
-          Continue with Google
-        </VBtn>
-      </VCardText>
-    </VCard>
+        </VCardText>
+      </VCard>
+    </VRow>
   </VContainer>
 </template>
