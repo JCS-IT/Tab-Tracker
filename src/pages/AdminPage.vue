@@ -1,20 +1,11 @@
 <template>
-  <!-- <KeepAlive>
+  <KeepAlive>
     <RouterView v-slot="{ Component }">
       <VSlideXTransition>
         <component :is="Component" />
       </VSlideXTransition>
     </RouterView>
-  </KeepAlive> -->
-
-  <VWindow v-model="page">
-    <VWindowItem value="staff">
-      <Staff />
-    </VWindowItem>
-    <VWindowItem value="items">
-      <Items />
-    </VWindowItem>
-  </VWindow>
+  </KeepAlive>
   <VBottomNavigation>
     <VTabs v-model="page">
       <VTab value="staff">
@@ -30,19 +21,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, defineAsyncComponent } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
-const page = ref("staff");
 const router = useRouter();
 
-// router.push("/admin/staff");
+const page = ref("staff");
 
-const Staff = defineAsyncComponent(() => import("./views/AdminStaffView.vue"));
-const Items = defineAsyncComponent(() => import("./views/AdminItemsView.vue"));
+router.push("/admin/staff");
 
-// if the page is changed, push the new page to the router
-// watch(page, (newPage: string) => {
-//   router.push(`/admin/${newPage}`);
-// });
+watch(
+  () => page.value,
+  (value) => {
+    router.push(`/admin/${value}`);
+  }
+);
 </script>
