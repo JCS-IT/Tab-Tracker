@@ -74,31 +74,35 @@ const filterUsers = (letter: string) => {
 </script>
 
 <template>
-  <VExpansionPanels v-model="panels">
-    <template v-for="letter in letters" :key="letter">
-      <VExpansionPanel
-        :id="letter"
-        :value="letter"
-        class="mb-2"
-        v-if="filterUsers(letter).length > 0"
-      >
-        <VExpansionPanelTitle>
-          <VRow>
-            <VCol cols="12" class="text-center">
-              <b class="text-h5">{{ letter.toUpperCase() }}</b>
-            </VCol>
-          </VRow>
-        </VExpansionPanelTitle>
-        <VExpansionPanelText>
-          <UserComponent
-            v-for="user in filterUsers(letter)"
-            :key="user.info.uid"
-            :user="user"
-            :items="items"
-            v-provide="user"
-          />
-        </VExpansionPanelText>
-      </VExpansionPanel>
-    </template>
-  </VExpansionPanels>
+  <VContainer fluid>
+    <VRow>
+      <VExpansionPanels v-model="panels" multiple>
+        <template v-for="letter in letters" :key="letter">
+          <VExpansionPanel
+            :id="letter"
+            :value="letter"
+            class="mb-2"
+            v-if="filterUsers(letter).length > 0"
+          >
+            <VExpansionPanelTitle>
+              <VRow>
+                <VCol cols="12">
+                  <b class="text-h5">{{ letter.toUpperCase() }}</b>
+                </VCol>
+              </VRow>
+            </VExpansionPanelTitle>
+            <VExpansionPanelText>
+              <template v-for="user in filterUsers(letter)" :key="user">
+                <UserComponent
+                  :user="user"
+                  :items="items"
+                  :ref="user.info.uid"
+                />
+              </template>
+            </VExpansionPanelText>
+          </VExpansionPanel>
+        </template>
+      </VExpansionPanels>
+    </VRow>
+  </VContainer>
 </template>

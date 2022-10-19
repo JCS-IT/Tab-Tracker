@@ -7,7 +7,7 @@ const ToggleRole = defineAsyncComponent(
   () => import("@/components/admin/User/ToggleRole.vue")
 );
 
-const ClearTable = defineAsyncComponent(
+const ClearTab = defineAsyncComponent(
   () => import("@/components/admin/User/ClearTab.vue")
 );
 

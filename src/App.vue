@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from "vue";
 import { auth } from "utils/firebase";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
 const loggedIn = ref(false);
 
 auth.onAuthStateChanged((user) => {
@@ -39,8 +40,13 @@ const UserProfile = defineAsyncComponent(
         </Transition>
       </RouterView>
     </VMain>
-    <VFadeTransition v-if="loggedIn">
-      <VFooter app color="blue-lighten-2" height="64px">
+    <VFadeTransition>
+      <VFooter
+        app
+        color="blue-lighten-2"
+        height="64px"
+        v-if="loggedIn && route.path === '/user'"
+      >
         <VContainer>
           <VRow justify="center" no-gutters>
             <FeedBack />
