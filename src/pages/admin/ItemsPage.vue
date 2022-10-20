@@ -6,10 +6,17 @@
       </VCol>
     </VRow>
     <VRow class="text-center">
-      <VCol>
+      <VCol cols="11">
         <VPagination
           v-model="page"
           :length="Math.ceil(items.length / perPage)"
+        />
+      </VCol>
+      <VCol cols="1">
+        <VSelect
+          v-model="perPage"
+          :items="perPageOptions"
+          label="Items per page"
         />
       </VCol>
     </VRow>
@@ -19,8 +26,8 @@
       </VCol>
     </VRow>
   </VContainer>
-  <VContainer v-else fluid align="center">
-    <VRow>
+  <VContainer v-else fluid>
+    <VRow align="center">
       <VCol cols="12">
         <VProgressLinear indeterminate />
       </VCol>
@@ -45,10 +52,14 @@ const ItemComponent = defineAsyncComponent(
 // data
 const items = ref([] as Item[]);
 const page = ref(1);
-const perPage = 100;
+const perPage = ref(20);
+const perPageOptions = ref([10, 20, 30, 40, 50]);
 
 const visibleItems = () => {
-  return items.value.slice((page.value - 1) * perPage, page.value * perPage);
+  return items.value.slice(
+    (page.value - 1) * perPage.value,
+    page.value * perPage.value
+  );
 };
 
 const itemSnap = onSnapshot(doc(db, "admin/items"), (doc) => {
