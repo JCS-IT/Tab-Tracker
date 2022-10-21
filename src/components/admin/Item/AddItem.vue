@@ -1,6 +1,6 @@
 <template>
   <VBtn color="green-lighten-2" @click="dialog = true"> Add Item </VBtn>
-  <VDialog v-model="dialog" persistent width="300px">
+  <VDialog v-model="dialog" width="300px" @click:outside="close()">
     <VCard :loading="loading" :disabled="loading">
       <VAlert v-if="error">
         <VAlertTitle>Error Occurred</VAlertTitle>
@@ -33,16 +33,7 @@
         <VBtn color="green-lighten-2" @click="addItem" :loading="loading">
           Submit
         </VBtn>
-        <VBtn
-          color="red"
-          @click="
-            input.name = '';
-            input.price = null;
-            dialog = false;
-          "
-        >
-          Cancel
-        </VBtn>
+        <VBtn color="red" @click="close()"> Cancel </VBtn>
       </VCardActions>
     </VCard>
   </VDialog>
@@ -62,12 +53,15 @@ const rules = {
   price: [
     (v: number) => !!v || "Item price is required",
     (v: number) => v > 0 || "Item price must be greater than 0",
+    (v: any) => !isNaN(v) || "Item price must be a number",
   ],
 };
+
 const input = ref({
-  name: "",
+  name: null as string | null,
   price: null as number | null,
 });
+
 const itemInput = ref(null);
 
 // methods
@@ -79,14 +73,18 @@ const addItem = async () => {
   try {
     const addItem = httpsCallable(functions, "addItem");
     await addItem({ item: input.value });
-    input.value.name = "";
-    input.value.price = null;
-    dialog.value = false;
+    close();
   } catch (err) {
     console.error(err);
     error.value = err as string;
   } finally {
     loading.value = false;
   }
+};
+
+const close = () => {
+  input.value.name = "";
+  input.value.price = null;
+  dialog.value = false;
 };
 </script>
