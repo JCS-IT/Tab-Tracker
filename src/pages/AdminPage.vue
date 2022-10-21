@@ -1,11 +1,11 @@
 <template>
-  <KeepAlive>
-    <RouterView v-slot="{ Component }">
-      <VSlideXTransition>
+  <RouterView v-slot="{ Component }">
+    <VSlideXTransition>
+      <KeepAlive>
         <component :is="Component" />
-      </VSlideXTransition>
-    </RouterView>
-  </KeepAlive>
+      </KeepAlive>
+    </VSlideXTransition>
+  </RouterView>
   <VBottomNavigation>
     <VTabs v-model="page">
       <VTab value="staff">
