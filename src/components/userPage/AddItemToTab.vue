@@ -7,7 +7,7 @@
   >
     <template #activator="{ props }">
       <VBtn
-        color="green-lighten-2"
+        color="green-accent-2"
         v-bind="props"
         :loading="dialog"
         :disabled="dialog"
