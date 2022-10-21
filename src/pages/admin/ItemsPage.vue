@@ -5,21 +5,6 @@
         <AddItem />
       </VCol>
     </VRow>
-    <VRow class="text-center">
-      <VCol cols="11">
-        <VPagination
-          v-model="page"
-          :length="Math.ceil(items.length / perPage)"
-        />
-      </VCol>
-      <VCol cols="1">
-        <VSelect
-          v-model="perPage"
-          :items="perPageOptions"
-          label="Items per page"
-        />
-      </VCol>
-    </VRow>
     <VRow align="center">
       <VCol v-for="(item, index) in visibleItems()" :key="index">
         <ItemComponent :items="items" :input="item" />
@@ -53,7 +38,6 @@ const ItemComponent = defineAsyncComponent(
 const items = ref([] as Item[]);
 const page = ref(1);
 const perPage = ref(20);
-const perPageOptions = ref([10, 20, 30, 40, 50]);
 
 const visibleItems = () => {
   return items.value.slice(
