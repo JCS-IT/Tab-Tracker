@@ -23,9 +23,9 @@
               <VTable density="compact">
                 <thead>
                   <tr>
-                    <td>Item</td>
-                    <td>Quantity</td>
-                    <td>Price</td>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -54,10 +54,10 @@
               <VTable>
                 <thead>
                   <tr>
-                    <td>Item</td>
-                    <td>Price</td>
-                    <td>Date</td>
-                    <td>Time</td>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                    <th>Time</th>
                   </tr>
                 </thead>
                 <tbody>
