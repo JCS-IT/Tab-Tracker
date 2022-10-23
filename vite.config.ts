@@ -19,14 +19,38 @@ export default defineConfig({
     },
   },
   define: {
-    __VUE_OPTIONS_API__: true,
+    __VUE_OPTIONS_API__: false,
     __VUE_PROD_DEVTOOLS__: false,
   },
+  optimizeDeps: {
+    disabled: false,
+  },
+  build: {
+    minify: "esbuild",
+    commonjsOptions: {
+      include: [],
+    },
+  },
+  esbuild: {
+    drop: ["console", "debugger"],
+    legalComments: "none",
+    format: "esm",
+  },
+  css: {
+    devSourcemap: true,
+  },
+  json: {
+    stringify: true,
+  },
+  appType: "spa",
   plugins: [
     vue(),
     vuetify({ autoImport: true }),
     mkcert(),
     VitePWA({
+      devOptions: {
+        enabled: false,
+      },
       injectRegister: "inline",
       registerType: "autoUpdate",
       includeAssets: [
@@ -62,6 +86,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        globPatterns: ["**/*.{js,css,png,svg,ico,webmanifest}"],
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
