@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
-    "@types/node": "^18.11.3",
+    "@types/node": "^18.11.4",
     "@types/webfontloader": "^1.6.35",
     "@vitejs/plugin-vue": "^3.1.2",
     "@vue/eslint-config-prettier": "^7.0.0",
@@ -37,7 +37,7 @@
     "vite-plugin-pwa": "^0.13.1",
     "vite-plugin-vuetify": "^1.0.0",
     "vue-cli-plugin-vuetify": "~2.5.8",
-    "vue-tsc": "^1.0.8"
+    "vue-tsc": "^1.0.9"
   },
   "workspaces": [
     "functions"
