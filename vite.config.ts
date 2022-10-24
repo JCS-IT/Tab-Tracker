@@ -22,9 +22,6 @@ export default defineConfig({
     __VUE_OPTIONS_API__: false,
     __VUE_PROD_DEVTOOLS__: false,
   },
-  optimizeDeps: {
-    disabled: false,
-  },
   build: {
     minify: "esbuild",
     commonjsOptions: {
@@ -36,21 +33,11 @@ export default defineConfig({
     legalComments: "none",
     format: "esm",
   },
-  css: {
-    devSourcemap: true,
-  },
-  json: {
-    stringify: true,
-  },
-  appType: "spa",
   plugins: [
     vue(),
     vuetify({ autoImport: true }),
     mkcert(),
     VitePWA({
-      devOptions: {
-        enabled: false,
-      },
       injectRegister: "inline",
       registerType: "autoUpdate",
       includeAssets: [

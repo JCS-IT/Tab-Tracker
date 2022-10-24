@@ -7,7 +7,7 @@
   >
     <template #activator="{ props }">
       <VBtn
-        color="green-accent-2"
+        color="green-lighten-2"
         v-bind="props"
         :loading="dialog"
         :disabled="dialog"
@@ -34,7 +34,7 @@
       </VCardTitle>
       <VCardText>
         <VBtn
-          color="green-accent-1"
+          color="green-lighten-2"
           v-for="(item, index) in items"
           :key="index"
           :loading="loading[item.name]"
