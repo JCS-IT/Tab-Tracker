@@ -1,4 +1,4 @@
-import { onCall, HttpsError } from "firebase-functions/lib/v1/providers/https";
+import {HttpsError, onCall} from "firebase-functions/v1/https";
 
 export const clearTab = onCall(async (data, context) => {
   if (context.app == undefined) {
@@ -6,13 +6,18 @@ export const clearTab = onCall(async (data, context) => {
   }
   if (!context?.auth?.token.admin) {
     throw new HttpsError(
-      "permission-denied",
-      "You must be an admin to clear the tab"
+        "permission-denied",
+        "You must be an admin to clear the tab"
     );
   }
 
-  const { firestore, auth } = await import("firebase-admin");
-  const user = await auth().getUserByEmail(data.email);
+  const {firestore, auth} = await import("firebase-admin");
+  let user = null;
+  if (data.uid == undefined) {
+    user = await auth().getUserByEmail(data.email);
+  } else {
+    user = await auth().getUser(data.uid);
+  }
   return firestore().doc(`users/${user.uid}`).update({
     tab: [],
   });
@@ -29,9 +34,9 @@ export const toggleRole = onCall(async (data, context) => {
     throw new HttpsError("invalid-argument", "Missing uid");
   }
 
-  const { auth, firestore } = await import("firebase-admin");
+  const {auth, firestore} = await import("firebase-admin");
 
-  const { uid, role } = data;
+  const {uid, role} = data;
 
   const user = await auth().getUser(uid);
 
@@ -40,11 +45,11 @@ export const toggleRole = onCall(async (data, context) => {
       [role]: !user.customClaims?.[role],
     });
     await firestore()
-      .doc(`users/${user.uid}`)
-      .update({
-        roles: {
-          [role]: !user.customClaims?.[role],
-        },
-      });
+        .doc(`users/${user.uid}`)
+        .update({
+          roles: {
+            [role]: !user.customClaims?.[role],
+          },
+        });
   };
 });

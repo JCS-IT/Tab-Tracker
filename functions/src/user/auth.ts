@@ -1,20 +1,20 @@
-import { auth } from "firebase-functions";
+import {auth} from "firebase-functions";
 
 export const beforeCreate = auth.user().beforeCreate(async (event) => {
-  const { email } = event;
+  const {email} = event;
   if (!email?.endsWith("@educbe.ca")) {
-    const { HttpsError } = await import("firebase-functions/v1/auth");
+    const {HttpsError} = await import("firebase-functions/v1/auth");
     throw new HttpsError(
-      "permission-denied",
-      "You must be in the educbe.ca domain to create an account"
+        "permission-denied",
+        "You must be in the educbe.ca domain to create an account"
     );
   }
 });
 
 export const onCreate = auth.user().onCreate(async (user) => {
-  const { uid, email, displayName, photoURL } = user;
+  const {uid, email, displayName, photoURL} = user;
 
-  const { firestore } = await import("firebase-admin");
+  const {firestore} = await import("firebase-admin");
 
   return firestore().doc(`users/${user.uid}`).set({
     info: {
@@ -29,6 +29,6 @@ export const onCreate = auth.user().onCreate(async (user) => {
 });
 
 export const onDelete = auth.user().onDelete(async (user) => {
-  const { firestore } = await import("firebase-admin");
+  const {firestore} = await import("firebase-admin");
   return firestore().doc(`users/${user.uid}`).delete();
 });
