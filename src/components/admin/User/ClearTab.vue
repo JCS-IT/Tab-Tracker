@@ -18,7 +18,7 @@ const clearTab = async () => {
   loading.value = true;
   try {
     const clearTab = httpsCallable(functions, "clearTab");
-    await clearTab({ uid: user?.info?.uid });
+    await clearTab({ email: user?.info?.email });
     dialog.value = false;
   } catch (err) {
     console.log(err);
