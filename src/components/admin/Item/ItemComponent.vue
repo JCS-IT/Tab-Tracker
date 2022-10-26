@@ -28,7 +28,7 @@
       <v-btn @click="updateItem()" color="green" :loading="loading.update">
         Update
       </v-btn>
-      <delete-item :item="input" />
+      <DeleteItem :item="input" />
     </v-card-actions>
   </v-card>
 </template>

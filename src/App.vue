@@ -31,7 +31,7 @@ const UserProfile = defineAsyncComponent(
     <v-app-bar color="blue-lighten-2">
       <v-app-bar-nav-icon @click="$router.push('/')" icon="mdi-home" />
       <v-app-bar-title> JCS Tabs </v-app-bar-title>
-      <user-profile v-if="loggedIn" />
+      <UserProfile v-if="loggedIn" />
     </v-app-bar>
     <v-main>
       <router-view v-slot="{ Component }">
@@ -49,7 +49,7 @@ const UserProfile = defineAsyncComponent(
       >
         <v-container>
           <v-row justify="center" no-gutters>
-            <feed-back />
+            <FeedBack />
           </v-row>
         </v-container>
       </v-footer>

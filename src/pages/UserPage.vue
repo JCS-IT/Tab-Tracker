@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <add-item :items="items" />
+        <AddItem :items="items" />
       </v-col>
     </v-row>
     <v-row>
@@ -78,7 +78,7 @@
                       <td>
                         {{ item.date.toDate().toLocaleTimeString() }}
                       </td>
-                      <delete-item :item="item" v-if="canDelete(item.date)" />
+                      <DeleteItem :item="item" v-if="canDelete(item.date)" />
                     </tr>
                   </template>
                 </tbody>
