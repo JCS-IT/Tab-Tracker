@@ -27,34 +27,34 @@ const UserProfile = defineAsyncComponent(
 </script>
 
 <template>
-  <VApp>
-    <VAppBar color="blue-lighten-2">
-      <VAppBarNavIcon @click="$router.push('/')" icon="mdi-home" />
-      <VAppBarTitle> JCS Tabs </VAppBarTitle>
-      <UserProfile v-if="loggedIn" />
-    </VAppBar>
-    <VMain>
-      <RouterView v-slot="{ Component }">
-        <Transition name="fade" mode="out-in">
+  <v-app>
+    <v-app-bar color="blue-lighten-2">
+      <v-app-bar-nav-icon @click="$router.push('/')" icon="mdi-home" />
+      <v-app-bar-title> JCS Tabs </v-app-bar-title>
+      <user-profile v-if="loggedIn" />
+    </v-app-bar>
+    <v-main>
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
           <component :is="Component" />
-        </Transition>
-      </RouterView>
-    </VMain>
-    <VFadeTransition>
-      <VFooter
+        </transition>
+      </router-view>
+    </v-main>
+    <v-fade-transition>
+      <v-footer
         app
         color="blue-lighten-2"
         height="64px"
         v-if="loggedIn && route.path === '/user'"
       >
-        <VContainer>
-          <VRow justify="center" no-gutters>
-            <FeedBack />
-          </VRow>
-        </VContainer>
-      </VFooter>
-    </VFadeTransition>
-  </VApp>
+        <v-container>
+          <v-row justify="center" no-gutters>
+            <feed-back />
+          </v-row>
+        </v-container>
+      </v-footer>
+    </v-fade-transition>
+  </v-app>
 </template>
 
 <style scoped>

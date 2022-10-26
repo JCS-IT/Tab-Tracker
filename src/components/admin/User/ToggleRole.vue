@@ -71,7 +71,7 @@ const close = () => {
 </script>
 
 <template>
-  <VDialog
+  <v-dialog
     v-model="dialog"
     :max-width="user?.roles.admin ? '350px' : '500px'"
     :overlay="true"
@@ -79,7 +79,7 @@ const close = () => {
     transition="dialog-transition"
   >
     <template v-slot:activator="{ props }">
-      <VSwitch
+      <v-switch
         color="primary"
         label="Administrator"
         v-bind="props"
@@ -90,34 +90,34 @@ const close = () => {
         :messages="checkPerms().message"
       />
     </template>
-    <VCard
+    <v-card
       :loading="loading.dialog"
       :max-height="user?.roles.admin ? '120px' : '340px'"
     >
-      <VCardTitle>Are you sure?</VCardTitle>
-      <VCardSubtitle>
+      <v-card-title>Are you sure?</v-card-title>
+      <v-card-subtitle>
         This will {{ user?.roles[props.role] ? "remove" : "add" }} the user as
         an {{ props.role }}.
-      </VCardSubtitle>
-      <VCardText v-if="!user?.roles.admin">
+      </v-card-subtitle>
+      <v-card-text v-if="!user?.roles.admin">
         When a user is an administrator they can:
-        <VList>
-          <VListItem v-for="(item, index) in perms.admin" :key="item">
-            <VListItemTitle>{{ index + 1 + ". " + item }}</VListItemTitle>
-          </VListItem>
-        </VList>
-      </VCardText>
-      <VCardActions>
-        <VBtn
+        <v-list>
+          <v-list-item v-for="(item, index) in perms.admin" :key="item">
+            <v-list-item-title>{{ index + 1 + ". " + item }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn
           color="primary"
           text
           @click="toggleRole()"
           :loading="loading.dialog"
         >
           OK
-        </VBtn>
-        <VBtn color="red" text @click="close()"> Cancel </VBtn>
-      </VCardActions>
-    </VCard>
-  </VDialog>
+        </v-btn>
+        <v-btn color="red" text @click="close()"> Cancel </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>

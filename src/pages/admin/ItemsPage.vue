@@ -1,23 +1,23 @@
 <template>
-  <VContainer fluid v-if="items.length > 0 && visibleItems().length > 0">
-    <VRow class="text-center">
-      <VCol>
-        <AddItem />
-      </VCol>
-    </VRow>
-    <VRow align="center">
-      <VCol v-for="(item, index) in visibleItems()" :key="index">
-        <ItemComponent :items="items" :input="item" />
-      </VCol>
-    </VRow>
-  </VContainer>
-  <VContainer v-else fluid>
-    <VRow align="center">
-      <VCol cols="12">
-        <VProgressLinear indeterminate />
-      </VCol>
-    </VRow>
-  </VContainer>
+  <v-container fluid v-if="items.length > 0 && visibleItems().length > 0">
+    <v-row class="text-center">
+      <v-col>
+        <add-item />
+      </v-col>
+    </v-row>
+    <v-row align="center">
+      <v-col v-for="(item, index) in visibleItems()" :key="index">
+        <item-component :items="items" :input="item" />
+      </v-col>
+    </v-row>
+  </v-container>
+  <v-container v-else fluid>
+    <v-row align="center">
+      <v-col cols="12">
+        <v-progress-linear indeterminate />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup lang="ts">

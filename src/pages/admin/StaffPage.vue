@@ -74,42 +74,42 @@ const filterUsers = (letter: string) => {
 </script>
 
 <template>
-  <VContainer fluid v-if="users !== null && items !== null">
-    <VRow>
-      <VExpansionPanels v-model="panels" multiple>
+  <v-container fluid v-if="users !== null && items !== null">
+    <v-row>
+      <v-expansion-panels v-model="panels" multiple>
         <template v-for="letter in letters" :key="letter">
-          <VExpansionPanel
+          <v-expansion-panel
             :id="letter"
             :value="letter"
             class="mb-2"
             v-if="filterUsers(letter).length > 0"
           >
-            <VExpansionPanelTitle>
-              <VRow>
-                <VCol cols="12">
+            <v-expansion-panel-title>
+              <v-row>
+                <v-col cols="12">
                   <b class="text-h5">{{ letter.toUpperCase() }}</b>
-                </VCol>
-              </VRow>
-            </VExpansionPanelTitle>
-            <VExpansionPanelText>
+                </v-col>
+              </v-row>
+            </v-expansion-panel-title>
+            <v-expansion-panel-text>
               <template v-for="user in filterUsers(letter)" :key="user">
-                <UserComponent
+                <user-component
                   :user="user"
                   :items="items"
                   :ref="user.info.uid"
                 />
               </template>
-            </VExpansionPanelText>
-          </VExpansionPanel>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
         </template>
-      </VExpansionPanels>
-    </VRow>
-  </VContainer>
-  <VContainer v-else fluid align="center">
-    <VRow>
-      <VCol cols="12">
-        <VProgressLinear indeterminate />
-      </VCol>
-    </VRow>
-  </VContainer>
+      </v-expansion-panels>
+    </v-row>
+  </v-container>
+  <v-container v-else fluid align="center">
+    <v-row>
+      <v-col cols="12">
+        <v-progress-linear indeterminate />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>

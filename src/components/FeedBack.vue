@@ -1,12 +1,12 @@
 <template>
-  <VDialog v-model="dialog" max-width="500px">
+  <v-dialog v-model="dialog" max-width="500px">
     <template v-slot:activator="{ props }">
-      <VBtn v-bind="props" color="green-lighten-2" @click="dialog = true">
+      <v-btn v-bind="props" color="green-lighten-2" @click="dialog = true">
         Feedback
-      </VBtn>
+      </v-btn>
     </template>
-    <VCard :loading="loading">
-      <VAlert
+    <v-card :loading="loading">
+      <v-alert
         v-if="error.code"
         type="error"
         dismissible
@@ -14,15 +14,15 @@
         elevation="2"
         color="red"
       >
-        <VAlertTitle>
+        <v-alert-title>
           {{ error.code }}
-        </VAlertTitle>
+        </v-alert-title>
         {{ error.message }}
-      </VAlert>
-      <VCardTitle class="headline">Feedback Submission</VCardTitle>
-      <VCardText>
-        <VForm ref="inputForm">
-          <VTextarea
+      </v-alert>
+      <v-card-title class="headline">Feedback Submission</v-card-title>
+      <v-card-text>
+        <v-form ref="inputForm">
+          <v-textarea
             v-model="input"
             label="Feedback"
             placeholder="Enter your feedback here..."
@@ -30,14 +30,14 @@
             rows="5"
             :rules="rules.text"
           />
-        </VForm>
-      </VCardText>
-      <VCardActions>
-        <VBtn color="green-lighten-2" text @click="submit">Submit</VBtn>
-        <VBtn color="error" text @click="dialog = false">Cancel</VBtn>
-      </VCardActions>
-    </VCard>
-  </VDialog>
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="green-lighten-2" text @click="submit">Submit</v-btn>
+        <v-btn color="error" text @click="dialog = false">Cancel</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup lang="ts">

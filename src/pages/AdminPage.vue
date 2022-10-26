@@ -1,23 +1,23 @@
 <template>
-  <RouterView v-slot="{ Component }">
-    <VSlideXTransition>
-      <KeepAlive>
+  <router-view v-slot="{ Component }">
+    <v-slide-x-transition>
+      <keep-alive>
         <component :is="Component" />
-      </KeepAlive>
-    </VSlideXTransition>
-  </RouterView>
-  <VBottomNavigation>
-    <VTabs v-model="page">
-      <VTab value="staff">
-        <VIcon>mdi-account-school</VIcon>
+      </keep-alive>
+    </v-slide-x-transition>
+  </router-view>
+  <v-bottom-navigation>
+    <v-tabs v-model="page">
+      <v-tab value="staff">
+        <v-icon>mdi-account-school</v-icon>
         Staff
-      </VTab>
-      <VTab value="items">
-        <VIcon>mdi-package</VIcon>
+      </v-tab>
+      <v-tab value="items">
+        <v-icon>mdi-package</v-icon>
         Items
-      </VTab>
-    </VTabs>
-  </VBottomNavigation>
+      </v-tab>
+    </v-tabs>
+  </v-bottom-navigation>
 </template>
 
 <script setup lang="ts">

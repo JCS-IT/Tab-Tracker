@@ -52,71 +52,71 @@ const checkTabLength = () => {
 </script>
 
 <template v-if="user != null">
-  <VTooltip :text="user?.info.displayName">
+  <v-tooltip :text="user?.info.displayName">
     <template v-slot:activator="{ props }">
-      <VBtn
+      <v-btn
         :ref="user?.info.displayName"
         icon
         v-bind="props"
         @click="dialog = true"
         :loading="dialog"
       >
-        <VAvatar>
-          <VImg :src="user?.info.photoURL" alt="Avatar" />
-        </VAvatar>
-      </VBtn>
+        <v-avatar>
+          <v-img :src="user?.info.photoURL" alt="Avatar" />
+        </v-avatar>
+      </v-btn>
     </template>
-  </VTooltip>
-  <VDialog v-model="dialog" width="300px">
-    <VCard>
-      <VCardTitle>
-        <VRow>
-          <VCol>
-            <VAvatar>
-              <VImg :src="user?.info.photoURL" alt="User Avatar" />
-            </VAvatar>
-          </VCol>
-          <VCol>
+  </v-tooltip>
+  <v-dialog v-model="dialog" width="300px">
+    <v-card>
+      <v-card-title>
+        <v-row>
+          <v-col>
+            <v-avatar>
+              <v-img :src="user?.info.photoURL" alt="User Avatar" />
+            </v-avatar>
+          </v-col>
+          <v-col>
             {{ user?.info.displayName }}
-          </VCol>
-        </VRow>
-      </VCardTitle>
-      <VCardText align="center">
-        <VExpansionPanels>
-          <VExpansionPanel>
-            <VExpansionPanelTitle>
+          </v-col>
+        </v-row>
+      </v-card-title>
+      <v-card-text align="center">
+        <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-title>
               Tab
-              <VSpacer />
+              <v-spacer />
               Total: ${{ total }}
-            </VExpansionPanelTitle>
-            <VExpansionPanelText>
-              <VList>
+            </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <v-list>
                 <template v-for="(item, index) in items" :key="index">
-                  <VListItem v-if="count[item.name] > 0">
-                    <VListItemTitle>
+                  <v-list-item v-if="count[item.name] > 0">
+                    <v-list-item-title>
                       {{ item.name }}: {{ count[item.name] }} *{{
                         new Intl.NumberFormat("en-CA", {
                           style: "currency",
                           currency: "CAD",
                         }).format(item.price)
                       }}
-                    </VListItemTitle>
-                  </VListItem>
+                    </v-list-item-title>
+                  </v-list-item>
                 </template>
-              </VList>
-            </VExpansionPanelText>
-          </VExpansionPanel>
-        </VExpansionPanels>
-      </VCardText>
-      <VDivider />
-      <VCardText>
+              </v-list>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-card-text>
+      <v-divider />
+      <v-card-text>
         <span>Roles:</span>
-        <ToggleRole :user="user" role="admin" />
-      </VCardText>
-      <VCardActions>
-        <VBtn color="primary" @click="dialog = false">Cancel</VBtn>
-        <ClearTab :user="user" v-if="checkTabLength()" />
-      </VCardActions>
-    </VCard>
-  </VDialog>
+        <toggle-role :user="user" role="admin" />
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="primary" @click="dialog = false">Cancel</v-btn>
+        <clear-tab :user="user" v-if="checkTabLength()" />
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>

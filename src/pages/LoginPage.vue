@@ -50,39 +50,39 @@ const signIn = () => {
 </script>
 
 <template>
-  <VContainer fluid>
-    <VRow justify="center">
-      <VCard color="dark-grey" width="300" class="text-center mt-45">
-        <VCardTitle class="text-center">
+  <v-container fluid>
+    <v-row justify="center">
+      <v-card color="dark-grey" width="300" class="text-center mt-45">
+        <v-card-title class="text-center">
           <h1>Login</h1>
-        </VCardTitle>
-        <VDivider />
-        <VCardText>
-          <VAlert type="error" v-if="alert" variant="outlined" prominent>
-            <VAlertTitle>
+        </v-card-title>
+        <v-divider />
+        <v-card-text>
+          <v-alert type="error" v-if="alert" variant="outlined" prominent>
+            <v-alert-title>
               {{ error.status.replace("_", " ") }}
-            </VAlertTitle>
+            </v-alert-title>
             {{ error.message }}
-            <VDivider />
-            <VBtn
+            <v-divider />
+            <v-btn
               variant="text"
               class="float-right"
               color="blue"
               @click="alert = false"
             >
               Dismiss
-            </VBtn>
-          </VAlert>
-          <VBtn @click="signIn()" v-else>
-            <VImg
+            </v-btn>
+          </v-alert>
+          <v-btn @click="signIn()" v-else>
+            <v-img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
               style="width: 20px; height: 20px; margin-right: 10px"
               icon
             />
             Continue with Google
-          </VBtn>
-        </VCardText>
-      </VCard>
-    </VRow>
-  </VContainer>
+          </v-btn>
+        </v-card-text>
+      </v-card>
+    </v-row>
+  </v-container>
 </template>

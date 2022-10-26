@@ -1,19 +1,19 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <VCard
+  <v-card
     width="200px"
     :loading="loading.update || loading.delete"
     :disabled="loading.update"
   >
-    <VAlert v-if="error != null">
+    <v-alert v-if="error != null">
       {{ error }}
-    </VAlert>
-    <VCardTitle>
+    </v-alert>
+    <v-card-title>
       {{ input.name }}
-    </VCardTitle>
-    <VCardText class="pb-0">
-      <VForm>
-        <VTextField
+    </v-card-title>
+    <v-card-text class="pb-0">
+      <v-form>
+        <v-text-field
           label="Price"
           variant="outlined"
           type="number"
@@ -22,15 +22,15 @@
           :rules="rules.price"
           @keyup.enter="updateItem()"
         />
-      </VForm>
-    </VCardText>
-    <VCardActions>
-      <VBtn @click="updateItem()" color="green" :loading="loading.update">
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn @click="updateItem()" color="green" :loading="loading.update">
         Update
-      </VBtn>
-      <DeleteItem :item="input" />
-    </VCardActions>
-  </VCard>
+      </v-btn>
+      <delete-item :item="input" />
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script setup lang="ts">

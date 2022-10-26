@@ -1,24 +1,24 @@
 <template>
-  <VBtn color="green-lighten-2" @click="dialog = true"> Add Item </VBtn>
-  <VDialog v-model="dialog" width="300px" @click:outside="close()">
-    <VCard :loading="loading" :disabled="loading">
-      <VAlert v-if="error">
-        <VAlertTitle>Error Occurred</VAlertTitle>
+  <v-btn color="green-lighten-2" @click="dialog = true"> Add Item </v-btn>
+  <v-dialog v-model="dialog" width="300px" @click:outside="close()">
+    <v-card :loading="loading" :disabled="loading">
+      <v-alert v-if="error">
+        <v-alert-title>Error Occurred</v-alert-title>
         {{ error }}
-      </VAlert>
-      <VCardTitle>
+      </v-alert>
+      <v-card-title>
         <span class="headline">Add Item</span>
-      </VCardTitle>
-      <VCardText>
-        <VForm ref="itemInput" lazy-validation>
-          <VTextField
+      </v-card-title>
+      <v-card-text>
+        <v-form ref="itemInput" lazy-validation>
+          <v-text-field
             label="Item Name"
             variant="outlined"
             v-model="input.name"
             :rules="rules.name"
             @keyup.enter="addItem"
           />
-          <VTextField
+          <v-text-field
             label="Item Price"
             variant="outlined"
             type="number"
@@ -27,16 +27,16 @@
             :rules="rules.price"
             @keyup.enter="addItem"
           />
-        </VForm>
-      </VCardText>
-      <VCardActions>
-        <VBtn color="green-lighten-2" @click="addItem" :loading="loading">
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="green-lighten-2" @click="addItem" :loading="loading">
           Submit
-        </VBtn>
-        <VBtn color="red" @click="close()"> Cancel </VBtn>
-      </VCardActions>
-    </VCard>
-  </VDialog>
+        </v-btn>
+        <v-btn color="red" @click="close()"> Cancel </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup lang="ts">

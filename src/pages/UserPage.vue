@@ -1,26 +1,26 @@
 <template>
-  <VContainer align="center" v-if="user !== null && items !== null">
-    <VRow>
-      <VCol>
+  <v-container align="center" v-if="user !== null && items !== null">
+    <v-row>
+      <v-col>
         <h1>{{ user?.info.displayName }}'s Tab</h1>
-      </VCol>
-    </VRow>
-    <VRow>
-      <VCol>
-        <AddItem :items="items" />
-      </VCol>
-    </VRow>
-    <VRow>
-      <VCol cols="12">
-        <VExpansionPanels>
-          <VExpansionPanel>
-            <VExpansionPanelTitle>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <add-item :items="items" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-title>
               Tab
-              <VSpacer />
+              <v-spacer />
               Total: {{ total() }}
-            </VExpansionPanelTitle>
-            <VExpansionPanelText>
-              <VTable density="compact">
+            </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <v-table density="compact">
                 <thead>
                   <tr>
                     <th>Item</th>
@@ -44,14 +44,14 @@
                     </tr>
                   </template>
                 </tbody>
-              </VTable>
-            </VExpansionPanelText>
-          </VExpansionPanel>
-          <VExpansionPanel>
-            <VExpansionPanelTitle> History </VExpansionPanelTitle>
-            <VExpansionPanelText>
-              <VPagination v-model="page" :length="MathTime()" />
-              <VTable>
+              </v-table>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+          <v-expansion-panel>
+            <v-expansion-panel-title> History </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <v-pagination v-model="page" :length="MathTime()" />
+              <v-table>
                 <thead>
                   <tr>
                     <th>Item</th>
@@ -78,24 +78,24 @@
                       <td>
                         {{ item.date.toDate().toLocaleTimeString() }}
                       </td>
-                      <DeleteItem :item="item" v-if="canDelete(item.date)" />
+                      <delete-item :item="item" v-if="canDelete(item.date)" />
                     </tr>
                   </template>
                 </tbody>
-              </VTable>
-            </VExpansionPanelText>
-          </VExpansionPanel>
-        </VExpansionPanels>
-      </VCol>
-    </VRow>
-  </VContainer>
-  <VContainer v-else fluid align="center">
-    <VRow>
-      <VCol cols="12">
-        <VProgressLinear indeterminate />
-      </VCol>
-    </VRow>
-  </VContainer>
+              </v-table>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-col>
+    </v-row>
+  </v-container>
+  <v-container v-else fluid align="center">
+    <v-row>
+      <v-col cols="12">
+        <v-progress-linear indeterminate />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup lang="ts">

@@ -37,9 +37,9 @@ const deleteItem = async () => {
 </script>
 
 <template>
-  <VDialog v-model="dialog" max-width="350px" align="center">
+  <v-dialog v-model="dialog" max-width="350px" align="center">
     <template v-slot:activator>
-      <VBtn
+      <v-btn
         color="red"
         :loading="loading.pending"
         @click="
@@ -48,19 +48,21 @@ const deleteItem = async () => {
         "
       >
         Delete
-      </VBtn>
+      </v-btn>
     </template>
-    <VCard :loading="loading.confirm" :disabled="loading.confirm">
-      <VAlert v-if="error != null">
+    <v-card :loading="loading.confirm" :disabled="loading.confirm">
+      <v-alert v-if="error != null">
         {{ error }}
-      </VAlert>
-      <VCardTitle> Are you sure? </VCardTitle>
-      <VCardSubtitle> This will permanently delete this item. </VCardSubtitle>
-      <VCardActions>
-        <VBtn @click="deleteItem()" color="red" :loading="loading.confirm">
+      </v-alert>
+      <v-card-title> Are you sure? </v-card-title>
+      <v-card-subtitle>
+        This will permanently delete this item.
+      </v-card-subtitle>
+      <v-card-actions>
+        <v-btn @click="deleteItem()" color="red" :loading="loading.confirm">
           Delete
-        </VBtn>
-        <VBtn
+        </v-btn>
+        <v-btn
           @click="
             dialog = false;
             loading.pending = false;
@@ -68,8 +70,8 @@ const deleteItem = async () => {
           color="green"
         >
           Cancel
-        </VBtn>
-      </VCardActions>
-    </VCard>
-  </VDialog>
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
