@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { inject, ref } from "vue";
+import { ref } from "vue";
 import { functions } from "utils/firebase";
 import { httpsCallable } from "@firebase/functions";
 import type { User } from "types";
 
 // inject the user
-const user = inject("user") as User;
+const props = defineProps<{ user: User | null }>();
 
 const dialog = ref(false);
 const loading = ref(false);
@@ -18,7 +18,7 @@ const clearTab = async () => {
   loading.value = true;
   try {
     const clearTab = httpsCallable(functions, "clearTab");
-    await clearTab({ email: user?.info?.email });
+    await clearTab({ email: props.user?.info.email });
     dialog.value = false;
   } catch (err) {
     console.log(err);
@@ -28,14 +28,25 @@ const clearTab = async () => {
     loading.value = false;
   }
 };
+
+const closeDialog = () => {
+  dialog.value = false;
+  error.value = { code: null, message: null };
+};
 </script>
 
 <template>
-  <v-dialog v-model="dialog" max-width="300px">
+  <v-dialog v-model="dialog" max-width="300px" @click:outside="closeDialog()">
     <template #activator="{ props }">
       <v-btn v-bind="props" color="red" :loading="dialog"> Clear Tab </v-btn>
     </template>
     <v-card :disabled="loading" :loading="loading">
+      <v-alert type="error" v-if="error.code != null">
+        <v-alert-title>
+          {{ error.code }}
+        </v-alert-title>
+        {{ error.message }}
+      </v-alert>
       <v-card-title>Are you sure?</v-card-title>
       <v-card-subtitle>this action cannot be undone.</v-card-subtitle>
       <v-card-text>
