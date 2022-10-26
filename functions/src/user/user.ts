@@ -1,4 +1,8 @@
-import { onCall, HttpsError } from "firebase-functions/v1/https";
+import {
+  onCall,
+  HttpsError,
+  type FunctionsErrorCode,
+} from "firebase-functions/v1/https";
 
 export const clearTab = onCall(async (data, context) => {
   if (context.app == undefined) {
@@ -11,11 +15,19 @@ export const clearTab = onCall(async (data, context) => {
     );
   }
 
-  const { firestore, auth } = await import("firebase-admin");
-  const user = await auth().getUserByEmail(data.email);
-  return firestore().doc(`users/${user.uid}`).update({
-    tab: [],
-  });
+  try {
+    const { firestore, auth } = await import("firebase-admin");
+    const user = await auth().getUserByEmail(data.email);
+    return firestore().doc(`users/${user.uid}`).update({
+      tab: [],
+    });
+  } catch (error) {
+    const { code, message } = error as {
+      code: FunctionsErrorCode;
+      message: string;
+    };
+    throw new HttpsError(code, message);
+  }
 });
 
 export const toggleRole = onCall(async (data, context) => {
