@@ -67,7 +67,7 @@ const checkTabLength = () => {
       </v-btn>
     </template>
   </v-tooltip>
-  <v-dialog v-model="dialog" width="300px">
+  <v-dialog v-model="dialog" max-width="400px">
     <v-card>
       <v-card-title>
         <v-row>
@@ -94,7 +94,8 @@ const checkTabLength = () => {
                 <template v-for="(item, index) in items" :key="index">
                   <v-list-item v-if="count[item.name] > 0">
                     <v-list-item-title>
-                      {{ item.name }}: {{ count[item.name] }} *{{
+                      {{ item.name }}: {{ count[item.name] }} *
+                      {{
                         new Intl.NumberFormat("en-CA", {
                           style: "currency",
                           currency: "CAD",

@@ -18,7 +18,7 @@ const clearTab = async () => {
   loading.value = true;
   try {
     const clearTab = httpsCallable(functions, "clearTab");
-    await clearTab({ uid: user.info.uid });
+    await clearTab({ uid: user?.info?.uid });
     dialog.value = false;
   } catch (err) {
     console.log(err);
@@ -40,7 +40,7 @@ const clearTab = async () => {
       <v-card-subtitle>this action cannot be undone.</v-card-subtitle>
       <v-card-text>
         Are you sure you want to clear the tab for
-        <strong>{{ user.info.displayName }}</strong
+        <strong>{{ user?.info?.displayName }}</strong
         >?
       </v-card-text>
       <v-card-actions>
