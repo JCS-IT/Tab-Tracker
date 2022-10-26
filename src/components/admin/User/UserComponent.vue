@@ -53,16 +53,16 @@ const checkTabLength = () => {
 
 <template v-if="user != null">
   <v-tooltip :text="user?.info.displayName">
-    <template v-slot:activator="{ props }">
+    <template #activator="{ props }">
       <v-btn
-        :ref="user?.info.displayName"
+        :ref="user?.info.uid"
         icon
         v-bind="props"
         @click="dialog = true"
         :loading="dialog"
       >
         <v-avatar>
-          <v-img :src="user?.info.photoURL" alt="Avatar" />
+          <v-img :src="user?.info.photoURL" :alt="user?.info.displayName" />
         </v-avatar>
       </v-btn>
     </template>

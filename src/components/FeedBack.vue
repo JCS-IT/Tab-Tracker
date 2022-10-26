@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
-    <template v-slot:activator="{ props }">
+    <template #activator="{ props }">
       <v-btn v-bind="props" color="green-lighten-2" @click="dialog = true">
         Feedback
       </v-btn>

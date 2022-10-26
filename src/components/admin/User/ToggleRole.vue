@@ -78,7 +78,7 @@ const close = () => {
     persistent
     transition="dialog-transition"
   >
-    <template v-slot:activator="{ props }">
+    <template #activator="{ props }">
       <v-switch
         color="primary"
         label="Administrator"

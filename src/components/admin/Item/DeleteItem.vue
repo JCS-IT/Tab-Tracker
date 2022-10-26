@@ -38,7 +38,7 @@ const deleteItem = async () => {
 
 <template>
   <v-dialog v-model="dialog" max-width="350px" align="center">
-    <template v-slot:activator>
+    <template #activator>
       <v-btn
         color="red"
         :loading="loading.pending"

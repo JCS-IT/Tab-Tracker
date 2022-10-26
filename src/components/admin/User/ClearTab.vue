@@ -32,7 +32,7 @@ const clearTab = async () => {
 
 <template>
   <v-dialog v-model="dialog" max-width="300px">
-    <template v-slot:activator="{ props }">
+    <template #activator="{ props }">
       <v-btn v-bind="props" color="red" :loading="dialog"> Clear Tab </v-btn>
     </template>
     <v-card :disabled="loading" :loading="loading">
