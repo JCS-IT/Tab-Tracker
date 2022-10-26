@@ -1,12 +1,12 @@
-import {initializeApp} from "firebase-admin";
+import { initializeApp } from "firebase-admin/app";
 
 initializeApp();
 
-// user functions
-export {clearTab, toggleRole} from "./user/user";
+// User functions
+export { clearTab, toggleRole } from "./user/user";
 
-// auth functions
-export {beforeCreate, onCreate, onDelete} from "./user/auth";
+// Item functions
+export { addItem, deleteItem, updateItem } from "./items";
 
-// item functions
-export {addItem, deleteItem, updateItem} from "./items";
+// Auth functions
+export { beforeCreate, onCreate, onDelete } from "./user/auth";
