@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <add-item :items="items" />
+        <AddItem :items="items" />
       </v-col>
     </v-row>
     <v-row>

@@ -2,7 +2,7 @@
   <v-container fluid v-if="items.length > 0 && visibleItems().length > 0">
     <v-row class="text-center">
       <v-col>
-        <add-item />
+        <AddItem />
       </v-col>
     </v-row>
     <v-row align="center">
