@@ -28,7 +28,11 @@ const FeedBack = defineAsyncComponent(
       <RouterView />
     </VMain>
     <VFooter absolute app inset color="blue-lighten-2">
-      <FeedBack />
+      <VRow>
+        <VCol cols="12" class="text-center">
+          <FeedBack />
+        </VCol>
+      </VRow>
     </VFooter>
   </VApp>
 </template>
