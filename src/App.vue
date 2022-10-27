@@ -9,13 +9,20 @@ const UserMenu = defineAsyncComponent(
 const FeedBack = defineAsyncComponent(
   () => import("@/components/public/FeedBack.vue")
 );
+
+const mode = import.meta.env.MODE;
 </script>
 
 <template>
   <VApp>
     <VAppBar color="blue-lighten-2">
       <VAppBarNavIcon @click="$router.push({ name: 'Home' })" icon="mdi-home" />
-      <VToolbarTitle>JCS Tabs</VToolbarTitle>
+      <VToolbarTitle>
+        JCS Tabs
+        <template v-if="mode === 'development'">
+          <VChip label small>DEV</VChip>
+        </template>
+      </VToolbarTitle>
       <UserMenu
         v-if="
           auth.onAuthStateChanged((user) => {

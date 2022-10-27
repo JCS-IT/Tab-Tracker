@@ -75,9 +75,21 @@ const submit = async () => {
       email: auth.currentUser?.email,
       date: Timestamp.now(),
       text: input.value,
-      version: {
-        app: import.meta.env.VITE_APP_VERSION,
-        mode: import.meta.env.MODE,
+      debug: {
+        app: {
+          version: __APP_VERSION__,
+          mode: import.meta.env.MODE,
+        },
+        device: {
+          userAgent: navigator.userAgent,
+          platform: navigator.platform,
+          vendor: navigator.vendor,
+        },
+        browser: {
+          cookieEnabled: navigator.cookieEnabled,
+          language: navigator.language,
+          onLine: navigator.onLine,
+        },
       },
     });
 
