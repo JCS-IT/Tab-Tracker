@@ -6,10 +6,21 @@
       </v-col>
     </v-row>
     <v-row align="center">
+      <v-col
+        cols="12"
+        md="6"
+        lg="4"
+        v-for="item in visibleItems()"
+        :key="item.name"
+      >
+        <ItemCard :items="items" :input="item" />
+      </v-col>
+    </v-row>
+    <!-- <v-row align="center">
       <v-col v-for="(item, index) in visibleItems()" :key="index">
         <item-component :items="items" :input="item" />
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
   <v-container v-else fluid>
     <v-row align="center">
@@ -30,8 +41,8 @@ import type { Item } from "types";
 const AddItem = defineAsyncComponent(
   () => import("@/components/admin/Item/AddItem.vue")
 );
-const ItemComponent = defineAsyncComponent(
-  () => import("@/components/admin/Item/ItemComponent.vue")
+const ItemCard = defineAsyncComponent(
+  () => import("@/components/admin/Item/ItemCard.vue")
 );
 
 // data

@@ -39,8 +39,8 @@ const letters = [
 ] as string[];
 
 // components
-const UserComponent = defineAsyncComponent(
-  () => import("@/components/admin/User/UserComponent.vue")
+const UserCard = defineAsyncComponent(
+  () => import("@/components/admin/User/UserCard.vue")
 );
 
 // firestore snapshots
@@ -93,11 +93,7 @@ const filterUsers = (letter: string) => {
             </v-expansion-panel-title>
             <v-expansion-panel-text>
               <template v-for="user in filterUsers(letter)" :key="user">
-                <user-component
-                  :user="user"
-                  :items="items"
-                  :ref="user.info.uid"
-                />
+                <UserCard :user="user" :items="items" :ref="user.info.uid" />
               </template>
             </v-expansion-panel-text>
           </v-expansion-panel>
