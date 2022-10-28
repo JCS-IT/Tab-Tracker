@@ -55,7 +55,7 @@ const logout = () => {
         <v-divider class="my-3" />
         <v-btn rounded variant="text" @click="logout()"> logout </v-btn>
         <v-divider class="my-3" />
-        <p class="text-caption mt-1">Version: {{ version }}</p>
+        <p class="text-caption mt-1">v{{ version }}</p>
       </v-card-text>
     </v-card>
   </v-menu>
