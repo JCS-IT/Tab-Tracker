@@ -21,6 +21,7 @@ export default defineConfig({
   define: {
     __VUE_OPTIONS_API__: true,
     __VUE_PROD_DEVTOOLS__: false,
+    __APP_VERSION__: JSON.stringify(require("./package.json").version),
   },
   build: {
     minify: "esbuild",

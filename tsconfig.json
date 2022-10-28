@@ -5,7 +5,8 @@
     "src/**/*",
     "src/**/*.vue",
     "src/**/*.ts",
-    "node_modules/vuetify/lib/index.d.ts"
+    "node_modules/vuetify/lib/index.d.ts",
+    "vite-env.d.ts"
   ],
   "compilerOptions": {
     "baseUrl": ".",

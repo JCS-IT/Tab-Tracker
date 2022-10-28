@@ -24,13 +24,20 @@ const FeedBack = defineAsyncComponent(
 const UserProfile = defineAsyncComponent(
   () => import("@/components/UserProfile.vue")
 );
+
+const mode = import.meta.env.MODE;
 </script>
 
 <template>
   <v-app>
     <v-app-bar color="blue-lighten-2">
       <v-app-bar-nav-icon @click="$router.push('/')" icon="mdi-home" />
-      <v-app-bar-title> JCS Tabs </v-app-bar-title>
+      <v-app-bar-title>
+        JCS Tabs
+        <template v-if="mode === 'development'">
+          <v-chip color="red" label>DEV</v-chip>
+        </template>
+      </v-app-bar-title>
       <UserProfile v-if="loggedIn" />
     </v-app-bar>
     <v-main>

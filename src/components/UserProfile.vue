@@ -6,6 +6,8 @@ import type { User } from "firebase/auth";
 // data
 const user = ref<User | null>(null);
 const admin = ref(false);
+// eslint-disable-next-line no-undef
+const version = __APP_VERSION__;
 
 auth.onAuthStateChanged((currentUser) => {
   if (currentUser) {
@@ -52,6 +54,8 @@ const logout = () => {
         </template>
         <v-divider class="my-3" />
         <v-btn rounded variant="text" @click="logout()"> logout </v-btn>
+        <v-divider class="my-3" />
+        <p class="text-caption mt-1">Version: {{ version }}</p>
       </v-card-text>
     </v-card>
   </v-menu>
