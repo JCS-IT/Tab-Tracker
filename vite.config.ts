@@ -74,10 +74,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,png,svg,ico,webmanifest}"],
         cleanupOutdatedCaches: true,
-        skipWaiting: true,
-        clientsClaim: true,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -107,7 +104,6 @@ export default defineConfig({
               },
             },
           },
-          // cache google profile images
           {
             urlPattern: /^https:\/\/www\.googleapis.com\/plus\/v1\/people\/.*/i,
             handler: "CacheFirst",
