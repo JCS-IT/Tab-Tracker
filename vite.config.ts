@@ -74,6 +74,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        skipWaiting: true,
         cleanupOutdatedCaches: true,
         runtimeCaching: [
           {
