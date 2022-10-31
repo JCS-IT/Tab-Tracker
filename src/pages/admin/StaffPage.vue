@@ -81,7 +81,7 @@ const filterUsers = (letter: string) => {
           <v-expansion-panel
             :id="letter"
             :value="letter"
-            class="mb-2"
+            class="ma-2"
             v-if="filterUsers(letter).length > 0"
           >
             <v-expansion-panel-title>
