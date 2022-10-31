@@ -5,22 +5,12 @@
         <AddItem />
       </v-col>
     </v-row>
+
     <v-row align="center">
-      <v-col
-        cols="12"
-        md="6"
-        lg="4"
-        v-for="item in visibleItems()"
-        :key="item.name"
-      >
+      <v-col v-for="(item, index) in visibleItems()" :key="index">
         <ItemCard :items="items" :input="item" />
       </v-col>
     </v-row>
-    <!-- <v-row align="center">
-      <v-col v-for="(item, index) in visibleItems()" :key="index">
-        <item-component :items="items" :input="item" />
-      </v-col>
-    </v-row> -->
   </v-container>
   <v-container v-else fluid>
     <v-row align="center">
