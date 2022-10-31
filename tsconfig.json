@@ -1,15 +1,33 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
-    "env.d.ts",
-    "src/**/*",
-    "src/**/*.vue",
     "src/**/*.ts",
-    "node_modules/vuetify/lib/index.d.ts",
-    "vite-env.d.ts"
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "vite.config.ts",
+    "env.d.ts"
   ],
   "compilerOptions": {
     "baseUrl": ".",
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "types": [
+      "vuetify"
+    ],
     "paths": {
       "@/*": [
         "./src/*"
@@ -17,14 +35,7 @@
       "utils/*": [
         "./src/utils/*"
       ],
-      "types": [
-        "./src/types"
-      ],
     },
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
-    ]
   },
   "references": [
     {

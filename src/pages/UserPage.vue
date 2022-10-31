@@ -102,7 +102,7 @@
 import { computed, defineAsyncComponent, onBeforeUnmount, ref } from "vue";
 import { auth, db } from "utils/firebase";
 import { doc, onSnapshot, Timestamp } from "firebase/firestore";
-import type { User, Item } from "types";
+import type { User, Item } from "@/types";
 
 // components
 const AddItem = defineAsyncComponent(

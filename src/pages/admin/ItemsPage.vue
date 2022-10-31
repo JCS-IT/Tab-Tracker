@@ -25,7 +25,7 @@
 import { defineAsyncComponent, ref } from "vue";
 import { auth, db } from "utils/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
-import type { Item } from "types";
+import type { Item } from "@/types";
 
 // components
 const AddItem = defineAsyncComponent(

@@ -37,7 +37,7 @@
 import { defineAsyncComponent, ref } from "vue";
 import { functions } from "utils/firebase";
 import { httpsCallable } from "@firebase/functions";
-import type { Item } from "types";
+import type { Item } from "@/types";
 
 // props
 const props = defineProps<{

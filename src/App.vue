@@ -30,7 +30,7 @@ const mode = import.meta.env.MODE;
 
 <template>
   <v-app>
-    <v-app-bar color="blue-lighten-2">
+    <v-app-bar color="primary">
       <v-app-bar-nav-icon @click="$router.push('/')" icon="mdi-home" />
       <v-app-bar-title>
         JCS Tabs
@@ -50,7 +50,7 @@ const mode = import.meta.env.MODE;
     <v-fade-transition>
       <v-footer
         app
-        color="blue-lighten-2"
+        color="primary"
         height="64px"
         v-if="loggedIn && route.path === '/user'"
       >

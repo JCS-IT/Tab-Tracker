@@ -1,40 +1,3 @@
-<script setup lang="ts">
-import { ref } from "vue";
-import { functions } from "utils/firebase";
-import { httpsCallable } from "@firebase/functions";
-import type { User } from "types";
-
-// inject the user
-const props = defineProps<{ user: User | null }>();
-
-const dialog = ref(false);
-const loading = ref(false);
-const error = ref({
-  code: null,
-  message: null,
-} as { code: string | null; message: string | null });
-
-const clearTab = async () => {
-  loading.value = true;
-  try {
-    const clearTab = httpsCallable(functions, "clearTab");
-    await clearTab({ email: props.user?.info.email });
-    dialog.value = false;
-  } catch (err) {
-    console.log(err);
-    const { code, message } = err as { code: string; message: string };
-    error.value = { code, message };
-  } finally {
-    loading.value = false;
-  }
-};
-
-const closeDialog = () => {
-  dialog.value = false;
-  error.value = { code: null, message: null };
-};
-</script>
-
 <template>
   <v-dialog v-model="dialog" max-width="300px" @click:outside="closeDialog()">
     <template #activator="{ props }">
@@ -68,3 +31,40 @@ const closeDialog = () => {
     </v-card>
   </v-dialog>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { functions } from "utils/firebase";
+import { httpsCallable } from "@firebase/functions";
+import type { User } from "@/types";
+
+// inject the user
+const props = defineProps<{ user: User | null }>();
+
+const dialog = ref(false);
+const loading = ref(false);
+const error = ref({
+  code: null,
+  message: null,
+} as { code: string | null; message: string | null });
+
+const clearTab = async () => {
+  loading.value = true;
+  try {
+    const clearTab = httpsCallable(functions, "clearTab");
+    await clearTab({ email: props.user?.info.email });
+    dialog.value = false;
+  } catch (err) {
+    console.log(err);
+    const { code, message } = err as { code: string; message: string };
+    error.value = { code, message };
+  } finally {
+    loading.value = false;
+  }
+};
+
+const closeDialog = () => {
+  dialog.value = false;
+  error.value = { code: null, message: null };
+};
+</script>

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <template #activator="{ props }">
-      <v-btn v-bind="props" color="green-lighten-2" @click="dialog = true">
+      <v-btn v-bind="props" color="secondary" @click="dialog = true">
         Feedback
       </v-btn>
     </template>

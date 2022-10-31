@@ -1,42 +1,20 @@
-import { fileURLToPath, URL } from "node:url";
-
-import { defineConfig } from "vite";
+// Plugins
 import vue from "@vitejs/plugin-vue";
-
-// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
 import vuetify from "vite-plugin-vuetify";
-
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from "vite-plugin-mkcert";
 
+// Utilities
+import { defineConfig } from "vite";
+import { fileURLToPath, URL } from "node:url";
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  server: {
-    https: true,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Referrer-Policy": "no-referrer",
-    },
-  },
-  define: {
-    __VUE_OPTIONS_API__: true,
-    __VUE_PROD_DEVTOOLS__: false,
-    __APP_VERSION__: JSON.stringify(require("./package.json").version),
-  },
-  build: {
-    minify: "esbuild",
-    commonjsOptions: {
-      include: [],
-    },
-  },
-  esbuild: {
-    drop: ["console", "debugger"],
-    legalComments: "none",
-    format: "esm",
-  },
   plugins: [
     vue(),
-    vuetify({ autoImport: true }),
+    vuetify({
+      autoImport: true,
+    }),
     mkcert(),
     VitePWA({
       injectRegister: "inline",
@@ -134,11 +112,29 @@ export default defineConfig({
       },
     }),
   ],
+  define: {
+    __VUE_OPTIONS_API__: true,
+    __VUE_PROD_DEVTOOLS__: false,
+    __APP_VERSION__: JSON.stringify(require("./package.json").version),
+  },
+  esbuild: {
+    drop: ["console", "debugger"],
+    legalComments: "none",
+    format: "esm",
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
       utils: fileURLToPath(new URL("./src/utils", import.meta.url)),
       types: fileURLToPath(new URL("./src/types", import.meta.url)),
+    },
+    extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
+  },
+  server: {
+    https: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Referrer-Policy": "no-referrer",
     },
   },
 });
