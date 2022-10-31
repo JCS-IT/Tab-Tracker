@@ -62,7 +62,7 @@
         <ToggleRole :user="user" role="admin" />
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click="dialog = false">Cancel</v-btn>
+        <v-btn color="primary" @click="dialog = false">Close</v-btn>
         <ClearTab :user="user" v-if="checkTabLength()" />
       </v-card-actions>
     </v-card>

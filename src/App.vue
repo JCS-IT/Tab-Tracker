@@ -30,22 +30,24 @@ const mode = import.meta.env.MODE;
 
 <template>
   <v-app>
-    <v-app-bar color="primary">
-      <v-app-bar-nav-icon @click="$router.push('/')" icon="mdi-home" />
+    <v-app-bar color="primary" app>
+      <v-app-bar-nav-icon @click="$router.go(0)" icon="mdi-home" />
       <v-app-bar-title>
         JCS Tabs
         <template v-if="mode === 'development'">
-          <v-chip color="red" label>DEV</v-chip>
+          <v-chip color="info" label>DEV</v-chip>
         </template>
       </v-app-bar-title>
       <UserProfile v-if="loggedIn" />
     </v-app-bar>
     <v-main>
-      <router-view v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+      <v-container fluid>
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </v-container>
     </v-main>
     <v-fade-transition>
       <v-footer

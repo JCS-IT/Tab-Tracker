@@ -1,39 +1,37 @@
 <template>
-  <v-container fluid>
-    <v-row justify="center">
-      <v-card color="dark-grey" width="300" class="text-center mt-45">
-        <v-card-title class="text-center">
-          <h1>Login</h1>
-        </v-card-title>
-        <v-divider />
-        <v-card-text>
-          <v-alert type="error" v-if="alert" variant="outlined" prominent>
-            <v-alert-title>
-              {{ error.status.replace("_", " ") }}
-            </v-alert-title>
-            {{ error.message }}
-            <v-divider />
-            <v-btn
-              variant="text"
-              class="float-right"
-              color="blue"
-              @click="alert = false"
-            >
-              Dismiss
-            </v-btn>
-          </v-alert>
-          <v-btn @click="signIn()" v-else>
-            <v-img
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-              style="width: 20px; height: 20px; margin-right: 10px"
-              icon
-            />
-            Continue with Google
+  <v-row justify="center">
+    <v-card color="dark-grey" width="300" class="text-center mt-45">
+      <v-card-title class="text-center">
+        <h1>Login</h1>
+      </v-card-title>
+      <v-divider />
+      <v-card-text>
+        <v-alert type="error" v-if="alert" variant="outlined" prominent>
+          <v-alert-title>
+            {{ error.status.replace("_", " ") }}
+          </v-alert-title>
+          {{ error.message }}
+          <v-divider />
+          <v-btn
+            variant="text"
+            class="float-right"
+            color="blue"
+            @click="alert = false"
+          >
+            Dismiss
           </v-btn>
-        </v-card-text>
-      </v-card>
-    </v-row>
-  </v-container>
+        </v-alert>
+        <v-btn @click="signIn()" v-else>
+          <v-img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            style="width: 20px; height: 20px; margin-right: 10px"
+            icon
+          />
+          Continue with Google
+        </v-btn>
+      </v-card-text>
+    </v-card>
+  </v-row>
 </template>
 
 <script setup lang="ts">
@@ -65,24 +63,18 @@ const ignoreErrorCode = [
 
 const provider = new GoogleAuthProvider();
 const signIn = () => {
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      const user = result.user;
-      console.log(user);
-      router.push("/user");
-    })
-    .catch((err) => {
-      if (!ignoreErrorCode.includes(err.code)) {
-        try {
-          const { error } = JSON.parse(err.message.match(/{.*}/g));
-          error.value = error;
-        } catch {
-          error.value = {
-            message: err.message,
-            status: err.code,
-          };
-        }
+  signInWithPopup(auth, provider).catch((err) => {
+    if (!ignoreErrorCode.includes(err.code)) {
+      try {
+        const { error } = JSON.parse(err.message.match(/{.*}/g));
+        error.value = error;
+      } catch {
+        error.value = {
+          message: err.message,
+          status: err.code,
+        };
       }
-    });
+    }
+  });
 };
 </script>

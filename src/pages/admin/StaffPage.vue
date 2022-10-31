@@ -26,7 +26,7 @@
       </v-expansion-panels>
     </v-row>
   </v-container>
-  <v-container v-else fluid align="center">
+  <v-container fluid v-else>
     <v-row>
       <v-col cols="12">
         <v-progress-linear indeterminate />

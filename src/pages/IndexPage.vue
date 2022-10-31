@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <v-container fluid align="center">
+    <v-progress-circular indeterminate />
+  </v-container>
 </template>
 
 <script setup lang="ts">

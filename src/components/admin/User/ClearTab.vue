@@ -19,14 +19,14 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-          color="error"
+          color="green"
           @click="clearTab()"
           :disabled="loading"
           :loading="loading"
         >
           Confirm
         </v-btn>
-        <v-btn color="primary" @click="dialog = false">Cancel</v-btn>
+        <v-btn color="red" @click="dialog = false">Cancel</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

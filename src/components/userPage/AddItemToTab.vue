@@ -7,7 +7,7 @@
   >
     <template #activator="{ props }">
       <v-btn
-        color="green-lighten-2"
+        color="success"
         v-bind="props"
         :loading="dialog"
         :disabled="dialog"
@@ -34,7 +34,7 @@
       </v-card-title>
       <v-card-text>
         <v-btn
-          color="green-lighten-2"
+          color="blue-lighten-3"
           v-for="(item, index) in items"
           :key="index"
           :loading="loading[item.name]"

@@ -1,9 +1,10 @@
 <template>
-  <v-btn color="green-lighten-2" @click="dialog = true"> Add Item </v-btn>
+  <v-btn color="secondary" @click="dialog = true"> Add Item </v-btn>
   <v-dialog v-model="dialog" width="300px" @click:outside="close()">
     <v-card :loading="loading" :disabled="loading">
-      <v-alert v-if="error">
+      <v-alert v-if="error" type="error" variant="outlined">
         <v-alert-title>Error Occurred</v-alert-title>
+        hello!
         {{ error }}
       </v-alert>
       <v-card-title>
@@ -30,7 +31,7 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="green-lighten-2" @click="addItem" :loading="loading">
+        <v-btn color="green" @click="addItem" :loading="loading">
           Submit
         </v-btn>
         <v-btn color="red" @click="close()"> Cancel </v-btn>
