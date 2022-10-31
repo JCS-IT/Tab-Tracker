@@ -75,23 +75,6 @@ const submit = async () => {
       email: auth.currentUser?.email,
       date: Timestamp.now(),
       text: input.value,
-      debug: {
-        app: {
-          // eslint-disable-next-line no-undef
-          version: __APP_VERSION__,
-          mode: import.meta.env.MODE,
-        },
-        device: {
-          userAgent: navigator.userAgent,
-          platform: navigator.platform,
-          vendor: navigator.vendor,
-        },
-        browser: {
-          cookieEnabled: navigator.cookieEnabled,
-          language: navigator.language,
-          onLine: navigator.onLine,
-        },
-      },
     });
 
     close();

@@ -1,6 +1,6 @@
 {
   "name": "jcstabs",
-  "version": "1.12.3",
+  "version": "0.0.0",
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",
