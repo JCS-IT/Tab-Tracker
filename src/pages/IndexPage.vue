@@ -8,9 +8,11 @@ import { auth } from "utils/firebase";
 
 const router = useRouter();
 
-if (auth.currentUser) {
-  router.push("/user");
-} else {
-  router.push("/login");
-}
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    router.push("/user");
+  } else {
+    router.push("/login");
+  }
+});
 </script>
