@@ -1,5 +1,5 @@
 <template>
-  <template v-if="items.length > 0 && visibleItems().length > 0">
+  <v-container v-if="items.length > 0 && visibleItems().length > 0">
     <v-row class="text-center">
       <v-col>
         <AddItem />
@@ -11,14 +11,14 @@
         <ItemCard :items="items" :input="item" />
       </v-col>
     </v-row>
-  </template>
-  <template v-else>
+  </v-container>
+  <v-container v-else>
     <v-row align="center">
       <v-col cols="12">
         <v-progress-linear indeterminate />
       </v-col>
     </v-row>
-  </template>
+  </v-container>
 </template>
 
 <script setup lang="ts">

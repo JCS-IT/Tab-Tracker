@@ -1,21 +1,7 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from "vue";
-import { auth } from "utils/firebase";
-import { useRouter, useRoute } from "vue-router";
 
-const router = useRouter();
-const route = useRoute();
 const loggedIn = ref(false);
-
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    router.push("/user");
-    loggedIn.value = true;
-  } else {
-    router.push("/login");
-    loggedIn.value = false;
-  }
-});
 
 const FeedBack = defineAsyncComponent(
   () => import("@/components/FeedBack.vue")
@@ -31,7 +17,7 @@ const mode = import.meta.env.MODE;
 <template>
   <v-app>
     <v-app-bar color="primary" app>
-      <v-app-bar-nav-icon @click="$router.go(0)" icon="mdi-home" />
+      <v-app-bar-nav-icon @click="$router.push('/')" icon="mdi-home" />
       <v-app-bar-title>
         JCS Tabs
         <template v-if="mode === 'development'">
@@ -54,7 +40,7 @@ const mode = import.meta.env.MODE;
         app
         color="primary"
         height="64px"
-        v-if="loggedIn && route.path === '/user'"
+        v-if="loggedIn && $route.path === '/user'"
       >
         <v-container>
           <v-row justify="center" no-gutters>

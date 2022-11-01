@@ -29,6 +29,7 @@
           />
           Continue with Google
         </v-btn>
+        <v-progress-linear v-if="auth.currentUser" indeterminate />
       </v-card-text>
     </v-card>
   </v-row>
