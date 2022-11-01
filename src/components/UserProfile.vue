@@ -1,7 +1,7 @@
 <template>
   <v-menu rounded v-if="user !== null">
     <template #activator="{ props }">
-      <v-btn icon v-bind="props" elevation="3">
+      <v-btn icon v-bind="props">
         <v-avatar>
           <v-img :src="(user?.photoURL as string)" />
         </v-avatar>

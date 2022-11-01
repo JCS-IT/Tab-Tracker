@@ -1,41 +1,11 @@
-<script setup lang="ts">
-import { ref, defineAsyncComponent } from "vue";
-import { auth } from "utils/firebase";
-import { useRouter, useRoute } from "vue-router";
-
-const router = useRouter();
-const route = useRoute();
-const loggedIn = ref(false);
-
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    router.push("/user");
-    loggedIn.value = true;
-  } else {
-    router.push("/login");
-    loggedIn.value = false;
-  }
-});
-
-const FeedBack = defineAsyncComponent(
-  () => import("@/components/FeedBack.vue")
-);
-
-const UserProfile = defineAsyncComponent(
-  () => import("@/components/UserProfile.vue")
-);
-
-const mode = import.meta.env.MODE;
-</script>
-
 <template>
   <v-app>
     <v-app-bar color="primary" app>
       <v-app-bar-nav-icon @click="$router.go(0)" icon="mdi-home" />
       <v-app-bar-title>
         JCS Tabs
-        <template v-if="mode === 'development'">
-          <v-chip color="info" label>DEV</v-chip>
+        <template v-if="mode">
+          <v-chip color="error" label>DEV</v-chip>
         </template>
       </v-app-bar-title>
       <UserProfile v-if="loggedIn" />
@@ -65,6 +35,36 @@ const mode = import.meta.env.MODE;
     </v-fade-transition>
   </v-app>
 </template>
+
+<script setup lang="ts">
+import { ref, defineAsyncComponent } from "vue";
+import { auth } from "utils/firebase";
+import { useRouter, useRoute } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
+const loggedIn = ref(false);
+
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    router.push("/user");
+    loggedIn.value = true;
+  } else {
+    router.push("/login");
+    loggedIn.value = false;
+  }
+});
+
+const FeedBack = defineAsyncComponent(
+  () => import("@/components/FeedBack.vue")
+);
+
+const UserProfile = defineAsyncComponent(
+  () => import("@/components/UserProfile.vue")
+);
+
+const mode = import.meta.env.DEV;
+</script>
 
 <style scoped>
 .fade-enter-active,
