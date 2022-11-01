@@ -33,7 +33,7 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="green-lighten-2" text @click="submit">Submit</v-btn>
+        <v-btn color="success" text @click="submit">Submit</v-btn>
         <v-btn color="error" text @click="dialog = false">Cancel</v-btn>
       </v-card-actions>
     </v-card>

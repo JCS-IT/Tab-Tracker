@@ -91,6 +91,9 @@
   </v-container>
   <v-container v-else fluid align="center">
     <v-row>
+      <v-col> <h1>Fetching your profile...</h1></v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12">
         <v-progress-linear indeterminate />
       </v-col>

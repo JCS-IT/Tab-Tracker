@@ -1,32 +1,15 @@
-<script setup lang="ts">
-import { ref, defineAsyncComponent } from "vue";
-import { auth } from "utils/firebase";
-
-const loggedIn = ref(false);
-
-auth.onAuthStateChanged((user) => {
-  loggedIn.value = !!user;
-});
-
-const FeedBack = defineAsyncComponent(
-  () => import("@/components/FeedBack.vue")
-);
-
-const UserProfile = defineAsyncComponent(
-  () => import("@/components/UserProfile.vue")
-);
-
-const mode = import.meta.env.MODE;
-</script>
-
 <template>
-  <v-app>
+  <v-app theme="dark">
     <v-app-bar color="primary" app>
-      <v-app-bar-nav-icon @click="$router.push('/')" icon="mdi-home" />
+      <v-app-bar-nav-icon
+        @click="$router.push('/')"
+        color="auto"
+        icon="mdi-home"
+      />
       <v-app-bar-title>
         JCS Tabs
         <template v-if="mode === 'development'">
-          <v-chip color="info" label>DEV</v-chip>
+          <v-chip label>DEV</v-chip>
         </template>
       </v-app-bar-title>
       <UserProfile v-if="loggedIn" />
@@ -56,6 +39,27 @@ const mode = import.meta.env.MODE;
     </v-fade-transition>
   </v-app>
 </template>
+
+<script setup lang="ts">
+import { ref, defineAsyncComponent } from "vue";
+import { auth } from "utils/firebase";
+
+const loggedIn = ref(false);
+
+auth.onAuthStateChanged((user) => {
+  loggedIn.value = !!user;
+});
+
+const FeedBack = defineAsyncComponent(
+  () => import("@/components/FeedBack.vue")
+);
+
+const UserProfile = defineAsyncComponent(
+  () => import("@/components/UserProfile.vue")
+);
+
+const mode = import.meta.env.MODE;
+</script>
 
 <style scoped>
 .fade-enter-active,

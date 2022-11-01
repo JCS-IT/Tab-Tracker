@@ -12,6 +12,11 @@
     </v-row>
   </v-container>
   <v-container v-else>
+    <v-row>
+      <v-col align="center">
+        <h1>Fetching items...</h1>
+      </v-col>
+    </v-row>
     <v-row align="center">
       <v-col cols="12">
         <v-progress-linear indeterminate />

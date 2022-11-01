@@ -28,6 +28,11 @@
   </v-container>
   <v-container fluid v-else>
     <v-row>
+      <v-col align="center">
+        <h1>Fetching users...</h1>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12">
         <v-progress-linear indeterminate />
       </v-col>

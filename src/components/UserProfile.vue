@@ -1,13 +1,13 @@
 <template>
   <v-menu rounded v-if="user !== null">
     <template #activator="{ props }">
-      <v-btn icon v-bind="props" elevation="3">
+      <v-btn icon v-bind="props">
         <v-avatar>
           <v-img :src="(user?.photoURL as string)" />
         </v-avatar>
       </v-btn>
     </template>
-    <v-card>
+    <v-card color="user">
       <v-card-text class="mx-auto text-center">
         <v-avatar size="large">
           <v-img :src="(user?.photoURL as string)" alt="Avatar" />
@@ -19,13 +19,16 @@
           <v-btn
             rounded
             variant="text"
+            color="auto"
             @click="$router.push({ name: 'Admin' })"
           >
             admin menu
           </v-btn>
         </template>
         <v-divider class="my-3" />
-        <v-btn rounded variant="text" @click="logout()"> logout </v-btn>
+        <v-btn rounded variant="text" color="auto" @click="logout()">
+          logout
+        </v-btn>
       </v-card-text>
     </v-card>
   </v-menu>

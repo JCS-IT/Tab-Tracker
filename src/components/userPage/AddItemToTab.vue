@@ -15,26 +15,27 @@
         Add Item
       </v-btn>
     </template>
-    <v-alert
-      v-if="error.code !== null"
-      type="error"
-      variant="outlined"
-      prominent
-      class="text-center"
-      elevation="2"
-    >
-      <v-alert-title>
-        {{ error.code }}
-      </v-alert-title>
-      {{ error.message }}
-    </v-alert>
     <v-card>
       <v-card-title class="text-center">
         <span>Add Item</span>
       </v-card-title>
-      <v-card-text>
+      <v-card-text v-if="error.code !== null">
+        <v-alert
+          type="error"
+          variant="outlined"
+          prominent
+          class="text-center"
+          elevation="2"
+        >
+          <v-alert-title>
+            {{ error.code }}
+          </v-alert-title>
+          {{ error.message }}
+        </v-alert>
+      </v-card-text>
+      <v-card-text v-else>
         <v-btn
-          color="blue-lighten-3"
+          color="secondary"
           v-for="(item, index) in items"
           :key="index"
           :loading="loading[item.name]"
