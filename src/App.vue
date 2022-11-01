@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from "vue";
+import { auth } from "utils/firebase";
 
 const loggedIn = ref(false);
+
+auth.onAuthStateChanged((user) => {
+  loggedIn.value = !!user;
+});
 
 const FeedBack = defineAsyncComponent(
   () => import("@/components/FeedBack.vue")

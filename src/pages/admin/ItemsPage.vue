@@ -1,13 +1,12 @@
 <template>
-  <v-container v-if="items.length > 0 && visibleItems().length > 0">
+  <v-container v-if="items.length > 0">
     <v-row class="text-center">
       <v-col>
         <AddItem />
       </v-col>
     </v-row>
-
-    <v-row align="center">
-      <v-col v-for="(item, index) in visibleItems()" :key="index">
+    <v-row class="text-center">
+      <v-col v-for="(item, index) in items" :key="index" align="center">
         <ItemCard :items="items" :input="item" />
       </v-col>
     </v-row>
@@ -37,15 +36,6 @@ const ItemCard = defineAsyncComponent(
 
 // data
 const items = ref([] as Item[]);
-const page = ref(1);
-const perPage = ref(20);
-
-const visibleItems = () => {
-  return items.value.slice(
-    (page.value - 1) * perPage.value,
-    page.value * perPage.value
-  );
-};
 
 const itemSnap = onSnapshot(doc(db, "admin/items"), (doc) => {
   if (doc.exists()) {
