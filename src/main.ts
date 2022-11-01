@@ -21,6 +21,9 @@ registerSW({
         r.update();
       }, intervalMS);
   },
+  onNeedRefresh() {
+    window.location.reload();
+  },
 });
 
 const app = createApp(App);
