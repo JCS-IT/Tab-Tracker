@@ -1,5 +1,5 @@
 <template>
-  <v-app theme="dark">
+  <v-app>
     <v-app-bar color="primary" app>
       <v-app-bar-nav-icon
         @click="$router.push('/')"
@@ -8,18 +8,27 @@
       />
       <v-app-bar-title>
         JCS Tabs
-        <template v-if="mode === 'development'">
+        <template v-if="mode">
           <v-chip label>DEV</v-chip>
         </template>
       </v-app-bar-title>
+      <v-fade-transition>
+        <v-btn icon @click="toggleTheme" color="auto">
+          <v-icon>{{
+            theme.global.name.value === "light"
+              ? "mdi-white-balance-sunny"
+              : "mdi-weather-night"
+          }}</v-icon>
+        </v-btn>
+      </v-fade-transition>
       <UserProfile v-if="loggedIn" />
     </v-app-bar>
     <v-main>
       <v-container fluid>
         <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
+          <Transition name="fade-transition" mode="out-in">
             <component :is="Component" />
-          </transition>
+          </Transition>
         </router-view>
       </v-container>
     </v-main>
@@ -43,13 +52,37 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from "vue";
 import { auth } from "utils/firebase";
+import { useTheme } from "vuetify";
+import { useRouter } from "vue-router";
 
+// data
 const loggedIn = ref(false);
+const theme = useTheme();
+const mode = import.meta.env.DEV;
 
+const router = useRouter();
+
+// computed
 auth.onAuthStateChanged((user) => {
-  loggedIn.value = !!user;
+  if (user) {
+    loggedIn.value = true;
+  } else {
+    router.push("/login");
+    loggedIn.value = false;
+  }
 });
 
+// methods
+const toggleTheme = () => {
+  theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
+  localStorage.setItem("theme", theme.global.name.value);
+};
+
+if (localStorage.getItem("theme")) {
+  theme.global.name.value = localStorage.getItem("theme") as string;
+}
+
+// components
 const FeedBack = defineAsyncComponent(
   () => import("@/components/FeedBack.vue")
 );
@@ -57,18 +90,4 @@ const FeedBack = defineAsyncComponent(
 const UserProfile = defineAsyncComponent(
   () => import("@/components/UserProfile.vue")
 );
-
-const mode = import.meta.env.MODE;
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

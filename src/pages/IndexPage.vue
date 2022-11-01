@@ -10,6 +10,8 @@ import { auth } from "utils/firebase";
 
 const router = useRouter();
 
+console.log("hello!");
+
 auth.onAuthStateChanged((user) => {
   if (user) {
     router.push("/user");

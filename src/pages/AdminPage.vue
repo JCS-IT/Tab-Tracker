@@ -1,19 +1,20 @@
 <template>
-  <router-view v-slot="{ Component }">
-    <v-slide-x-transition>
-      <keep-alive>
+  <keep-alive>
+    <router-view v-slot="{ Component }">
+      <Transition name="slide-x-transition" mode="out-in">
         <component :is="Component" />
-      </keep-alive>
-    </v-slide-x-transition>
-  </router-view>
+      </Transition>
+    </router-view>
+  </keep-alive>
+
   <v-bottom-navigation>
     <v-tabs v-model="page">
       <v-tab value="staff">
-        <v-icon>mdi-account-school</v-icon>
+        <v-icon icon="mdi-account-school" />
         Staff
       </v-tab>
       <v-tab value="items">
-        <v-icon>mdi-package</v-icon>
+        <v-icon icon="mdi-package" />
         Items
       </v-tab>
     </v-tabs>

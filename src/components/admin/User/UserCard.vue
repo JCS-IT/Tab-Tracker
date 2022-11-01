@@ -7,6 +7,7 @@
         v-bind="props"
         @click="dialog = true"
         :loading="dialog"
+        variant="text"
       >
         <v-avatar>
           <v-img :src="user?.info.photoURL" :alt="user?.info.displayName" />

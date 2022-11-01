@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="400px" align="center">
     <template #activator="{ props }">
       <v-btn v-bind="props" color="red" depressed @click="dialog = true">
-        <v-icon>mdi-delete</v-icon>
+        <v-icon icon="mdi-delete" />
       </v-btn>
     </template>
     <v-card :loading="loading" :disabled="loading">
@@ -31,14 +31,14 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-          color="green"
+          color="success"
           @click="deleteItem"
           :loading="loading"
           :disabled="loading"
         >
-          Delete
+          Confirm
         </v-btn>
-        <v-btn color="red" @click="cancel()"> Cancel </v-btn>
+        <v-btn color="error" @click="cancel()"> Cancel </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

@@ -1,27 +1,22 @@
 <template>
   <v-row justify="center">
-    <v-card color="dark-grey" width="300" class="text-center mt-45">
+    <v-card color="info" width="300" class="text-center mt-45">
       <v-card-title class="text-center">
         <h1>Login</h1>
       </v-card-title>
       <v-divider />
-      <v-card-text>
+      <v-card-text v-if="!loggedIn">
         <v-alert type="error" v-if="alert" variant="outlined" prominent>
           <v-alert-title>
             {{ error.status.replace("_", " ") }}
           </v-alert-title>
           {{ error.message }}
           <v-divider />
-          <v-btn
-            variant="text"
-            class="float-right"
-            color="blue"
-            @click="alert = false"
-          >
+          <v-btn variant="text" class="float-right" @click="alert = false">
             Dismiss
           </v-btn>
         </v-alert>
-        <v-btn @click="signIn()" v-else>
+        <v-btn @click="signIn()" v-if="!alert">
           <v-img
             src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
             style="width: 20px; height: 20px; margin-right: 10px"
@@ -29,7 +24,9 @@
           />
           Continue with Google
         </v-btn>
-        <v-progress-linear v-if="auth.currentUser" indeterminate />
+      </v-card-text>
+      <v-card-text v-else>
+        <v-progress-linear indeterminate />
       </v-card-text>
     </v-card>
   </v-row>
@@ -42,10 +39,12 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const loggedIn = ref(false);
 
 auth.onAuthStateChanged((user) => {
   if (user) {
     router.push("/user");
+    loggedIn.value = true;
   }
 });
 
