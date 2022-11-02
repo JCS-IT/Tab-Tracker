@@ -63,7 +63,7 @@
         <ToggleRole :user="user" role="admin" />
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="dialog = false">Close</v-btn>
+        <v-btn color="auto" @click="dialog = false">Close</v-btn>
         <ClearTab :user="user" v-if="checkTabLength()" />
       </v-card-actions>
     </v-card>
@@ -75,10 +75,7 @@ import { defineAsyncComponent, ref, computed } from "vue";
 import type { User, Item } from "@/types";
 
 // components
-const ToggleRole = defineAsyncComponent(
-  () => import("@/components/admin/User/ToggleRole.vue")
-);
-
+import ToggleRole from "@/components/admin/User/ToggleRole.vue";
 const ClearTab = defineAsyncComponent(
   () => import("@/components/admin/User/ClearTab.vue")
 );

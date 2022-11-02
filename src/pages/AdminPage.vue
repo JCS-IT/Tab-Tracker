@@ -1,39 +1,21 @@
 <template>
-  <router-view v-slot="{ Component }">
-    <Transition name="slide-x-transition" mode="out-in">
-      <keep-alive>
+  <RouterView v-slot="{ Component }">
+    <Transition name="slide-x-transition" mode="out-in" appear>
+      <KeepAlive :include="['Staff', 'Items']">
         <component :is="Component" />
-      </keep-alive>
+      </KeepAlive>
     </Transition>
-  </router-view>
+  </RouterView>
   <v-bottom-navigation>
-    <v-tabs v-model="page">
-      <v-tab value="staff">
+    <v-tabs>
+      <v-tab value="staff" to="/admin/staff">
         <v-icon icon="mdi-account-school" />
         Staff
       </v-tab>
-      <v-tab value="items">
+      <v-tab value="items" to="/admin/items">
         <v-icon icon="mdi-package" />
         Items
       </v-tab>
     </v-tabs>
   </v-bottom-navigation>
 </template>
-
-<script setup lang="ts">
-import { ref, watch } from "vue";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
-
-const page = ref("staff");
-
-router.push("/admin/staff");
-
-watch(
-  () => page.value,
-  (value) => {
-    router.push(`/admin/${value}`);
-  }
-);
-</script>

@@ -12,22 +12,25 @@
           <v-chip label>DEV</v-chip>
         </template>
       </v-app-bar-title>
-      <v-fade-transition>
-        <v-btn icon @click="toggleTheme" color="auto">
-          <v-icon>{{
-            theme.global.name.value === "light"
-              ? "mdi-white-balance-sunny"
-              : "mdi-weather-night"
-          }}</v-icon>
-        </v-btn>
-      </v-fade-transition>
+      <v-btn icon @click="toggleTheme" color="auto">
+        <Transition name="fade-transition" mode="out-in">
+          <v-icon
+            icon="mdi-white-balance-sunny"
+            v-if="theme.global.name.value == 'light'"
+          />
+          <v-icon icon="mdi-weather-night" v-else />
+        </Transition>
+      </v-btn>
+
       <UserProfile v-if="loggedIn" />
     </v-app-bar>
     <v-main>
       <v-container fluid>
-        <Transition name="fade-transition" mode="out-in">
-          <RouterView />
-        </Transition>
+        <router-view v-slot="{ Component }">
+          <Transition name="fade-transition" appear>
+            <component :is="Component" />
+          </Transition>
+        </router-view>
       </v-container>
     </v-main>
     <v-fade-transition>
