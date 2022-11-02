@@ -33,9 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { functions } from "utils/firebase";
-import { httpsCallable } from "@firebase/functions";
 import type { User } from "@/types";
 
 // inject the user

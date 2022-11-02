@@ -34,9 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from "vue";
-import { functions } from "utils/firebase";
-import { httpsCallable } from "@firebase/functions";
 import type { Item } from "@/types";
 
 // props
@@ -44,9 +41,6 @@ const props = defineProps<{
   input: Item;
   items: Item[];
 }>();
-
-// components
-const DeleteItem = defineAsyncComponent(() => import("./DeleteItem.vue"));
 
 // data
 const loading = ref({

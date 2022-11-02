@@ -28,4 +28,4 @@ initializeAppCheck(app, {
   isTokenAutoRefreshEnabled: true,
 });
 
-export { app, auth, db, functions };
+export { auth, db, functions };

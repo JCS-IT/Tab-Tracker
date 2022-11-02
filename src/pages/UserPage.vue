@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <AddItem :items="items" />
+        <AddItemToTab :items="items" />
       </v-col>
     </v-row>
     <v-row>
@@ -78,7 +78,10 @@
                       <td>
                         {{ item.date.toDate().toLocaleTimeString() }}
                       </td>
-                      <DeleteItem :item="item" v-if="canDelete(item.date)" />
+                      <DeleteItemFromTab
+                        :item="item"
+                        v-if="canDelete(item.date)"
+                      />
                     </tr>
                   </template>
                 </tbody>
@@ -102,18 +105,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onBeforeUnmount, ref } from "vue";
-import { auth, db } from "utils/firebase";
-import { doc, onSnapshot, Timestamp } from "firebase/firestore";
+import type { Timestamp } from "firebase/firestore";
 import type { User, Item } from "@/types";
-
-// components
-const AddItem = defineAsyncComponent(
-  () => import("@/components/userPage/AddItemToTab.vue")
-);
-const DeleteItem = defineAsyncComponent(
-  () => import("@/components/userPage/DeleteItemFromTab.vue")
-);
 
 // props
 const page = ref(1);

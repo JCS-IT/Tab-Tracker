@@ -71,14 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, computed } from "vue";
 import type { User, Item } from "@/types";
-
-// components
-import ToggleRole from "@/components/admin/User/ToggleRole.vue";
-const ClearTab = defineAsyncComponent(
-  () => import("@/components/admin/User/ClearTab.vue")
-);
 
 // props
 const props = defineProps<{

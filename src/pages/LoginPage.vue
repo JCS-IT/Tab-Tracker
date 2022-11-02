@@ -33,11 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { auth } from "utils/firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useRouter } from "vue-router";
-
 const router = useRouter();
 const loggedIn = ref(false);
 

@@ -9,9 +9,6 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import { auth } from "utils/firebase";
-
 const router = useRouter();
 
 auth.onAuthStateChanged((user) => {

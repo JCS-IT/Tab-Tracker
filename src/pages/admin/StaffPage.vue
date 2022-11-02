@@ -41,11 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from "vue";
-import { db } from "utils/firebase";
-import { doc, collection, onSnapshot } from "@firebase/firestore";
 import type { User, Item } from "@/types";
-import { onBeforeRouteLeave } from "vue-router";
 
 const users = ref<User[]>([]);
 const panels = ref<string[]>([]);
@@ -79,11 +75,6 @@ const letters = [
   "y",
   "z",
 ] as string[];
-
-// components
-const UserCard = defineAsyncComponent(
-  () => import("@/components/admin/User/UserCard.vue")
-);
 
 // firestore snapshots
 const usersSnap = onSnapshot(collection(db, "users"), (snap) => {

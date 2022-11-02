@@ -41,18 +41,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { auth, db } from "utils/firebase";
-import { addDoc, Timestamp, collection } from "firebase/firestore";
-
 const dialog = ref(false);
-
 const input = ref("");
-
 const inputForm = ref(null);
-
 const loading = ref(false);
-
 const error = ref({
   code: null,
   message: null,
@@ -61,6 +53,7 @@ const error = ref({
 const rules = {
   text: [(v: string) => !!v || "Field cannot be empty"],
 };
+
 const submit = async () => {
   // @ts-expect-error
   const { valid } = await inputForm.value.validate();

@@ -45,9 +45,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { auth, db } from "utils/firebase";
-import { updateDoc, doc, arrayRemove } from "firebase/firestore";
 import type { TabItem } from "@/types";
 
 const dialog = ref(false);

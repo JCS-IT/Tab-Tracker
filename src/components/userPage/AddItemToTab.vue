@@ -61,11 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { auth, db } from "utils/firebase";
-import { doc, arrayUnion, updateDoc, Timestamp } from "firebase/firestore";
 import type { Item } from "@/types";
-import { useDisplay } from "vuetify";
 
 const dialog = ref(false);
 const loading = ref({} as Record<string, boolean>);

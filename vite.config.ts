@@ -3,6 +3,8 @@ import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from "vite-plugin-mkcert";
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
 
 // Utilities
 import { defineConfig } from "vite";
@@ -16,6 +18,39 @@ export default defineConfig({
       autoImport: true,
     }),
     mkcert(),
+    AutoImport({
+      include: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.vue\??/, // .vue
+        /\.mdx?$/, // .md, .mdx
+      ],
+
+      imports: [
+        "vue",
+        "vue-router",
+        {
+          vuetify: ["useTheme", "useDisplay"],
+          "firebase/auth": ["GoogleAuthProvider", "signInWithPopup"],
+          "firebase/firestore": [
+            "doc",
+            "collection",
+            "onSnapshot",
+            "arrayRemove",
+            "addDoc",
+            "updateDoc",
+            "Timestamp",
+            "arrayUnion",
+          ],
+          "firebase/functions": ["httpsCallable"],
+          "utils/firebase": ["auth", "db", "functions"],
+        },
+      ],
+
+      eslintrc: {
+        enabled: true,
+      },
+    }),
+    Components(),
     VitePWA({
       injectRegister: "inline",
       registerType: "autoUpdate",

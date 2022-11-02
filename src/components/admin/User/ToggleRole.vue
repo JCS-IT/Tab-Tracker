@@ -51,9 +51,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { auth, functions } from "utils/firebase";
-import { httpsCallable } from "firebase/functions";
 import type { User } from "@/types";
 
 const props = defineProps<{

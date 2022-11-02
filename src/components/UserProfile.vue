@@ -35,9 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { auth } from "utils/firebase";
-import { useRouter } from "vue-router";
 import type { User } from "firebase/auth";
 
 // data

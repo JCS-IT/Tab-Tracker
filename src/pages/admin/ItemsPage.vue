@@ -26,18 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from "vue";
-import { auth, db } from "utils/firebase";
-import { doc, onSnapshot } from "firebase/firestore";
 import type { Item } from "@/types";
-
-// components
-const AddItem = defineAsyncComponent(
-  () => import("@/components/admin/Item/AddItem.vue")
-);
-const ItemCard = defineAsyncComponent(
-  () => import("@/components/admin/Item/ItemCard.vue")
-);
 
 // data
 const items = ref([] as Item[]);

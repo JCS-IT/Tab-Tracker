@@ -51,10 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineAsyncComponent } from "vue";
 import { auth } from "utils/firebase";
-import { useTheme } from "vuetify";
-import { useRouter } from "vue-router";
 
 // data
 const loggedIn = ref(false);
@@ -83,13 +80,4 @@ const toggleTheme = () => {
 if (localStorage.getItem("theme")) {
   theme.global.name.value = localStorage.getItem("theme") as string;
 }
-
-// components
-const FeedBack = defineAsyncComponent(
-  () => import("@/components/FeedBack.vue")
-);
-
-const UserProfile = defineAsyncComponent(
-  () => import("@/components/UserProfile.vue")
-);
 </script>
