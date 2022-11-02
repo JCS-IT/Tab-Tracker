@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="items.length > 0">
+  <v-container v-if="items.length">
     <v-row class="text-center">
       <v-col>
         <AddItem />

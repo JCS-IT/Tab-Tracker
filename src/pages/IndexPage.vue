@@ -1,6 +1,10 @@
 <template>
   <v-container fluid align="center">
-    <v-progress-circular indeterminate />
+    <v-row>
+      <v-col>
+        <v-progress-circular indeterminate />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -9,8 +13,6 @@ import { useRouter } from "vue-router";
 import { auth } from "utils/firebase";
 
 const router = useRouter();
-
-console.log("hello!");
 
 auth.onAuthStateChanged((user) => {
   if (user) {

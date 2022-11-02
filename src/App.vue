@@ -2,9 +2,9 @@
   <v-app>
     <v-app-bar color="primary" app>
       <v-app-bar-nav-icon
-        @click="$router.push('/')"
         color="auto"
         icon="mdi-home"
+        @click="router.push('/user')"
       />
       <v-app-bar-title>
         JCS Tabs
@@ -25,11 +25,9 @@
     </v-app-bar>
     <v-main>
       <v-container fluid>
-        <router-view v-slot="{ Component }">
-          <Transition name="fade-transition" mode="out-in">
-            <component :is="Component" />
-          </Transition>
-        </router-view>
+        <Transition name="fade-transition" mode="out-in">
+          <RouterView />
+        </Transition>
       </v-container>
     </v-main>
     <v-fade-transition>
@@ -65,6 +63,7 @@ const router = useRouter();
 // computed
 auth.onAuthStateChanged((user) => {
   if (user) {
+    router.push("/user");
     loggedIn.value = true;
   } else {
     router.push("/login");

@@ -20,7 +20,7 @@
             rounded
             variant="text"
             color="auto"
-            @click="$router.push({ name: 'Admin' })"
+            @click="router.push('/admin/staff')"
           >
             admin menu
           </v-btn>
@@ -37,11 +37,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { auth } from "utils/firebase";
+import { useRouter } from "vue-router";
 import type { User } from "firebase/auth";
 
 // data
 const user = ref<User | null>(null);
 const admin = ref(false);
+const router = useRouter();
 // eslint-disable-next-line no-undef
 
 auth.onAuthStateChanged((currentUser) => {

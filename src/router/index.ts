@@ -6,7 +6,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "Index",
+      name: "Home",
       component: () => import("@/pages/IndexPage.vue"),
     },
     {
@@ -26,16 +26,17 @@ const router = createRouter({
       children: [
         {
           path: "staff",
+          name: "Staff",
           component: () => import("@/pages/admin/StaffPage.vue"),
         },
         {
           path: "items",
+          name: "Items",
           component: () => import("@/pages/admin/ItemsPage.vue"),
         },
       ],
     },
   ],
-
   history: createWebHistory(import.meta.env.BASE_URL),
 });
 

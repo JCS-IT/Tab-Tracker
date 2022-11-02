@@ -1,12 +1,11 @@
 <template>
-  <keep-alive>
-    <router-view v-slot="{ Component }">
-      <Transition name="slide-x-transition" mode="out-in">
+  <router-view v-slot="{ Component }">
+    <Transition name="slide-x-transition" mode="out-in">
+      <keep-alive>
         <component :is="Component" />
-      </Transition>
-    </router-view>
-  </keep-alive>
-
+      </keep-alive>
+    </Transition>
+  </router-view>
   <v-bottom-navigation>
     <v-tabs v-model="page">
       <v-tab value="staff">
