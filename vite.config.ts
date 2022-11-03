@@ -156,6 +156,21 @@ export default defineConfig({
     legalComments: "none",
     format: "esm",
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "firebase-app": ["firebase/app"],
+          "firebase-auth": ["firebase/auth"],
+          "firebase-firestore": ["firebase/firestore"],
+          "firebase-functions": ["firebase/functions"],
+          vuetify: ["vuetify"],
+          "vue-router": ["vue-router"],
+          vue: ["vue"],
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
