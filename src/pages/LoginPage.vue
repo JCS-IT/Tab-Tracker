@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-card color="info" width="300" class="text-center mt-45">
+    <v-card color="secondary" width="300" class="text-center mt-45">
       <v-card-title class="text-center">
         <h1>Login</h1>
       </v-card-title>
