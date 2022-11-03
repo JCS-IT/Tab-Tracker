@@ -1,7 +1,7 @@
 <template>
   <v-container fluid v-if="users !== null && items !== null">
     <v-row>
-      <v-expansion-panels v-model="panels" multiple>
+      <v-expansion-panels>
         <template v-for="letter in letters" :key="letter">
           <v-expansion-panel
             :id="letter"
@@ -44,7 +44,6 @@
 import type { User, Item } from "@/types";
 
 const users = ref<User[]>([]);
-const panels = ref<string[]>([]);
 const items = ref<Item[]>([]);
 
 const letters = [
