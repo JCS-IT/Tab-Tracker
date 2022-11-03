@@ -3,7 +3,7 @@
     <v-app-bar color="primary" app>
       <v-app-bar-nav-icon
         color="auto"
-        icon="mdi-home"
+        icon="home"
         @click="router.push('/user')"
       />
       <v-app-bar-title>
@@ -14,11 +14,8 @@
       </v-app-bar-title>
       <v-btn icon @click="toggleTheme" color="auto">
         <Transition name="fade-transition" mode="out-in">
-          <v-icon
-            icon="mdi-white-balance-sunny"
-            v-if="theme.global.name.value == 'light'"
-          />
-          <v-icon icon="mdi-weather-night" v-else />
+          <v-icon icon="light_mode" v-if="theme.global.name.value == 'light'" />
+          <v-icon icon="dark_mode" v-else />
         </Transition>
       </v-btn>
 

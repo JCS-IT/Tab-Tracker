@@ -21,12 +21,19 @@
             variant="text"
             color="auto"
             @click="router.push('/admin/staff')"
+            prepend-icon="admin_panel_settings"
           >
             admin menu
           </v-btn>
         </template>
         <v-divider class="my-3" />
-        <v-btn rounded variant="text" color="auto" @click="logout()">
+        <v-btn
+          rounded
+          variant="text"
+          color="auto"
+          @click="logout()"
+          prepend-icon="logout"
+        >
           logout
         </v-btn>
       </v-card-text>

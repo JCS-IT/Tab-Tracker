@@ -11,6 +11,7 @@
         v-bind="props"
         :loading="dialog"
         :disabled="dialog"
+        prepend-icon="add"
       >
         Add Item
       </v-btn>

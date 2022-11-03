@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="400px" align="center">
     <template #activator="{ props }">
       <v-btn v-bind="props" color="red" depressed @click="dialog = true">
-        <v-icon icon="mdi-delete" />
+        <v-icon icon="delete" />
       </v-btn>
     </template>
     <v-card :loading="loading" :disabled="loading">

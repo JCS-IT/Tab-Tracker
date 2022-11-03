@@ -2123,13 +2123,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdi/font@npm:7.0.96":
-  version: 7.0.96
-  resolution: "@mdi/font@npm:7.0.96"
-  checksum: 3bc71dc45e784af98fc41ff58eedd77b7ec93fdd5ad2ea599914efd7eff0412db97e4d1766ae3abb55d90a39e5e6dbc550ffe36c72fa504d5b2b021b5aa16f8e
-  languageName: node
-  linkType: hard
-
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -5877,7 +5870,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "jcstabs@workspace:."
   dependencies:
-    "@mdi/font": 7.0.96
     "@rushstack/eslint-patch": ^1.2.0
     "@types/node": ^18.11.9
     "@types/webfontloader": ^1.6.35
