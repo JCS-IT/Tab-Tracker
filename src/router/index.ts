@@ -40,7 +40,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
   const { currentUser } = auth;
   if (!currentUser && to.name !== "Login") {
     return { name: "Login" };
