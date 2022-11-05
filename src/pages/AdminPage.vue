@@ -19,3 +19,15 @@
     </v-tabs>
   </v-bottom-navigation>
 </template>
+
+<route lang="json">
+{
+  "name": "AdminPage",
+  "path": "/admin",
+  "component": "./AdminPage.vue",
+  "meta": {
+    "requiresAuth": true,
+    "requiresAdmin": true
+  }
+}
+</route>

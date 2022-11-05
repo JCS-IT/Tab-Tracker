@@ -73,3 +73,11 @@ const signIn = () => {
   });
 };
 </script>
+
+<route lang="json">
+{
+  "path": "/login",
+  "name": "Login",
+  "component": "LoginPage"
+}
+</route>

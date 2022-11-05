@@ -41,3 +41,15 @@ if (!auth.currentUser) {
   itemSnap();
 }
 </script>
+
+<route lang="json">
+{
+  "name": "ItemsPage",
+  "path": "/admin/items",
+  "component": "./ItemsPage.vue",
+  "meta": {
+    "requiresAuth": true,
+    "requiresAdmin": true
+  }
+}
+</route>

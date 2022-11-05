@@ -19,3 +19,11 @@ auth.onAuthStateChanged((user) => {
   }
 });
 </script>
+
+<route lang="json">
+{
+  "path": "/",
+  "name": "Index",
+  "component": "IndexPage"
+}
+</route>

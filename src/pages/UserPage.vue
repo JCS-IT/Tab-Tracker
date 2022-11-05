@@ -170,3 +170,14 @@ const MathTime = () => {
   }
 };
 </script>
+
+<route lang="json">
+{
+  "path": "/user",
+  "name": "UserPage",
+  "component": "./UserPage.vue",
+  "meta": {
+    "requiresAuth": true
+  }
+}
+</route>

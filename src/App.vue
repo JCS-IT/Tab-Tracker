@@ -60,7 +60,7 @@ const router = useRouter();
 // computed
 auth.onAuthStateChanged((user) => {
   if (user) {
-    router.push("/user");
+    router.push("/User");
     loggedIn.value = true;
   } else {
     router.push("/login");

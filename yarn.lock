@@ -366,6 +366,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/parser@npm:^7.18.13":
+  version: 7.20.2
+  resolution: "@babel/parser@npm:7.20.2"
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: 441d0550144f338e1a41de785b914f5942c493dfafdf07cccdc19c3ecf94aa5ea58741566e199e385ba7a09e3e51522df87f7405cdf14ec88da0ff11db8030f1
+  languageName: node
+  linkType: hard
+
 "@babel/parser@npm:^7.9.4":
   version: 7.19.6
   resolution: "@babel/parser@npm:7.19.6"
@@ -1280,6 +1289,17 @@ __metadata:
     "@babel/helper-validator-identifier": ^7.19.1
     to-fast-properties: ^2.0.0
   checksum: 4032f6407093f80dd4f4764be676f7527d2a5c0381586967cd79683cf8af01cdc16745a381b9cef045f702f0c9b0dffd880d84ee55dad59ba01bd23d5d52a8e0
+  languageName: node
+  linkType: hard
+
+"@babel/types@npm:^7.18.13":
+  version: 7.20.2
+  resolution: "@babel/types@npm:7.20.2"
+  dependencies:
+    "@babel/helper-string-parser": ^7.19.4
+    "@babel/helper-validator-identifier": ^7.19.1
+    to-fast-properties: ^2.0.0
+  checksum: 57e76e5f21876135f481bfd4010c87f2d38196bb0a2bc60a28d6e55e3afa90cdd9accf164e4cb71bdfb620517fa0a0cb5600cdce36c21d59fdaccfbb899c024c
   languageName: node
   linkType: hard
 
@@ -2439,6 +2459,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/pluginutils@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "@rollup/pluginutils@npm:4.2.1"
+  dependencies:
+    estree-walker: ^2.0.1
+    picomatch: ^2.2.2
+  checksum: 6bc41f22b1a0f1efec3043899e4d3b6b1497b3dea4d94292d8f83b4cf07a1073ecbaedd562a22d11913ff7659f459677b01b09e9598a98936e746780ecc93a12
+  languageName: node
+  linkType: hard
+
 "@rollup/pluginutils@npm:^5.0.2":
   version: 5.0.2
   resolution: "@rollup/pluginutils@npm:5.0.2"
@@ -2988,6 +3018,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue-macros/common@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "@vue-macros/common@npm:0.11.2"
+  dependencies:
+    "@babel/types": ^7.18.13
+    "@vue/compiler-sfc": ^3.2.38
+    magic-string: ^0.26.3
+  checksum: a25146b9549fbbfc74147a41d9f4a949f368052cae4cb806cc6b815d219cb78ee7f34e3f771359fa12de961639821b24673f13ca8a856fe508f834717b5c23a5
+  languageName: node
+  linkType: hard
+
 "@vue/compiler-core@npm:3.2.41":
   version: 3.2.41
   resolution: "@vue/compiler-core@npm:3.2.41"
@@ -3010,7 +3051,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:3.2.41, @vue/compiler-sfc@npm:^3.2.40":
+"@vue/compiler-sfc@npm:3.2.41, @vue/compiler-sfc@npm:^3.2.38, @vue/compiler-sfc@npm:^3.2.40":
   version: 3.2.41
   resolution: "@vue/compiler-sfc@npm:3.2.41"
   dependencies:
@@ -3363,6 +3404,16 @@ __metadata:
   version: 2.0.1
   resolution: "arrify@npm:2.0.1"
   checksum: 067c4c1afd182806a82e4c1cb8acee16ab8b5284fbca1ce29408e6e91281c36bb5b612f6ddfbd40a0f7a7e0c75bf2696eb94c027f6e328d6e9c52465c98e4209
+  languageName: node
+  linkType: hard
+
+"ast-walker-scope@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "ast-walker-scope@npm:0.2.3"
+  dependencies:
+    "@babel/parser": ^7.18.13
+    "@babel/types": ^7.18.13
+  checksum: df2cb211b7cdc1cf8d80e44f0a338c1d566e956c3129a3c02d809f58e922357e1acbdabe6a2f6b686eb37800cb5c1b3250fc29c70b0e4837ce0749f87bd34694
   languageName: node
   linkType: hard
 
@@ -4720,7 +4771,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"estree-walker@npm:^2.0.2":
+"estree-walker@npm:^2.0.1, estree-walker@npm:^2.0.2":
   version: 2.0.2
   resolution: "estree-walker@npm:2.0.2"
   checksum: 6151e6f9828abe2259e57f5fd3761335bb0d2ebd76dc1a01048ccee22fabcfef3c0859300f6d83ff0d1927849368775ec5a6d265dde2f6de5a1be1721cd94efc
@@ -5886,6 +5937,7 @@ __metadata:
     typescript: ~4.8.4
     unplugin-auto-import: ^0.11.4
     unplugin-vue-components: ^0.22.9
+    unplugin-vue-router: ^0.2.3
     vite: ^3.2.2
     vite-plugin-mkcert: ^1.10.1
     vite-plugin-pwa: ^0.13.1
@@ -6420,7 +6472,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.26.7":
+"magic-string@npm:^0.26.3, magic-string@npm:^0.26.7":
   version: 0.26.7
   resolution: "magic-string@npm:0.26.7"
   dependencies:
@@ -8603,6 +8655,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unplugin-vue-router@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "unplugin-vue-router@npm:0.2.3"
+  dependencies:
+    "@babel/types": ^7.19.3
+    "@rollup/pluginutils": ^4.2.1
+    "@vue-macros/common": ^0.11.2
+    ast-walker-scope: ^0.2.3
+    chokidar: ^3.5.3
+    fast-glob: ^3.2.12
+    json5: ^2.2.1
+    local-pkg: ^0.4.2
+    mlly: ^0.5.16
+    pathe: ^0.3.8
+    scule: ^0.3.2
+    unplugin: ^0.9.6
+    yaml: ^2.1.2
+  peerDependencies:
+    vue-router: ^4.1.0
+  peerDependenciesMeta:
+    vue-router:
+      optional: true
+  checksum: bf607fe417641a9b808a333dc246c7a04b4edbe1228efcb3cdc9d1886f04574435b05ad70113b01ddf079179b885dd4b5b51581e9d54df9637a455a05401d3df
+  languageName: node
+  linkType: hard
+
 "unplugin@npm:^0.10.1, unplugin@npm:^0.10.2":
   version: 0.10.2
   resolution: "unplugin@npm:0.10.2"
@@ -8612,6 +8690,18 @@ __metadata:
     webpack-sources: ^3.2.3
     webpack-virtual-modules: ^0.4.5
   checksum: 984199a8ecbceb7d7b37d14d5bea88dc6ae3e1fa6f1ec5b4a9263160424ee5b5ecf809ce667ff2ff819731650fc9bd42fcc7b2b33dd888a1eb047349eba63960
+  languageName: node
+  linkType: hard
+
+"unplugin@npm:^0.9.6":
+  version: 0.9.6
+  resolution: "unplugin@npm:0.9.6"
+  dependencies:
+    acorn: ^8.8.0
+    chokidar: ^3.5.3
+    webpack-sources: ^3.2.3
+    webpack-virtual-modules: ^0.4.5
+  checksum: 6f544f7c53511e0b9064112353562159efd6fc0f38a78ff7e9ac5d3c09b298b59ea565165bbfab0eec08b016d50c5e453673581712bfcf875924d06e04bd77cd
   languageName: node
   linkType: hard
 
@@ -9246,6 +9336,13 @@ __metadata:
   version: 4.0.0
   resolution: "yallist@npm:4.0.0"
   checksum: 343617202af32df2a15a3be36a5a8c0c8545208f3d3dfbc6bb7c3e3b7e8c6f8e7485432e4f3b88da3031a6e20afa7c711eded32ddfb122896ac5d914e75848d5
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.1.2":
+  version: 2.1.3
+  resolution: "yaml@npm:2.1.3"
+  checksum: 91316062324a93f9cb547469092392e7d004ff8f70c40fecb420f042a4870b2181557350da56c92f07bd44b8f7a252b0be26e6ade1f548e1f4351bdd01c9d3c7
   languageName: node
   linkType: hard
 

@@ -1,10 +1,12 @@
 // Plugins
+import VueRouter from "unplugin-vue-router/vite";
 import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from "vite-plugin-mkcert";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
+import { VueRouterAutoImports } from "unplugin-vue-router";
 
 // Utilities
 import { defineConfig } from "vite";
@@ -13,6 +15,10 @@ import { fileURLToPath, URL } from "node:url";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    VueRouter({
+      dataFetching: true,
+      routesFolder: "src/pages",
+    }),
     vue(),
     vuetify({
       autoImport: true,
@@ -27,7 +33,7 @@ export default defineConfig({
 
       imports: [
         "vue",
-        "vue-router",
+        VueRouterAutoImports,
         {
           vuetify: ["useTheme", "useDisplay"],
           "firebase/auth": ["GoogleAuthProvider", "signInWithPopup"],
