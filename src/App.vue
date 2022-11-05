@@ -18,7 +18,6 @@
           <v-icon icon="dark_mode" v-else />
         </Transition>
       </v-btn>
-
       <UserProfile v-if="loggedIn" />
     </v-app-bar>
     <v-main>

@@ -8,9 +8,26 @@
   </v-container>
 </template>
 
+<route lang="json">
+{
+  "path": "/",
+  "name": "Home",
+  "meta": {
+    "requiresAuth": false
+  }
+}
+</route>
+
 <script setup lang="ts">
+// router
 const router = useRouter();
 
+definePage({
+  path: "/",
+  name: "Index",
+});
+
+// computed
 auth.onAuthStateChanged((user) => {
   if (user) {
     router.push("/user");
@@ -19,11 +36,3 @@ auth.onAuthStateChanged((user) => {
   }
 });
 </script>
-
-<route lang="json">
-{
-  "path": "/",
-  "name": "Index",
-  "component": "IndexPage"
-}
-</route>

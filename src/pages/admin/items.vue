@@ -25,6 +25,17 @@
   </v-container>
 </template>
 
+<route lang="json">
+{
+  "path": "/admin/items",
+  "name": "admin-items",
+  "meta": {
+    "requiresAuth": true,
+    "requiresAdmin": true
+  }
+}
+</route>
+
 <script setup lang="ts">
 import type { Item } from "@/types";
 
@@ -41,15 +52,3 @@ if (!auth.currentUser) {
   itemSnap();
 }
 </script>
-
-<route lang="json">
-{
-  "name": "ItemsPage",
-  "path": "/admin/items",
-  "component": "./ItemsPage.vue",
-  "meta": {
-    "requiresAuth": true,
-    "requiresAdmin": true
-  }
-}
-</route>

@@ -22,12 +22,33 @@
 
 <route lang="json">
 {
-  "name": "AdminPage",
   "path": "/admin",
-  "component": "./AdminPage.vue",
+  "name": "AdminPage",
+  "component": "AdminPage",
   "meta": {
-    "requiresAuth": true,
-    "requiresAdmin": true
-  }
+    "requiresAuth": true
+  },
+  "children": [
+    {
+      "path": "staff",
+      "name": "Staff",
+      "component": "StaffPage"
+    },
+    {
+      "path": "items",
+      "name": "Items",
+      "component": "ItemsPage"
+    }
+  ]
 }
 </route>
+
+<script setup lang="ts">
+const router = useRouter();
+
+onMounted(() => {
+  if (router.currentRoute.value.path === "/admin") {
+    router.push({ name: "admin-staff" });
+  }
+});
+</script>

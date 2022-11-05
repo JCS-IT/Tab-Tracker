@@ -18,6 +18,8 @@ export default defineConfig({
     VueRouter({
       dataFetching: true,
       routesFolder: "src/pages",
+      routeBlockLang: "json5",
+      importMode: "async",
     }),
     vue(),
     vuetify({

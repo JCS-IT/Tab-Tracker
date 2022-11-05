@@ -20,7 +20,7 @@
             rounded
             variant="text"
             color="auto"
-            @click="router.push('/admin/staff')"
+            @click="router.push('/admin')"
             prepend-icon="admin_panel_settings"
           >
             admin menu

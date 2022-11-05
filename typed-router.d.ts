@@ -35,12 +35,12 @@ import type {
 
 declare module 'vue-router/auto/routes' {
   export interface RouteNamedMap {
-    'Index': RouteRecordInfo<'Index', '/', Record<never, never>, Record<never, never>>,
+    'Home': RouteRecordInfo<'Home', '/', Record<never, never>, Record<never, never>>,
     'AdminPage': RouteRecordInfo<'AdminPage', '/admin', Record<never, never>, Record<never, never>>,
-    'ItemsPage': RouteRecordInfo<'ItemsPage', '/admin/items', Record<never, never>, Record<never, never>>,
-    'Staff': RouteRecordInfo<'Staff', '/admin/staff', Record<never, never>, Record<never, never>>,
+    'admin-items': RouteRecordInfo<'admin-items', '/admin/items', Record<never, never>, Record<never, never>>,
+    'admin-staff': RouteRecordInfo<'admin-staff', '/admin/staff', Record<never, never>, Record<never, never>>,
     'Login': RouteRecordInfo<'Login', '/login', Record<never, never>, Record<never, never>>,
-    'UserPage': RouteRecordInfo<'UserPage', '/user', Record<never, never>, Record<never, never>>,
+    'user': RouteRecordInfo<'user', '/user', Record<never, never>, Record<never, never>>,
   }
 }
 

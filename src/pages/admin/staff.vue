@@ -40,10 +40,22 @@
   </v-container>
 </template>
 
+<route lang="json">
+{
+  "path": "/admin/staff",
+  "name": "admin-staff",
+  "meta": {
+    "requiresAuth": true,
+    "requiresAdmin": true
+  }
+}
+</route>
+
 <script setup lang="ts">
 import type { User, Item } from "@/types";
 import { onBeforeRouteLeave } from "vue-router/auto";
 
+// data
 const users = ref<User[]>([]);
 const items = ref<Item[]>([]);
 
@@ -105,14 +117,3 @@ const filterUsers = (letter: string) => {
   });
 };
 </script>
-
-<route lang="json">
-{
-  "path": "/admin/staff",
-  "name": "Staff",
-  "meta": {
-    "requiresAuth": true,
-    "requiresAdmin": true
-  }
-}
-</route>

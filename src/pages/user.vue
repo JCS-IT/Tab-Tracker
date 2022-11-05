@@ -104,6 +104,16 @@
   </v-container>
 </template>
 
+<route lang="json">
+{
+  "path": "/user",
+  "name": "user",
+  "meta": {
+    "requiresAuth": true
+  }
+}
+</route>
+
 <script setup lang="ts">
 import type { Timestamp } from "firebase/firestore";
 import type { User, Item } from "@/types";
@@ -170,14 +180,3 @@ const MathTime = () => {
   }
 };
 </script>
-
-<route lang="json">
-{
-  "path": "/user",
-  "name": "UserPage",
-  "component": "./UserPage.vue",
-  "meta": {
-    "requiresAuth": true
-  }
-}
-</route>

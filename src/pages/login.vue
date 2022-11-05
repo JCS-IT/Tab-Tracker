@@ -32,17 +32,21 @@
   </v-row>
 </template>
 
+<route lang="json">
+{
+  "path": "/login",
+  "name": "Login",
+  "meta": {
+    "requiresAuth": false
+  }
+}
+</route>
+
 <script setup lang="ts">
 const router = useRouter();
 const loggedIn = ref(false);
 
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    router.push("/user");
-    loggedIn.value = true;
-  }
-});
-
+// data
 const alert = ref(false);
 const error = ref({
   message: "",
@@ -57,6 +61,16 @@ const ignoreErrorCode = [
 ];
 
 const provider = new GoogleAuthProvider();
+
+// computed
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    router.push("/user");
+    loggedIn.value = true;
+  }
+});
+
+// methods
 const signIn = () => {
   signInWithPopup(auth, provider).catch((err) => {
     if (!ignoreErrorCode.includes(err.code)) {
@@ -73,11 +87,3 @@ const signIn = () => {
   });
 };
 </script>
-
-<route lang="json">
-{
-  "path": "/login",
-  "name": "Login",
-  "component": "LoginPage"
-}
-</route>
