@@ -1,5 +1,5 @@
 <template>
-  <v-container align="center" v-if="user !== null && items !== null">
+  <v-container align="center" v-if="user && items">
     <v-row>
       <v-col>
         <h1>{{ user?.info.displayName }}'s Tab</h1>
@@ -118,20 +118,31 @@
 import type { Timestamp } from "firebase/firestore";
 import type { User, Item } from "@/types";
 
-// props
+const router = useRouter();
+
+// data
 const page = ref(1);
 const perPage = 10;
 const user = ref<User | null>(null);
 const items = ref<Item[]>([]);
+
+// firebase
 const itemSub = onSnapshot(doc(db, "admin/items"), (doc) => {
   items.value = doc.data()?.food as Item[];
 });
 
-// @ts-expect-error
-const userSub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
-  user.value = doc.data() as User;
-  user.value.tab.reverse();
-});
+const userSub = onSnapshot(
+  // @ts-expect-error
+  doc(db, "users", auth.currentUser.uid),
+  (doc) => {
+    if (doc.exists()) {
+      user.value = doc.data() as User;
+      user.value.tab.reverse();
+    } else {
+      console.log("No such document!");
+    }
+  }
+);
 
 onBeforeUnmount(() => {
   itemSub();
@@ -140,10 +151,10 @@ onBeforeUnmount(() => {
 // computed properties
 const count = () => {
   const total = {} as { [key: string]: number };
-  items.value.forEach((item) => {
+  items.value?.forEach((item) => {
     total[item.name] = 0;
   });
-  user.value?.tab.forEach((item) => {
+  user.value?.tab?.forEach((item) => {
     total[item.name]++;
   });
   return total;
@@ -179,4 +190,12 @@ const MathTime = () => {
     return Math.ceil(user.value.tab.length / perPage);
   }
 };
+
+setTimeout(() => {
+  if (!user.value) {
+    router.push({
+      name: "error",
+    });
+  }
+}, 5000);
 </script>

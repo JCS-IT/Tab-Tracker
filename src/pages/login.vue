@@ -35,7 +35,7 @@
 <route lang="json">
 {
   "path": "/login",
-  "name": "Login",
+  "name": "login",
   "meta": {
     "requiresAuth": false
   }
@@ -65,7 +65,7 @@ const provider = new GoogleAuthProvider();
 // computed
 auth.onAuthStateChanged((user) => {
   if (user) {
-    router.push("/user");
+    router.push({ name: "user" });
     loggedIn.value = true;
   }
 });

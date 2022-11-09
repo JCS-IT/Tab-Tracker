@@ -11,28 +11,9 @@
 <route lang="json">
 {
   "path": "/",
-  "name": "Home",
+  "name": "home",
   "meta": {
     "requiresAuth": false
   }
 }
 </route>
-
-<script setup lang="ts">
-// router
-const router = useRouter();
-
-definePage({
-  path: "/",
-  name: "Index",
-});
-
-// computed
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    router.push("/user");
-  } else {
-    router.push("/login");
-  }
-});
-</script>
