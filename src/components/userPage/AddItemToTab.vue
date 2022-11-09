@@ -76,7 +76,7 @@ const props = defineProps<{
   items: Item[];
 }>();
 
-props.items.forEach((item) => {
+props.items?.forEach((item) => {
   loading.value[item.name] = false;
 });
 

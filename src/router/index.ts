@@ -17,7 +17,7 @@ router.beforeEach(async (to, from) => {
   const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin);
 
   if (requiresAuth && !currentUser) {
-    return { name: "Login" };
+    return { name: "login" };
   }
 
   if (requiresAdmin && !admin) {

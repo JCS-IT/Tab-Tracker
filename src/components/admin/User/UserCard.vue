@@ -85,7 +85,7 @@ const dialog = ref(false);
 // computed
 const total = computed(() => {
   let total = 0;
-  props.user?.tab.forEach((item) => {
+  props.user?.tab?.forEach((item) => {
     total += item.price;
   });
   return total;
@@ -93,7 +93,7 @@ const total = computed(() => {
 
 const count = computed(() => {
   const count = {} as Record<string, number>;
-  props.user?.tab.forEach((item) => {
+  props.user?.tab?.forEach((item) => {
     if (count[item.name]) {
       count[item.name] += 1;
     } else {

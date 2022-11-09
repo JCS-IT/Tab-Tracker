@@ -91,7 +91,7 @@ const letters = [
 // firestore snapshots
 const usersSnap = onSnapshot(collection(db, "users"), (snap) => {
   users.value = [];
-  snap.forEach((doc) => {
+  snap?.forEach((doc) => {
     users.value.push(doc.data() as User);
   });
 });
