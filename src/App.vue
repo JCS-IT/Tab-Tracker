@@ -1,27 +1,79 @@
-<script setup lang="ts">
-import { defineAsyncComponent } from "vue";
-import { auth } from "@/firebase";
+<template>
+  <v-app>
+    <v-app-bar color="primary" app>
+      <v-app-bar-nav-icon @click="$router.go(0)" icon="mdi-home" />
+      <v-app-bar-title>
+        JCS Tabs
+        <template v-if="mode">
+          <v-chip color="error" label>DEV</v-chip>
+        </template>
+      </v-app-bar-title>
+      <UserProfile v-if="loggedIn" />
+    </v-app-bar>
+    <v-main>
+      <v-container fluid>
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </v-container>
+    </v-main>
+    <v-fade-transition>
+      <v-footer
+        app
+        color="primary"
+        height="64px"
+        v-if="loggedIn && route.path === '/user'"
+      >
+        <v-container>
+          <v-row justify="center" no-gutters>
+            <FeedBack />
+          </v-row>
+        </v-container>
+      </v-footer>
+    </v-fade-transition>
+  </v-app>
+</template>
 
-const UserMenu = defineAsyncComponent(
-  () => import("@/components/public/UserMenu.vue")
+<script setup lang="ts">
+import { ref, defineAsyncComponent } from "vue";
+import { auth } from "utils/firebase";
+import { useRouter, useRoute } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
+const loggedIn = ref(false);
+
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    router.push("/user");
+    loggedIn.value = true;
+  } else {
+    router.push("/login");
+    loggedIn.value = false;
+  }
+});
+
+const FeedBack = defineAsyncComponent(
+  () => import("@/components/FeedBack.vue")
 );
+
+const UserProfile = defineAsyncComponent(
+  () => import("@/components/UserProfile.vue")
+);
+
+const mode = import.meta.env.DEV;
 </script>
 
-<template>
-  <VApp>
-    <VAppBar color="blue-lighten-2">
-      <VAppBarNavIcon @click="$router.push({ name: 'Home' })" icon="mdi-home" />
-      <VToolbarTitle>JCS Tabs</VToolbarTitle>
-      <UserMenu
-        v-if="
-          auth.onAuthStateChanged((user) => {
-            return user ? true : false;
-          })
-        "
-      />
-    </VAppBar>
-    <VMain>
-      <RouterView />
-    </VMain>
-  </VApp>
-</template>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

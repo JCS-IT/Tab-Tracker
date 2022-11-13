@@ -1,0 +1,110 @@
+<template>
+  <v-dialog
+    v-model="dialog"
+    :fullscreen="mobile"
+    :max-Width="mobile ? width : '500px'"
+    min-width="300px"
+  >
+    <template #activator="{ props }">
+      <v-btn
+        color="success"
+        v-bind="props"
+        :loading="dialog"
+        :disabled="dialog"
+      >
+        Add Item
+      </v-btn>
+    </template>
+    <v-alert
+      v-if="error.code !== null"
+      type="error"
+      variant="outlined"
+      prominent
+      class="text-center"
+      elevation="2"
+    >
+      <v-alert-title>
+        {{ error.code }}
+      </v-alert-title>
+      {{ error.message }}
+    </v-alert>
+    <v-card>
+      <v-card-title class="text-center">
+        <span>Add Item</span>
+      </v-card-title>
+      <v-card-text>
+        <v-btn
+          color="blue-lighten-3"
+          v-for="(item, index) in items"
+          :key="index"
+          :loading="loading[item.name]"
+          :disabled="loading[item.name]"
+          @click="addItem(item)"
+          class="ma-1"
+          width="100%"
+        >
+          {{ item.name }}:
+          {{
+            new Intl.NumberFormat("en-CA", {
+              style: "currency",
+              currency: "CAD",
+            }).format(item.price)
+          }}
+        </v-btn>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="red" @click="close()"> Cancel </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { auth, db } from "utils/firebase";
+import { doc, arrayUnion, updateDoc, Timestamp } from "firebase/firestore";
+import type { Item } from "@/types";
+import { useDisplay } from "vuetify";
+
+const dialog = ref(false);
+const loading = ref({} as Record<string, boolean>);
+const error = ref({
+  code: null as string | null,
+  message: null as string | null,
+});
+const { mobile, width } = useDisplay();
+
+const props = defineProps<{
+  items: Item[];
+}>();
+
+props.items.forEach((item) => {
+  loading.value[item.name] = false;
+});
+
+const addItem = async (item: Item) => {
+  loading.value[item.name] = true;
+  if (!auth.currentUser) return;
+  try {
+    await updateDoc(doc(db, "users", auth.currentUser?.uid), {
+      tab: arrayUnion({
+        ...item,
+        date: Timestamp.now(),
+      }),
+    });
+    close();
+  } catch (err) {
+    const { code, message } = err as { code: string; message: string };
+    error.value = { code, message };
+  }
+};
+
+const close = () => {
+  dialog.value = false;
+  loading.value = {};
+  error.value = {
+    code: null,
+    message: null,
+  };
+};
+</script>

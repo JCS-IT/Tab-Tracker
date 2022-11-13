@@ -1,30 +1,20 @@
-import { fileURLToPath, URL } from "node:url";
-
-import { defineConfig } from "vite";
+// Plugins
 import vue from "@vitejs/plugin-vue";
-
-// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
 import vuetify from "vite-plugin-vuetify";
-
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from "vite-plugin-mkcert";
 
+// Utilities
+import { defineConfig } from "vite";
+import { fileURLToPath, URL } from "node:url";
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  server: {
-    https: true,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Referrer-Policy": "no-referrer",
-    },
-  },
-  define: {
-    __VUE_OPTIONS_API__: true,
-    __VUE_PROD_DEVTOOLS__: false,
-  },
   plugins: [
     vue(),
-    vuetify({ autoImport: true }),
+    vuetify({
+      autoImport: true,
+    }),
     mkcert(),
     VitePWA({
       injectRegister: "inline",
@@ -62,9 +52,8 @@ export default defineConfig({
         ],
       },
       workbox: {
-        cleanupOutdatedCaches: true,
         skipWaiting: true,
-        clientsClaim: true,
+        cleanupOutdatedCaches: true,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -94,7 +83,6 @@ export default defineConfig({
               },
             },
           },
-          // cache google profile images
           {
             urlPattern: /^https:\/\/www\.googleapis.com\/plus\/v1\/people\/.*/i,
             handler: "CacheFirst",
@@ -124,9 +112,28 @@ export default defineConfig({
       },
     }),
   ],
+  define: {
+    __VUE_OPTIONS_API__: true,
+    __VUE_PROD_DEVTOOLS__: false,
+  },
+  esbuild: {
+    drop: ["console", "debugger"],
+    legalComments: "none",
+    format: "esm",
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      utils: fileURLToPath(new URL("./src/utils", import.meta.url)),
+      types: fileURLToPath(new URL("./src/types", import.meta.url)),
+    },
+    extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
+  },
+  server: {
+    https: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Referrer-Policy": "no-referrer",
     },
   },
 });

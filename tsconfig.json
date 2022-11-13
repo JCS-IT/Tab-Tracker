@@ -1,16 +1,38 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
-    "env.d.ts",
-    "src/**/*",
-    "src/**/*.vue"
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "vite.config.ts",
+    "env.d.ts"
   ],
   "compilerOptions": {
     "baseUrl": ".",
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "types": [
+      "vuetify"
+    ],
     "paths": {
       "@/*": [
         "./src/*"
-      ]
+      ],
+      "utils/*": [
+        "./src/utils/*"
+      ],
     },
   },
   "references": [

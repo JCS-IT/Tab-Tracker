@@ -1,52 +1,48 @@
-import { auth } from "@/firebase";
 import { createRouter, createWebHistory } from "vue-router";
+import { auth } from "utils/firebase";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior: () => ({ left: 0, top: 0 }),
   routes: [
     {
       path: "/",
-      name: "Home",
-      component: () => import("../views/RedirectScreen.vue"),
+      name: "Index",
+      component: () => import("@/pages/IndexPage.vue"),
     },
     {
       path: "/login",
       name: "Login",
-      component: () => import("../views/LoginScreen.vue"),
+      component: () => import("@/pages/LoginPage.vue"),
     },
     {
       path: "/user",
       name: "User",
-      component: () => import("../views/UserScreen.vue"),
-      meta: {
-        requiresAuth: true,
-      },
+      component: () => import("@/pages/UserPage.vue"),
     },
     {
       path: "/admin",
       name: "Admin",
-      component: () => import("../views/AdminScreen.vue"),
-      meta: {
-        requiresAuth: true,
-        requiresAdmin: true,
-      },
+      component: () => import("@/pages/AdminPage.vue"),
+      children: [
+        {
+          path: "staff",
+          component: () => import("@/pages/admin/StaffPage.vue"),
+        },
+        {
+          path: "items",
+          component: () => import("@/pages/admin/ItemsPage.vue"),
+        },
+      ],
     },
   ],
+
+  history: createWebHistory(import.meta.env.BASE_URL),
 });
 
-router.beforeEach(async (to, from, next) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin);
-  const user = auth.currentUser;
-  const admin = (await auth.currentUser?.getIdTokenResult())?.claims.admin;
-
-  if (requiresAuth && !user) {
-    next("/login");
+router.beforeEach((to, from) => {
+  if (to.name != "Login" && !auth.currentUser) {
+    return { name: "Login" };
   }
-  if (requiresAdmin && !admin) {
-    next("/user");
-  }
-  next();
 });
 
 export default router;

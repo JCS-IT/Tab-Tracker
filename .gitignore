@@ -17,6 +17,8 @@ coverage
 /cypress/videos/
 /cypress/screenshots/
 
+/dev-dist/
+
 # yarn v2
 .yarn/*
 !.yarn/patches

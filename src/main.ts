@@ -1,8 +1,13 @@
-import { createApp } from "vue";
+// Components
 import App from "./App.vue";
-import router from "./router";
-import vuetify from "./plugins/vuetify";
-import { loadFonts } from "./plugins/webfontloader";
+
+// Composables
+import { createApp } from "vue";
+
+// Plugins
+import vuetify from "@/plugins/vuetify";
+import router from "@/router";
+import { loadFonts } from "@/plugins/webfontloader";
 
 loadFonts();
 
