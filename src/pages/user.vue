@@ -1,5 +1,5 @@
 <template>
-  <v-container align="center" v-if="user !== null && items !== null">
+  <v-container align="center" v-if="user && items">
     <v-row>
       <v-col>
         <h1>{{ user?.info.displayName }}'s Tab</h1>
@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <AddItem :items="items" />
+        <AddItemToTab :items="items" />
       </v-col>
     </v-row>
     <v-row>
@@ -78,7 +78,10 @@
                       <td>
                         {{ item.date.toDate().toLocaleTimeString() }}
                       </td>
-                      <DeleteItem :item="item" v-if="canDelete(item.date)" />
+                      <DeleteItemFromTab
+                        :item="item"
+                        v-if="canDelete(item.date)"
+                      />
                     </tr>
                   </template>
                 </tbody>
@@ -91,6 +94,9 @@
   </v-container>
   <v-container v-else fluid align="center">
     <v-row>
+      <v-col> <h1>Fetching your profile...</h1></v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12">
         <v-progress-linear indeterminate />
       </v-col>
@@ -98,34 +104,45 @@
   </v-container>
 </template>
 
+<route lang="json">
+{
+  "path": "/user",
+  "name": "user",
+  "meta": {
+    "requiresAuth": true
+  }
+}
+</route>
+
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onBeforeUnmount, ref } from "vue";
-import { auth, db } from "utils/firebase";
-import { doc, onSnapshot, Timestamp } from "firebase/firestore";
+import type { Timestamp } from "firebase/firestore";
 import type { User, Item } from "@/types";
 
-// components
-const AddItem = defineAsyncComponent(
-  () => import("@/components/userPage/AddItemToTab.vue")
-);
-const DeleteItem = defineAsyncComponent(
-  () => import("@/components/userPage/DeleteItemFromTab.vue")
-);
+const router = useRouter();
 
-// props
+// data
 const page = ref(1);
 const perPage = 10;
 const user = ref<User | null>(null);
 const items = ref<Item[]>([]);
+
+// firebase
 const itemSub = onSnapshot(doc(db, "admin/items"), (doc) => {
   items.value = doc.data()?.food as Item[];
 });
 
-// @ts-expect-error
-const userSub = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
-  user.value = doc.data() as User;
-  user.value.tab.reverse();
-});
+const userSub = onSnapshot(
+  // @ts-expect-error
+  doc(db, "users", auth.currentUser.uid),
+  (doc) => {
+    if (doc.exists()) {
+      user.value = doc.data() as User;
+      user.value.tab.reverse();
+    } else {
+      console.log("No such document!");
+    }
+  }
+);
 
 onBeforeUnmount(() => {
   itemSub();
@@ -134,10 +151,10 @@ onBeforeUnmount(() => {
 // computed properties
 const count = () => {
   const total = {} as { [key: string]: number };
-  items.value.forEach((item) => {
+  items.value?.forEach((item) => {
     total[item.name] = 0;
   });
-  user.value?.tab.forEach((item) => {
+  user.value?.tab?.forEach((item) => {
     total[item.name]++;
   });
   return total;
@@ -173,4 +190,12 @@ const MathTime = () => {
     return Math.ceil(user.value.tab.length / perPage);
   }
 };
+
+setTimeout(() => {
+  if (!user.value) {
+    router.push({
+      name: "error",
+    });
+  }
+}, 5000);
 </script>

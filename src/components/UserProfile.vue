@@ -7,7 +7,7 @@
         </v-avatar>
       </v-btn>
     </template>
-    <v-card>
+    <v-card color="user">
       <v-card-text class="mx-auto text-center">
         <v-avatar size="large">
           <v-img :src="(user?.photoURL as string)" alt="Avatar" />
@@ -19,26 +19,35 @@
           <v-btn
             rounded
             variant="text"
-            @click="$router.push({ name: 'Admin' })"
+            color="auto"
+            @click="router.push('/admin')"
+            prepend-icon="admin_panel_settings"
           >
             admin menu
           </v-btn>
         </template>
         <v-divider class="my-3" />
-        <v-btn rounded variant="text" @click="logout()"> logout </v-btn>
+        <v-btn
+          rounded
+          variant="text"
+          color="auto"
+          @click="logout()"
+          prepend-icon="logout"
+        >
+          logout
+        </v-btn>
       </v-card-text>
     </v-card>
   </v-menu>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { auth } from "utils/firebase";
 import type { User } from "firebase/auth";
 
 // data
 const user = ref<User | null>(null);
 const admin = ref(false);
+const router = useRouter();
 // eslint-disable-next-line no-undef
 
 auth.onAuthStateChanged((currentUser) => {

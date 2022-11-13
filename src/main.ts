@@ -8,8 +8,23 @@ import { createApp } from "vue";
 import vuetify from "@/plugins/vuetify";
 import router from "@/router";
 import { loadFonts } from "@/plugins/webfontloader";
+import { registerSW } from "virtual:pwa-register";
 
 loadFonts();
+
+const intervalMS = 60 * 60 * 1000;
+
+registerSW({
+  onRegistered(r) {
+    r &&
+      setInterval(() => {
+        r.update();
+      }, intervalMS);
+  },
+  onNeedRefresh() {
+    window.location.reload();
+  },
+});
 
 const app = createApp(App);
 

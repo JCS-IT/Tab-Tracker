@@ -7,6 +7,7 @@
         v-bind="props"
         @click="dialog = true"
         :loading="dialog"
+        color="secondary"
       >
         <v-avatar>
           <v-img :src="user?.info.photoURL" :alt="user?.info.displayName" />
@@ -62,7 +63,7 @@
         <ToggleRole :user="user" role="admin" />
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click="dialog = false">Close</v-btn>
+        <v-btn color="auto" @click="dialog = false">Close</v-btn>
         <ClearTab :user="user" v-if="checkTabLength()" />
       </v-card-actions>
     </v-card>
@@ -70,17 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, computed } from "vue";
 import type { User, Item } from "@/types";
-
-// components
-const ToggleRole = defineAsyncComponent(
-  () => import("@/components/admin/User/ToggleRole.vue")
-);
-
-const ClearTab = defineAsyncComponent(
-  () => import("@/components/admin/User/ClearTab.vue")
-);
 
 // props
 const props = defineProps<{
@@ -94,7 +85,7 @@ const dialog = ref(false);
 // computed
 const total = computed(() => {
   let total = 0;
-  props.user?.tab.forEach((item) => {
+  props.user?.tab?.forEach((item) => {
     total += item.price;
   });
   return total;
@@ -102,7 +93,7 @@ const total = computed(() => {
 
 const count = computed(() => {
   const count = {} as Record<string, number>;
-  props.user?.tab.forEach((item) => {
+  props.user?.tab?.forEach((item) => {
     if (count[item.name]) {
       count[item.name] += 1;
     } else {

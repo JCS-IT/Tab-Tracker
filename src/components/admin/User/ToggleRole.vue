@@ -8,7 +8,7 @@
   >
     <template #activator="{ props }">
       <v-switch
-        color="primary"
+        color="success"
         label="Administrator"
         v-bind="props"
         :model-value="user?.roles?.admin"
@@ -51,9 +51,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { auth, functions } from "utils/firebase";
-import { httpsCallable } from "firebase/functions";
 import type { User } from "@/types";
 
 const props = defineProps<{
@@ -119,5 +116,7 @@ const checkPerms = () => {
 
 const close = () => {
   dialog.value = false;
+  loading.value.switch = false;
+  loading.value.dialog = false;
 };
 </script>

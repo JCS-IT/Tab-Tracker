@@ -1,41 +1,3 @@
-<script setup lang="ts">
-import { ref } from "vue";
-import { functions } from "utils/firebase";
-import { httpsCallable } from "@firebase/functions";
-import type { Item } from "@/types";
-
-// props
-const props = defineProps<{
-  item: Item;
-}>();
-
-// data
-const loading = ref({
-  pending: false,
-  confirm: false,
-});
-const dialog = ref(false);
-const error = ref(null as string | null);
-
-// methods
-const deleteItem = async () => {
-  try {
-    loading.value.confirm = true;
-    const deleteItem = httpsCallable(functions, "deleteItem");
-    await deleteItem({ item: props.item });
-    dialog.value = false;
-  } catch (err) {
-    console.log(err);
-    error.value = err as string;
-  } finally {
-    loading.value = {
-      pending: false,
-      confirm: false,
-    };
-  }
-};
-</script>
-
 <template>
   <v-dialog v-model="dialog" max-width="350px" align="center">
     <template #activator>
@@ -75,3 +37,38 @@ const deleteItem = async () => {
     </v-card>
   </v-dialog>
 </template>
+
+<script setup lang="ts">
+import type { Item } from "@/types";
+
+// props
+const props = defineProps<{
+  item: Item;
+}>();
+
+// data
+const loading = ref({
+  pending: false,
+  confirm: false,
+});
+const dialog = ref(false);
+const error = ref(null as string | null);
+
+// methods
+const deleteItem = async () => {
+  try {
+    loading.value.confirm = true;
+    const deleteItem = httpsCallable(functions, "deleteItem");
+    await deleteItem({ item: props.item });
+    dialog.value = false;
+  } catch (err) {
+    console.log(err);
+    error.value = err as string;
+  } finally {
+    loading.value = {
+      pending: false,
+      confirm: false,
+    };
+  }
+};
+</script>

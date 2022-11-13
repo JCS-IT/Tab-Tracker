@@ -1,8 +1,12 @@
 // Plugins
+import VueRouter from "unplugin-vue-router/vite";
 import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
 import { VitePWA } from "vite-plugin-pwa";
 import mkcert from "vite-plugin-mkcert";
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
+import { VueRouterAutoImports } from "unplugin-vue-router";
 
 // Utilities
 import { defineConfig } from "vite";
@@ -11,11 +15,50 @@ import { fileURLToPath, URL } from "node:url";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    VueRouter({
+      dataFetching: true,
+      routesFolder: "src/pages",
+      routeBlockLang: "json5",
+      importMode: "async",
+    }),
     vue(),
     vuetify({
       autoImport: true,
     }),
     mkcert(),
+    AutoImport({
+      include: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.vue\??/, // .vue
+        /\.mdx?$/, // .md, .mdx
+      ],
+
+      imports: [
+        "vue",
+        VueRouterAutoImports,
+        {
+          vuetify: ["useTheme", "useDisplay"],
+          "firebase/auth": ["GoogleAuthProvider", "signInWithPopup"],
+          "firebase/firestore": [
+            "doc",
+            "collection",
+            "onSnapshot",
+            "arrayRemove",
+            "addDoc",
+            "updateDoc",
+            "Timestamp",
+            "arrayUnion",
+          ],
+          "firebase/functions": ["httpsCallable"],
+          "utils/firebase": ["auth", "db", "functions"],
+        },
+      ],
+
+      eslintrc: {
+        enabled: true,
+      },
+    }),
+    Components(),
     VitePWA({
       injectRegister: "inline",
       registerType: "autoUpdate",
@@ -120,6 +163,20 @@ export default defineConfig({
     drop: ["console", "debugger"],
     legalComments: "none",
     format: "esm",
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          firebase: [
+            "firebase/auth",
+            "firebase/firestore",
+            "firebase/functions",
+          ],
+          vue: ["vue", "vue-router"],
+        },
+      },
+    },
   },
   resolve: {
     alias: {

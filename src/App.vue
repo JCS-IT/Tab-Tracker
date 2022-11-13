@@ -1,21 +1,35 @@
 <template>
   <v-app>
     <v-app-bar color="primary" app>
-      <v-app-bar-nav-icon @click="$router.go(0)" icon="mdi-home" />
+      <v-app-bar-nav-icon
+        color="auto"
+        icon="home"
+        @click="router.push('/user')"
+      />
       <v-app-bar-title>
         JCS Tabs
         <template v-if="mode">
+          <<<<<<< HEAD
           <v-chip color="error" label>DEV</v-chip>
+          =======
+          <v-chip label>DEV</v-chip>
+          >>>>>>> e973cf4eae0784d455ec601df5e1fbe0cdfd6881
         </template>
       </v-app-bar-title>
+      <v-btn icon @click="toggleTheme" color="auto">
+        <Transition name="fade-transition" mode="out-in">
+          <v-icon icon="light_mode" v-if="theme.global.name.value == 'light'" />
+          <v-icon icon="dark_mode" v-else />
+        </Transition>
+      </v-btn>
       <UserProfile v-if="loggedIn" />
     </v-app-bar>
     <v-main>
       <v-container fluid>
         <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
+          <Transition name="fade-transition" appear>
             <component :is="Component" />
-          </transition>
+          </Transition>
         </router-view>
       </v-container>
     </v-main>
@@ -24,7 +38,7 @@
         app
         color="primary"
         height="64px"
-        v-if="loggedIn && route.path === '/user'"
+        v-if="loggedIn && $route.path === '/user'"
       >
         <v-container>
           <v-row justify="center" no-gutters>
@@ -37,14 +51,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineAsyncComponent } from "vue";
 import { auth } from "utils/firebase";
-import { useRouter, useRoute } from "vue-router";
+
+// data
+const loggedIn = ref(false);
+const theme = useTheme();
+const mode = import.meta.env.DEV;
 
 const router = useRouter();
-const route = useRoute();
-const loggedIn = ref(false);
 
+// computed
 auth.onAuthStateChanged((user) => {
   if (user) {
     router.push("/user");
@@ -55,25 +71,13 @@ auth.onAuthStateChanged((user) => {
   }
 });
 
-const FeedBack = defineAsyncComponent(
-  () => import("@/components/FeedBack.vue")
-);
+// methods
+const toggleTheme = () => {
+  theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
+  localStorage.setItem("theme", theme.global.name.value);
+};
 
-const UserProfile = defineAsyncComponent(
-  () => import("@/components/UserProfile.vue")
-);
-
-const mode = import.meta.env.DEV;
+if (localStorage.getItem("theme")) {
+  theme.global.name.value = localStorage.getItem("theme") as string;
+}
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

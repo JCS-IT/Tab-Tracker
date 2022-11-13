@@ -1,12 +1,12 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
+    "vite.config.ts",
+    "*.d.ts",
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue",
-    "vite.config.ts",
-    "env.d.ts"
+    "src/**/*.vue"
   ],
   "compilerOptions": {
     "baseUrl": ".",
@@ -24,7 +24,9 @@
       "dom"
     ],
     "types": [
-      "vuetify"
+      "vuetify",
+      "vite-plugin-pwa/client",
+      "firebase/firestore"
     ],
     "paths": {
       "@/*": [

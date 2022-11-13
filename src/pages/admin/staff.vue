@@ -1,7 +1,7 @@
 <template>
   <v-container fluid v-if="users !== null && items !== null">
     <v-row>
-      <v-expansion-panels v-model="panels" multiple>
+      <v-expansion-panels>
         <template v-for="letter in letters" :key="letter">
           <v-expansion-panel
             :id="letter"
@@ -28,6 +28,11 @@
   </v-container>
   <v-container fluid v-else>
     <v-row>
+      <v-col align="center">
+        <h1>Fetching users...</h1>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12">
         <v-progress-linear indeterminate />
       </v-col>
@@ -35,15 +40,23 @@
   </v-container>
 </template>
 
-<script setup lang="ts">
-import { defineAsyncComponent, ref } from "vue";
-import { db } from "utils/firebase";
-import { doc, collection, onSnapshot } from "@firebase/firestore";
-import type { User, Item } from "@/types";
-import { onBeforeRouteLeave } from "vue-router";
+<route lang="json">
+{
+  "path": "/admin/staff",
+  "name": "admin-staff",
+  "meta": {
+    "requiresAuth": true,
+    "requiresAdmin": true
+  }
+}
+</route>
 
+<script setup lang="ts">
+import type { User, Item } from "@/types";
+import { onBeforeRouteLeave } from "vue-router/auto";
+
+// data
 const users = ref<User[]>([]);
-const panels = ref<string[]>([]);
 const items = ref<Item[]>([]);
 
 const letters = [
@@ -75,15 +88,10 @@ const letters = [
   "z",
 ] as string[];
 
-// components
-const UserCard = defineAsyncComponent(
-  () => import("@/components/admin/User/UserCard.vue")
-);
-
 // firestore snapshots
 const usersSnap = onSnapshot(collection(db, "users"), (snap) => {
   users.value = [];
-  snap.forEach((doc) => {
+  snap?.forEach((doc) => {
     users.value.push(doc.data() as User);
   });
 });

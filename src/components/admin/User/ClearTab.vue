@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="300px" @click:outside="closeDialog()">
+  <v-dialog v-model="dialog" max-width="500px" @click:outside="closeDialog()">
     <template #activator="{ props }">
       <v-btn v-bind="props" color="red" :loading="dialog"> Clear Tab </v-btn>
     </template>
@@ -33,9 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { functions } from "utils/firebase";
-import { httpsCallable } from "@firebase/functions";
 import type { User } from "@/types";
 
 // inject the user
