@@ -2,93 +2,102 @@
   <v-container align="center" v-if="user && items">
     <v-row>
       <v-col>
-        <h1>{{ user?.info.displayName }}'s Tab</h1>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
         <AddItemToTab :items="items" />
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
-        <v-expansion-panels>
-          <v-expansion-panel>
-            <v-expansion-panel-title>
-              Tab
-              <v-spacer />
-              Total: {{ total() }}
-            </v-expansion-panel-title>
-            <v-expansion-panel-text>
-              <v-table density="compact">
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
+      <v-col>
+        <v-card max-width="800px">
+          <v-card-title> Current Tab </v-card-title>
+          <v-card-text>
+            <v-table density="compact">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-for="(item, index) in items" :key="index">
+                  <tr v-if="count()[item.name] > 0">
+                    <td>{{ item.name }}</td>
+                    <td>{{ count()[item.name] }}</td>
+                    <td>
+                      {{
+                        new Intl.NumberFormat("en-CA", {
+                          style: "currency",
+                          currency: "CAD",
+                        }).format(item.price)
+                      }}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  <template v-for="(item, index) in items" :key="index">
-                    <tr v-if="count()[item.name] > 0">
-                      <td>{{ item.name }}</td>
-                      <td>{{ count()[item.name] }}</td>
-                      <td>
-                        {{
-                          new Intl.NumberFormat("en-CA", {
-                            style: "currency",
-                            currency: "CAD",
-                          }).format(item.price)
-                        }}
-                      </td>
-                    </tr>
-                  </template>
-                </tbody>
-              </v-table>
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-          <v-expansion-panel>
-            <v-expansion-panel-title> History </v-expansion-panel-title>
-            <v-expansion-panel-text>
-              <v-pagination v-model="page" :length="MathTime()" />
-              <v-table>
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th>Price</th>
-                    <th>Date</th>
-                    <th>Time</th>
+                </template>
+              </tbody>
+            </v-table>
+          </v-card-text>
+          <v-card-text>
+            <v-row>
+              <v-col align="right">
+                <h3 class="mr-2">Total: {{ total() }}</h3>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-card max-width="800px">
+          <v-card-title> Recent Transactions </v-card-title>
+          <v-card-text>
+            <v-pagination v-model="page" :length="MathTime()" />
+            <v-table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Price</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-for="(item, index) in visibleItems" :key="index">
+                  <tr v-if="count()[item.name] > 0">
+                    <td>{{ item.name }}</td>
+                    <td>
+                      {{
+                        new Intl.NumberFormat("en-CA", {
+                          style: "currency",
+                          currency: "CAD",
+                        }).format(item.price)
+                      }}
+                    </td>
+                    <td>
+                      {{ item.date.toDate().toLocaleDateString() }}
+                    </td>
+                    <td>
+                      {{ item.date.toDate().toLocaleTimeString() }}
+                    </td>
+                    <DeleteItemFromTab
+                      :item="item"
+                      v-if="canDelete(item.date)"
+                    />
                   </tr>
-                </thead>
-                <tbody>
-                  <template v-for="(item, index) in visibleItems" :key="index">
-                    <tr v-if="count()[item.name] > 0">
-                      <td>{{ item.name }}</td>
-                      <td>
-                        {{
-                          new Intl.NumberFormat("en-CA", {
-                            style: "currency",
-                            currency: "CAD",
-                          }).format(item.price)
-                        }}
-                      </td>
-                      <td>
-                        {{ item.date.toDate().toLocaleDateString() }}
-                      </td>
-                      <td>
-                        {{ item.date.toDate().toLocaleTimeString() }}
-                      </td>
-                      <DeleteItemFromTab
-                        :item="item"
-                        v-if="canDelete(item.date)"
-                      />
-                    </tr>
-                  </template>
-                </tbody>
-              </v-table>
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-        </v-expansion-panels>
+                </template>
+              </tbody>
+            </v-table>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-footer app color="primary" height="50px">
+          <v-row justify="center" no-gutters>
+            <FeedBack />
+          </v-row>
+        </v-footer>
       </v-col>
     </v-row>
   </v-container>
@@ -118,11 +127,12 @@
 import type { Timestamp } from "firebase/firestore";
 import type { User, Item } from "@/types";
 
+const { mobile } = useDisplay();
 const router = useRouter();
 
 // data
 const page = ref(1);
-const perPage = 10;
+const perPage = 5;
 const user = ref<User | null>(null);
 const items = ref<Item[]>([]);
 
