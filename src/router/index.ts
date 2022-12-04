@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router/auto";
-import { auth } from "utils/firebase";
+import { auth } from "@/firebase";
 
 const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 }),

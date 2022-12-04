@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { auth } from "utils/firebase";
+import { auth } from "@/firebase";
 
 // data
 const loggedIn = ref(false);
