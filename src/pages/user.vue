@@ -127,7 +127,6 @@
 import type { Timestamp } from "firebase/firestore";
 import type { User, Item } from "@/types";
 
-const { mobile } = useDisplay();
 const router = useRouter();
 
 // data
