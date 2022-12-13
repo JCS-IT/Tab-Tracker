@@ -33,25 +33,11 @@
         </router-view>
       </v-container>
     </v-main>
-    <v-fade-transition>
-      <v-footer
-        app
-        color="primary"
-        height="64px"
-        v-if="loggedIn && $route.path === '/user'"
-      >
-        <v-container>
-          <v-row justify="center" no-gutters>
-            <FeedBack />
-          </v-row>
-        </v-container>
-      </v-footer>
-    </v-fade-transition>
   </v-app>
 </template>
 
 <script setup lang="ts">
-import { auth } from "utils/firebase";
+import { auth } from "@/firebase";
 
 // data
 const loggedIn = ref(false);

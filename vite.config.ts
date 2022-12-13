@@ -50,7 +50,7 @@ export default defineConfig({
             "arrayUnion",
           ],
           "firebase/functions": ["httpsCallable"],
-          "utils/firebase": ["auth", "db", "functions"],
+          "@/firebase": ["auth", "db", "functions"],
         },
       ],
 
