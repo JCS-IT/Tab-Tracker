@@ -2,7 +2,7 @@
   <VDialog v-model="dialog" max-width="400px" align="center">
     <template #activator="{ props }">
       <VBtn v-bind="props" color="red" depressed @click="dialog = true">
-        <v-icon icon="delete" />
+        <MdiDelete />
       </VBtn>
     </template>
     <VCard :loading="loading" :disabled="loading">
@@ -23,8 +23,8 @@
         <span>Delete Item</span>
       </VCardTitle>
       <VCardSubtitle>
-        {{ props.item?.name }} at
-        {{ props.item?.date.toDate().toLocaleString() }}
+        {{ item?.name }} at
+        {{ item?.date.toDate().toLocaleString() }}
       </VCardSubtitle>
       <VCardText>
         <span> Are you sure you want to delete this item? </span>
@@ -60,7 +60,7 @@ const error = ref({
   message: null as string | null,
 });
 
-const props = defineProps<{
+const { item } = defineProps<{
   item: TabItem;
 }>();
 
@@ -73,7 +73,7 @@ const deleteItem = async () => {
     }
     const userDoc = doc(db, "users", user.uid);
     await updateDoc(userDoc, {
-      tab: arrayRemove(props.item),
+      tab: arrayRemove(item),
     });
     dialog.value = false;
   } catch (err) {

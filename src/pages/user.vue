@@ -39,10 +39,22 @@
           <VCardText>
             <VRow>
               <VCol align="left">
-                <ClearTab />
+                <ClearTab
+                  :email="auth?.currentUser?.email!"
+                  name="your"
+                  v-if="total() > 0"
+                />
               </VCol>
               <VCol align="right">
-                <h3 class="mr-2">Total: {{ total() }}</h3>
+                <h3 class="mr-2">
+                  Total:
+                  {{
+                    new Intl.NumberFormat("en-CA", {
+                      style: "currency",
+                      currency: "CAD",
+                    }).format(total())
+                  }}
+                </h3>
               </VCol>
             </VRow>
           </VCardText>
@@ -136,15 +148,6 @@
         </VExpansionPanels>
       </VCol>
     </VRow>
-    <VRow>
-      <VCol>
-        <VFooter app color="primary" height="50px">
-          <VRow justify="center" no-gutters>
-            <FeedBack />
-          </VRow>
-        </VFooter>
-      </VCol>
-    </VRow>
   </VContainer>
   <VContainer v-else fluid align="center">
     <VRow>
@@ -180,10 +183,14 @@ import { useRouter } from "vue-router";
 import { useDocument, useFirebaseAuth, useFirestore } from "vuefire";
 
 // components
-import FeedBack from "@/components/FeedBack.vue";
 import AddItemToTab from "@/components/userPage/AddItemToTab.vue";
-import ClearTab from "@/components/userPage/ClearTab.vue";
-import DeleteItemFromTab from "@/components/userPage/DeleteItemFromTab.vue";
+
+const ClearTab = await import("@/components/ClearTab.vue").then(
+  (m) => m.default
+);
+const DeleteItemFromTab = await import(
+  "@/components/userPage/DeleteItemFromTab.vue"
+).then((m) => m.default);
 
 const router = useRouter();
 
@@ -217,10 +224,7 @@ const total = () => {
   userDoc.data.value?.tab?.forEach((item: Item) => {
     total += item.price;
   });
-  return new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: "CAD",
-  }).format(total);
+  return total;
 };
 
 const visibleItems = computed(() => {

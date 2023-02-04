@@ -7,18 +7,34 @@ import vuetify from "vite-plugin-vuetify";
 import VueRouter from "unplugin-vue-router/vite";
 import { VitePWA } from "vite-plugin-pwa";
 
+import Icons from "unplugin-icons/vite";
+import IconsResolver from "unplugin-icons/resolver";
+import Components from "unplugin-vue-components/vite";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     VueRouter({
-      dataFetching: true,
       routesFolder: "src/pages",
+      dataFetching: true,
       routeBlockLang: "json5",
       importMode: "async",
     }),
     vue(),
     vuetify({
       autoImport: true,
+    }),
+    Components({
+      dts: true,
+      resolvers: [
+        IconsResolver({
+          prefix: "",
+        }),
+      ],
+    }),
+    Icons({
+      compiler: "vue3",
+      autoInstall: true,
     }),
     VitePWA({
       injectRegister: "inline",

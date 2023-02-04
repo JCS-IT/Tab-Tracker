@@ -1,61 +1,53 @@
 <template>
   <VApp>
     <VAppBar color="primary" app>
-      <VAppBarNavIcon color="auto" icon="home" @click="router.push('/')" />
-      <VAppBarTitle> JCS Tabs </VAppBarTitle>
-      <VBtn icon @click="toggleTheme" color="auto">
-        <Transition name="fade-transition" mode="out-in">
-          <VIcon icon="light_mode" v-if="theme.global.name.value == 'light'" />
-          <VIcon icon="dark_mode" v-else />
-        </Transition>
-      </VBtn>
+      <VAppBarTitle>
+        <RouterLink to="/user"> JCS Tabs </RouterLink>
+      </VAppBarTitle>
       <UserProfile />
     </VAppBar>
     <VMain>
       <VContainer fluid>
-        <RouterView v-slot="{ Component, route }">
-          <Transition
-            :name="route.meta?.transition as string || 'fade-transition'"
-            appear
-            mode="out-in"
-          >
-            <component :is="Component" />
-          </Transition>
-        </RouterView>
+        <Suspense>
+          <RouterView v-slot="{ Component, route }">
+            <Transition
+              :name="route.meta?.transition as string || ''"
+              mode="out-in"
+              appear
+            >
+              <div :key="route.path">
+                <component :is="Component" />
+              </div>
+            </Transition>
+          </RouterView>
+        </Suspense>
       </VContainer>
     </VMain>
   </VApp>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { useFirebaseAuth } from "vuefire";
-import { useRouter } from "vue-router";
-import { useTheme } from "vuetify";
 import { usePreferredDark } from "@vueuse/core";
+import { useTheme } from "vuetify";
 
 import UserProfile from "@/components/UserProfile.vue";
 
 // data
-const loggedIn = ref(false);
 const theme = useTheme();
-const auth = useFirebaseAuth()!;
-const router = useRouter();
-
 const prefersDark = usePreferredDark();
+
+// computed
 
 if (prefersDark.value) {
   theme.global.name.value = "dark";
 } else {
   theme.global.name.value = "light";
 }
-
-auth.onAuthStateChanged((user) => {
-  loggedIn.value = !!user;
-});
-
-// methods
-const toggleTheme = () => {
-  theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
-};
 </script>
+
+<style scoped>
+a {
+  color: white;
+  text-decoration: none;
+}
+</style>

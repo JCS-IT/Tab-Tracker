@@ -2,6 +2,7 @@
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
     "vite.config.ts",
+    "typed-router.d.ts",
     "*.d.ts",
     "src/**/*.ts",
     "src/**/*.d.ts",
@@ -28,7 +29,8 @@
       "vuetify",
       "vite-plugin-pwa/client",
       "firebase/firestore",
-      "@types/webfontloader"
+      "@types/webfontloader",
+      "unplugin-icons/types/vue"
     ],
     "paths": {
       "@/*": [

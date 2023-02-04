@@ -3,6 +3,7 @@ import type { Item, User } from "@/types";
 import { collection, doc } from "firebase/firestore";
 import { useCollection, useDocument, useFirestore } from "vuefire";
 
+// components
 import UserCard from "@/components/admin/User/UserCard.vue";
 
 const letters = [
@@ -94,14 +95,3 @@ const filterUsers = (letter: string) => {
     </VRow>
   </VContainer>
 </template>
-
-<route lang="json">
-{
-  "path": "/admin/staff",
-  "name": "admin-staff",
-  "meta": {
-    "requiresAuth": true,
-    "requiresAdmin": true
-  }
-}
-</route>

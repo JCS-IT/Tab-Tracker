@@ -6,13 +6,8 @@
     min-width="300px"
   >
     <template #activator="{ props }">
-      <VBtn
-        color="success"
-        v-bind="props"
-        :loading="dialog"
-        :disabled="dialog"
-        prepend-icon="add"
-      >
+      <VBtn color="success" v-bind="props">
+        <MdiPlusThick class="mr-1" />
         Add Item
       </VBtn>
     </template>
@@ -79,11 +74,9 @@ const error = ref({
 });
 const { mobile, width } = useDisplay();
 
-const props = defineProps<{
-  items: Item[];
-}>();
+const { items } = defineProps<{ items: Item[] }>();
 
-props.items?.forEach((item) => {
+items?.forEach((item) => {
   loading.value[item.name] = false;
 });
 
