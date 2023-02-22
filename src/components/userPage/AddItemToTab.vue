@@ -6,8 +6,7 @@
     min-width="300px"
   >
     <template #activator="{ props }">
-      <VBtn color="success" v-bind="props">
-        <MdiPlusThick class="mr-1" />
+      <VBtn color="success" v-bind="props" :prepend-icon="MdiPlusThick">
         Add Item
       </VBtn>
     </template>
@@ -48,6 +47,7 @@
             }).format(item.price)
           }}
         </VBtn>
+        <CustomItem @close="close" />
       </VCardText>
       <VCardActions>
         <VBtn color="red" @click="close()"> Cancel </VBtn>
@@ -62,6 +62,8 @@ import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
 import { ref } from "vue";
 import { useFirebaseAuth, useFirestore } from "vuefire";
 import { useDisplay } from "vuetify";
+import MdiPlusThick from "~icons/mdi/plus-thick";
+import CustomItem from "./CustomItem.vue";
 
 const db = useFirestore();
 const auth = useFirebaseAuth();

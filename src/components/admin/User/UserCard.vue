@@ -1,5 +1,5 @@
 <template v-if="user != null">
-  <VTooltip :text="user?.info.displayName">
+  <VTooltip :text="user?.info.displayName" :disabled="mobile">
     <template #activator="{ props }">
       <VBtn
         icon
@@ -33,35 +33,33 @@
             <VExpansionPanelTitle>
               Tab
               <vSpacer />
-              Total: ${{ total }}
+              Total: {{ total }}
             </VExpansionPanelTitle>
             <VExpansionPanelText>
               <VTable>
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Price</th>
+                    <th>Item</th>
                     <th>Quantity</th>
+                    <th>Price</th>
                   </tr>
                 </thead>
                 <tbody>
                   <template
-                    v-for="(item, index) in user?.tab.filter(
-                      (item) => !item.paid
-                    )"
+                    v-for="(item, index) in dedupeArray(user.tab)"
                     :key="index"
                   >
-                    <tr>
+                    <tr v-if="countItemsInTab(user.tab)[item.name] > 0">
                       <td>{{ item.name }}</td>
+                      <td>{{ countItemsInTab(user.tab)[item.name] }}</td>
                       <td>
                         {{
-                          new Intl.NumberFormat("en", {
+                          new Intl.NumberFormat("en-CA", {
                             style: "currency",
                             currency: "CAD",
                           }).format(item.price)
                         }}
                       </td>
-                      <td>{{ count[item.name] }}</td>
                     </tr>
                   </template>
                 </tbody>
@@ -73,8 +71,8 @@
             <VExpansionPanelText>
               <VPagination
                 v-model="page"
-                :length="MathTime()"
-                :totalVisible="MathTime()"
+                :length="calculatePages(user.tab.length, 5)"
+                :totalVisible="calculatePages(user.tab.length, 5)"
               />
               <VTable>
                 <thead>
@@ -93,7 +91,7 @@
                       <td>{{ item.paid ? "Yes" : "No" }}</td>
                       <td>
                         {{
-                          new Intl.NumberFormat("en", {
+                          new Intl.NumberFormat("en-CA", {
                             style: "currency",
                             currency: "CAD",
                           }).format(item.price)
@@ -130,11 +128,13 @@
 <script setup lang="ts">
 import type { Item, User } from "@/types";
 import { computed, ref } from "vue";
+import { computeVisibleItems, dedupeArray } from "@/util/user";
+import { useDisplay } from "vuetify";
 
 // components
 import ClearHistory from "@/components/admin/User/ClearHistory.vue";
-// import ClearTab from "@/components/admin/User/ClearTab.vue";
 import ToggleRole from "@/components/admin/User/ToggleRole.vue";
+import { countItemsInTab, getTabTotal, calculatePages } from "@/util/user";
 
 const ClearTab = await import("@/components/ClearTab.vue").then(
   (m) => m.default
@@ -149,43 +149,19 @@ const { user, items } = defineProps<{
 // data
 const dialog = ref(false);
 const page = ref(1);
-const perPage = 5;
+
+const { mobile } = useDisplay();
 
 // computed
+const visibleItems = computed(() =>
+  computeVisibleItems(user?.tab, page.value, 5)
+);
+
 const total = computed(() => {
-  let total = 0;
-  user?.tab
-    ?.filter((item) => !item.paid)
-    .forEach((item) => {
-      total += item.price;
-    });
-  return total;
-});
-
-const visibleItems = computed(() => {
-  const start = (page.value - 1) * perPage;
-  const end = start + perPage;
-  // @ts-expect-error
-  user?.tab?.sort((a, b) => b.date.toDate() - a.date.toDate());
-  return user?.tab?.slice(start, end);
-});
-
-const MathTime = () => {
-  if (user?.tab.length) {
-    return Math.ceil(user?.tab.length / perPage);
-  }
-};
-
-const count = computed(() => {
-  const count = {} as Record<string, number>;
-  user?.tab?.forEach((item) => {
-    if (count[item.name]) {
-      count[item.name] += 1;
-    } else {
-      count[item.name] = 1;
-    }
-  });
-  return count;
+  return new Intl.NumberFormat("en-CA", {
+    style: "currency",
+    currency: "CAD",
+  }).format(getTabTotal(user?.tab));
 });
 
 // methods
