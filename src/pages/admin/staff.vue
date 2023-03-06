@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import UserCard from "@/components/admin/User/UserCard.vue";
-import type { Item, User } from "@/types";
+import type { Item, Items, User } from "@/types";
 import { collection, doc } from "firebase/firestore";
 import { computed } from "vue";
 import { useCollection, useDocument, useFirestore } from "vuefire";
@@ -36,8 +36,8 @@ const letters = [
 
 // firestore snapshots
 const db = useFirestore();
-const users = useCollection(collection(db, "users"));
-const items = useDocument(doc(db, "admin", "items"));
+const users = useCollection<User>(collection(db, "users"));
+const items = useDocument<Items>(doc(db, "admin", "items"));
 
 // computed
 
@@ -51,8 +51,8 @@ const isLoading = computed(() => {
 
 // methods
 const filterUsers = (letter: string) => {
-  return users?.value.filter((user) => {
-    return user.info.displayName
+  return users?.data.value.filter((user) => {
+    return user?.info.displayName
       .split(" ")[1]
       ?.toLowerCase()
       .startsWith(letter);
@@ -89,10 +89,7 @@ const filterUsers = (letter: string) => {
             </VExpansionPanelTitle>
             <VExpansionPanelText>
               <template v-for="user in filterUsers(letter)" :key="user">
-                <UserCard
-                  :user="(user as User)"
-                  :items="(items.food as Item[])"
-                />
+                <UserCard :user="user" :items="(items.food as Item[])" />
               </template>
             </VExpansionPanelText>
           </VExpansionPanel>

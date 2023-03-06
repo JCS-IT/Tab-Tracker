@@ -1,18 +1,23 @@
-import { fileURLToPath, URL } from "node:url";
-
-import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-
-import vuetify from "vite-plugin-vuetify";
-import VueRouter from "unplugin-vue-router/vite";
-import { VitePWA } from "vite-plugin-pwa";
-
-import Icons from "unplugin-icons/vite";
+import { fileURLToPath, URL } from "node:url";
 import IconsResolver from "unplugin-icons/resolver";
+import Icons from "unplugin-icons/vite";
 import Components from "unplugin-vue-components/vite";
+import VueRouter from "unplugin-vue-router/vite";
+import { defineConfig } from "vite";
+import mkcert from "vite-plugin-mkcert";
+import { VitePWA } from "vite-plugin-pwa";
+import vuetify from "vite-plugin-vuetify";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    https: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Referrer-Policy": "no-referrer",
+    },
+  },
   plugins: [
     VueRouter({
       routesFolder: "src/pages",
@@ -21,6 +26,8 @@ export default defineConfig({
       importMode: "async",
     }),
     vue(),
+
+    mkcert(),
     vuetify({
       autoImport: true,
     }),
@@ -45,6 +52,9 @@ export default defineConfig({
         "robots.txt",
         "apple-touch-icon.png",
       ],
+      devOptions: {
+        enabled: false,
+      },
       manifest: {
         name: "JCS Tab Tracker",
         short_name: "JCS Tabs",
@@ -149,6 +159,8 @@ export default defineConfig({
             "firebase/auth",
             "firebase/firestore",
             "firebase/functions",
+            "firebase/messaing",
+            "firebase/*",
           ],
           vue: ["vue", "vue-router"],
         },
@@ -158,12 +170,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
-  },
-  server: {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Referrer-Policy": "no-referrer",
+      "~utils": fileURLToPath(new URL("./src/utils", import.meta.url)),
     },
   },
 });

@@ -7,9 +7,6 @@ export const getTabTotal = (input: TabItem[]) => {
 
 export const countItemsInTab = (tab: TabItem[]) => {
   const count = {} as { [key: string]: number };
-  // items.forEach((item: Item) => {
-  //   count[item.name] = 0;
-  // });
   tab.forEach((item: TabItem) => {
     count[item.name] = 0;
   });
@@ -18,7 +15,6 @@ export const countItemsInTab = (tab: TabItem[]) => {
     .forEach((item: Item) => {
       count[item.name]++;
     });
-  console.log(count);
   return count;
 };
 
