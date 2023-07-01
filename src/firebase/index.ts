@@ -22,6 +22,4 @@ const messaging = getMessaging(firebaseApp);
 getAnalytics(firebaseApp);
 getPerformance(firebaseApp);
 
-connectFunctionsEmulator(functions, "localhost", 5001);
-
 export { firebaseApp, functions, messaging };

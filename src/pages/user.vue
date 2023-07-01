@@ -55,22 +55,27 @@ const headers = {
     {
       title: "Item",
       key: "name",
+      align: "center",
     },
     {
       title: "Price",
       key: "price",
+      align: "center",
     },
     {
       title: "Date",
       key: "date",
+      align: "center",
     },
     {
       title: "Time",
       key: "time",
+      align: "center",
     },
     {
       title: "Actions",
       key: "actions",
+      align: "center",
       sortable: false,
     },
   ],
@@ -78,18 +83,22 @@ const headers = {
     {
       title: "Item",
       key: "name",
+      align: "center",
     },
     {
       title: "Price",
       key: "price",
+      align: "center",
     },
     {
       title: "Date",
       key: "date",
+      align: "center",
     },
     {
       title: "Time",
       key: "time",
+      align: "center",
     },
   ],
 };
@@ -122,6 +131,7 @@ const headers = {
                 <tr
                   v-for="(item, index) in userDoc.tab.filter((e: TabItem) => !e.paid).reverse()"
                   :key="index"
+                  align="center"
                 >
                   <td>{{ item.name }}</td>
                   <td>
@@ -208,7 +218,7 @@ const headers = {
                 item-value="name"
               >
                 <template #item="{ item }">
-                  <tr>
+                  <tr align="center">
                     <td>{{ item.columns.name }}</td>
                     <td>
                       {{ $n(item.columns.price, "currency") }}

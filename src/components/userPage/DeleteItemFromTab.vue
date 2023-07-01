@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TabItem } from "@/types";
-import { mdiDelete } from "@mdi/js";
+import { mdiTrashCan } from "@mdi/js";
 import { useToast } from "vue-toastification";
 
 // composables
@@ -58,8 +58,14 @@ const cancel = () => {
 <template>
   <VDialog v-model="dialog" max-width="400px" align="center">
     <template #activator="{ props }">
-      <VBtn v-bind="props" color="red" @click="dialog = true" icon>
-        <VIcon :icon="mdiDelete" />
+      <VBtn
+        v-bind="props"
+        color="red"
+        @click="dialog = true"
+        variant="text"
+        icon
+      >
+        <VIcon :icon="mdiTrashCan" />
       </VBtn>
     </template>
     <VCard :loading="loading" :disabled="loading">

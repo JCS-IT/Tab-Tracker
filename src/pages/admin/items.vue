@@ -18,14 +18,17 @@ const headers = [
   {
     title: "Name",
     key: "name",
+    align: "center",
   },
   {
     title: "Price",
     key: "price",
+    align: "center",
   },
   {
     title: "Actions",
     key: "actions",
+    align: "center",
     sortable: false,
   },
 ];
@@ -49,29 +52,33 @@ const headers = [
     </VRow>
     <VRow>
       <VCol>
-        <VDataTable :items="items.food" :headers="headers">
-          <template #item="{ item }">
-            <tr>
-              <td>{{ item.columns.name }}</td>
-              <td>{{ $n(item.columns.price, "currency") }}</td>
-              <td>
-                <EditItem
-                  :input="{
-                    name: item.columns.name,
-                    price: item.columns.price,
-                  }"
-                  :items="items.food"
-                />
-                <DeleteItem
-                  :item="{
-                    name: item.columns.name,
-                    price: item.columns.price,
-                  }"
-                />
-              </td>
-            </tr>
-          </template>
-        </VDataTable>
+        <VCard>
+          <VCardText>
+            <VDataTable :items="items.food" :headers="headers">
+              <template #item="{ item }">
+                <tr align="center">
+                  <td>{{ item.columns.name }}</td>
+                  <td>{{ $n(item.columns.price, "currency") }}</td>
+                  <td>
+                    <EditItem
+                      :input="{
+                        name: item.columns.name,
+                        price: item.columns.price,
+                      }"
+                      :items="items.food"
+                    />
+                    <DeleteItem
+                      :item="{
+                        name: item.columns.name,
+                        price: item.columns.price,
+                      }"
+                    />
+                  </td>
+                </tr>
+              </template>
+            </VDataTable>
+          </VCardText>
+        </VCard>
       </VCol>
     </VRow>
     <VRow class="text-center">
