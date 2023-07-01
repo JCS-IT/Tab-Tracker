@@ -2,16 +2,15 @@
 import { functions } from "@/firebase";
 import type { Item } from "@/types";
 import { httpsCallable } from "firebase/functions";
+import { mdiPencil } from "@mdi/js";
 
-// components
-import DeleteItem from "./DeleteItem.vue";
-import type { VCard } from "vuetify/lib/components/index.mjs";
-
-// props
+// composables
 const props = defineProps<{
   input: Item;
   items: Item[];
 }>();
+
+const emit = defineEmits(["close"]);
 
 // data
 const loading = ref({
@@ -56,40 +55,43 @@ const updateItem = async () => {
     error.value = err as string;
   } finally {
     loading.value.update = false;
+    emit("close");
   }
 };
 </script>
 
 <template>
-  <VCard
-    width="200px"
-    :loading="loading.update || loading.delete"
-    :disabled="loading.update"
-  >
-    <VAlert v-if="error != null">
-      {{ error }}
-    </VAlert>
-    <VCardTitle>
-      {{ input.name }}
-    </VCardTitle>
-    <VCardText class="pb-0">
-      <VForm>
-        <VTextField
-          label="Price"
-          variant="outlined"
-          type="number"
-          v-model="price"
-          prefix="$"
-          :rules="rules.price"
-          @keyup.enter="updateItem()"
-        />
-      </VForm>
-    </VCardText>
-    <VCardActions>
-      <VBtn @click="updateItem()" color="green" :loading="loading.update">
-        Update
-      </VBtn>
-      <DeleteItem :item="input" />
-    </VCardActions>
-  </VCard>
+  <VDialog align="center" max-width="300px" height="">
+    <template #activator="{ props }">
+      <VBtn v-bind="props" :icon="mdiPencil" variant="text" color="green" />
+    </template>
+    <VCard>
+      <VCardTitle>
+        {{ input.name }}
+      </VCardTitle>
+      <VCardText>
+        <VForm>
+          <VTextField
+            label="Price"
+            variant="outlined"
+            type="number"
+            v-model="price"
+            prefix="$"
+            :rules="rules.price"
+            @keyup.enter="updateItem()"
+          />
+        </VForm>
+      </VCardText>
+      <VCardActions>
+        <VBtn
+          color="green"
+          variant="text"
+          @click="updateItem()"
+          :loading="loading.update"
+        >
+          Update
+        </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>

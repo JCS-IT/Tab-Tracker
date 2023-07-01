@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import type { Items, TabItem, User } from "@/types";
-import {
-  calculatePages,
-  computeVisibleItems,
-  countItemsInTab,
-  dedupeArray,
-  getTabTotal,
-} from "@/utils";
+import type { TabItem, User } from "@/types";
+import { countItemsInTab, dedupeArray, getTabTotal, virtualTab } from "@/utils";
 import type { Timestamp } from "firebase/firestore";
 import { useI18n } from "vue-i18n";
+import { VDataTable } from "vuetify/labs/VDataTable";
+import { VDataTableVirtual } from "vuetify/labs/VDataTable";
 
 // composables
 definePage({
@@ -23,10 +19,6 @@ definePage({
 const router = useRouter();
 const i18n = useI18n();
 
-// data
-const page = ref(1);
-const perPage = 5;
-
 // firebase
 const db = useFirestore();
 const auth = useFirebaseAuth();
@@ -35,10 +27,6 @@ const items = useDocument(doc(db, "admin", "items"));
 const userDoc = useDocument<User>(doc(db, `users/${auth?.currentUser?.uid}`));
 
 // computed
-const visibleItems = computed(() =>
-  computeVisibleItems([...(userDoc.data.value?.tab ?? [])], page.value, perPage)
-);
-
 const dedupedTab = computed(() => dedupeArray(userDoc.data.value?.tab ?? []));
 
 const isLoading = computed(() => {
@@ -61,6 +49,50 @@ const canDelete = (date: Timestamp, paid: Boolean) => {
 };
 
 userDoc.error.value && router.push("/error");
+
+const headers = {
+  actions: [
+    {
+      title: "Item",
+      key: "name",
+    },
+    {
+      title: "Price",
+      key: "price",
+    },
+    {
+      title: "Date",
+      key: "date",
+    },
+    {
+      title: "Time",
+      key: "time",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      sortable: false,
+    },
+  ],
+  noActions: [
+    {
+      title: "Item",
+      key: "name",
+    },
+    {
+      title: "Price",
+      key: "price",
+    },
+    {
+      title: "Date",
+      key: "date",
+    },
+    {
+      title: "Time",
+      key: "time",
+    },
+  ],
+};
 </script>
 
 <template>
@@ -85,42 +117,31 @@ userDoc.error.value && router.push("/error");
         <VCard>
           <VCardTitle> Recent Transactions </VCardTitle>
           <VCardText>
-            <VTable>
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>Price</th>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <template
+            <VDataTable :headers="headers.actions">
+              <template #body>
+                <tr
                   v-for="(item, index) in userDoc.tab.filter((e: TabItem) => !e.paid).reverse()"
                   :key="index"
                 >
-                  <tr v-if="countItemsInTab(userDoc.tab)[item.name] > 0">
-                    <td>{{ item.name }}</td>
-                    <td>
-                      {{ $n(item.price, "currency") }}
-                    </td>
-                    <td>
-                      {{ item.date.toDate().toLocaleDateString() }}
-                    </td>
-                    <td>
-                      {{ item.date.toDate().toLocaleTimeString() }}
-                    </td>
-                    <td>
-                      <DeleteItemFromTab
-                        :item="item"
-                        v-if="canDelete(item.date, item.paid)"
-                      />
-                    </td>
-                  </tr>
-                </template>
-              </tbody>
-            </VTable>
+                  <td>{{ item.name }}</td>
+                  <td>
+                    {{ $n(item.price, "currency") }}
+                  </td>
+                  <td>
+                    {{ item.date.toDate().toLocaleDateString() }}
+                  </td>
+                  <td>
+                    {{ item.date.toDate().toLocaleTimeString() }}
+                  </td>
+                  <td>
+                    <DeleteItemFromTab
+                      :item="item"
+                      v-if="canDelete(item.date, item.paid)"
+                    />
+                  </td>
+                </tr>
+              </template>
+            </VDataTable>
           </VCardText>
         </VCard>
       </VCol>
@@ -181,36 +202,26 @@ userDoc.error.value && router.push("/error");
               <h3>History</h3>
             </VExpansionPanelTitle>
             <VExpansionPanelText>
-              <VPagination
-                v-model="page"
-                :length="calculatePages(userDoc.tab.length, perPage)"
-              />
-              <VTable>
-                <thead>
+              <VDataTableVirtual
+                :headers="headers.noActions"
+                :items="virtualTab(userDoc.tab)"
+                item-value="name"
+              >
+                <template #item="{ item }">
                   <tr>
-                    <th>Item</th>
-                    <th>Price</th>
-                    <th>Date</th>
-                    <th>Time</th>
+                    <td>{{ item.columns.name }}</td>
+                    <td>
+                      {{ $n(item.columns.price, "currency") }}
+                    </td>
+                    <td>
+                      {{ item.columns.date.toDate().toLocaleDateString() }}
+                    </td>
+                    <td>
+                      {{ item.columns.date.toDate().toLocaleTimeString() }}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  <template v-for="(item, index) in visibleItems" :key="index">
-                    <tr>
-                      <td>{{ item.name }}</td>
-                      <td>
-                        {{ $n(item.price, "currency") }}
-                      </td>
-                      <td>
-                        {{ item.date.toDate().toLocaleDateString() }}
-                      </td>
-                      <td>
-                        {{ item.date.toDate().toLocaleTimeString() }}
-                      </td>
-                    </tr>
-                  </template>
-                </tbody>
-              </VTable>
+                </template>
+              </VDataTableVirtual>
             </VExpansionPanelText>
           </VExpansionPanel>
         </VExpansionPanels>

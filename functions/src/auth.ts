@@ -11,11 +11,11 @@ export const beforeCreate = auth.user().beforeCreate(async (user) => {
 });
 
 export const onCreate = auth.user().onCreate(async (user) => {
-  const { email, displayName, photoURL } = user;
+  const { email, displayName, photoURL, uid } = user;
 
   const { firestore } = await import("firebase-admin");
 
-  return firestore().doc(`users/${user.uid}`).set({
+  return await firestore().doc(`users/${user.uid}`).set({
     info: {
       email,
       displayName,

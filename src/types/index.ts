@@ -17,16 +17,18 @@ export type TabItem = {
 };
 
 export type User = {
-  info: {
-    uid: string;
-    email: string;
-    displayName: string;
-    photoURL: string;
-    createdAt: Timestamp;
-  };
+  info: UserInfo;
   tab: TabItem[];
   roles: {
     [key: string]: boolean;
   };
   topics: string[];
+};
+
+export type UserInfo = {
+  uid: string;
+  email: string;
+  displayName: string;
+  photoURL: string;
+  createdAt: Timestamp;
 };

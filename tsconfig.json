@@ -7,8 +7,6 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "typed-router.d.ts",
-    "components.d.ts"
   ],
   "compilerOptions": {
     "baseUrl": ".",
@@ -23,9 +21,14 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "types": [
       "vite-plugin-pwa/client",
       "firebase/firestore",

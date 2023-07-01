@@ -1,5 +1,7 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <script setup lang="ts">
 import type { Items } from "@/types";
+import { VDataTable } from "vuetify/labs/VDataTable";
 
 // firebase
 const db = useFirestore();
@@ -9,6 +11,24 @@ const items = useDocument<Items>(doc(db, "admin", "items"));
 const isLoading = computed(() => {
   return items.pending.value ? true : false;
 });
+
+// data
+
+const headers = [
+  {
+    title: "Name",
+    key: "name",
+  },
+  {
+    title: "Price",
+    key: "price",
+  },
+  {
+    title: "Actions",
+    key: "actions",
+    sortable: false,
+  },
+];
 </script>
 
 <template>
@@ -27,10 +47,34 @@ const isLoading = computed(() => {
         <NewItem />
       </VCol>
     </VRow>
-    <VRow class="text-center">
-      <VCol v-for="(item, index) in items?.food" :key="index" align="center">
-        <ItemCard :items="items?.food" :input="item" />
+    <VRow>
+      <VCol>
+        <VDataTable :items="items.food" :headers="headers">
+          <template #item="{ item }">
+            <tr>
+              <td>{{ item.columns.name }}</td>
+              <td>{{ $n(item.columns.price, "currency") }}</td>
+              <td>
+                <EditItem
+                  :input="{
+                    name: item.columns.name,
+                    price: item.columns.price,
+                  }"
+                  :items="items.food"
+                />
+                <DeleteItem
+                  :item="{
+                    name: item.columns.name,
+                    price: item.columns.price,
+                  }"
+                />
+              </td>
+            </tr>
+          </template>
+        </VDataTable>
       </VCol>
+    </VRow>
+    <VRow class="text-center">
       <VCol v-if="items.food.length < 1">
         <h1>Nothings here... Lets change that!</h1>
       </VCol>

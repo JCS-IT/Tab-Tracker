@@ -4,4 +4,4 @@ const router = useRouter();
 router.back();
 </script>
 
-<template>How on earth did you get here?</template>
+<template>How did you get here?</template>

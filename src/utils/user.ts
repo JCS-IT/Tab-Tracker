@@ -46,3 +46,12 @@ export const computeVisibleItems = (
     .reverse()
     .slice(start, end);
 };
+
+export const virtualTab = (tab: TabItem[]): TabItem[] => {
+  const virtualTab = tab.map((item) => {
+    return {
+      ...item,
+    };
+  });
+  return virtualTab;
+};

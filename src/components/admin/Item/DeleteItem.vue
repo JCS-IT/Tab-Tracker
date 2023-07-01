@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
 import type { Item } from "@/types";
+import { mdiDelete, mdiTrashCan } from "@mdi/js";
 import { httpsCallable } from "firebase/functions";
 import { useToast } from "vue-toastification";
 
@@ -13,17 +14,14 @@ const props = defineProps<{
 const toast = useToast();
 
 // data
-const loading = ref({
-  pending: false,
-  confirm: false,
-});
+const loading = ref(false);
 const dialog = ref(false);
 const error = ref(null as string | null);
 
 // methods
 const deleteItem = async () => {
   try {
-    loading.value.confirm = true;
+    loading.value = true;
     const deleteItem = httpsCallable(functions, "deleteItem");
     await deleteItem({ item: props.item });
 
@@ -36,46 +34,48 @@ const deleteItem = async () => {
     toast.error(`${err}`);
     error.value = err as string;
   } finally {
-    loading.value = {
-      pending: false,
-      confirm: false,
-    };
+    loading.value = false;
   }
 };
+
+// lifecycle
+onUnmounted(() => {
+  dialog.value = false;
+  loading.value = false;
+});
 </script>
 
 <template>
-  <VDialog v-model="dialog" max-width="350px" align="center">
-    <template #activator>
-      <VBtn
-        color="red"
-        :loading="loading.pending"
-        @click="
-          dialog = true;
-          loading.pending = true;
-        "
-      >
-        Delete
-      </VBtn>
+  <VDialog v-model="dialog" max-width="300px" align="center">
+    <template #activator="{ props }">
+      <VBtn v-bind="props" color="red" variant="text" :icon="mdiTrashCan" />
     </template>
-    <VCard :loading="loading.confirm" :disabled="loading.confirm">
+    <VCard :loading="loading" :disabled="loading">
       <VAlert v-if="error != null">
         {{ error }}
       </VAlert>
-      <VCardTitle> Are you sure? </VCardTitle>
-      <VCardSubtitle> This will permanently delete this item. </VCardSubtitle>
+      <VCardTitle class="text-wrap">
+        Are you sure you want to delete
+        <span class="font-weight-bold">{{ item.name }}</span
+        >?
+      </VCardTitle>
+      <VCardSubtitle class="text-wrap">
+        This will permanently delete
+        <span class="font-weight-bold">{{ item.name }}</span> from the database.
+        <br />
+        <br />
+        This action cannot be undone.
+      </VCardSubtitle>
       <VCardActions>
-        <VBtn @click="deleteItem()" color="red" :loading="loading.confirm">
-          Delete
-        </VBtn>
+        <VBtn @click="deleteItem()" color="red" :loading="loading"> Yes </VBtn>
         <VBtn
           @click="
             dialog = false;
-            loading.pending = false;
+            loading = false;
           "
           color="green"
         >
-          Cancel
+          No
         </VBtn>
       </VCardActions>
     </VCard>
