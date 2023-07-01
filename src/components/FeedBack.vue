@@ -114,8 +114,8 @@ const close = () => {
         </VForm>
       </VCardText>
       <VCardActions>
-        <VBtn color="success" text @click="submit">Submit</VBtn>
-        <VBtn color="error" text @click="close">Cancel</VBtn>
+        <VBtn color="success" variant="text" @click="submit">Submit</VBtn>
+        <VBtn color="error" variant="text" @click="close">Cancel</VBtn>
       </VCardActions>
     </VCard>
   </VDialog>

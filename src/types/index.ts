@@ -1,4 +1,5 @@
 import type { Timestamp } from "firebase/firestore";
+import type { VDataTable } from "vuetify/labs/VDataTable";
 
 export type Item = {
   name: string;
@@ -32,3 +33,8 @@ export type UserInfo = {
   photoURL: string;
   createdAt: Timestamp;
 };
+
+export type VDataTableHeaderProps = Extract<
+  VDataTable["$props"]["headers"],
+  { key: string }
+>;

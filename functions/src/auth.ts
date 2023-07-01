@@ -11,7 +11,7 @@ export const beforeCreate = auth.user().beforeCreate(async (user) => {
 });
 
 export const onCreate = auth.user().onCreate(async (user) => {
-  const { email, displayName, photoURL, uid } = user;
+  const { email, displayName, photoURL } = user;
 
   const { firestore } = await import("firebase-admin");
 

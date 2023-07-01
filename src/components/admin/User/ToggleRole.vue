@@ -113,10 +113,15 @@ const close = () => {
         </VList>
       </VCardText>
       <VCardActions>
-        <VBtn color="auto" text @click="toggleRole()" :loading="loading.dialog">
+        <VBtn
+          color="auto"
+          variant="text"
+          @click="toggleRole()"
+          :loading="loading.dialog"
+        >
           Confirm
         </VBtn>
-        <VBtn color="red" text @click="close()"> Cancel </VBtn>
+        <VBtn color="red" variant="text" @click="close()"> Cancel </VBtn>
       </VCardActions>
     </VCard>
   </VDialog>

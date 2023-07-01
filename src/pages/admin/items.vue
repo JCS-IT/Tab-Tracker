@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script setup lang="ts">
-import type { Items } from "@/types";
+import type { Items, VDataTableHeaderProps } from "@/types";
 import { VDataTable } from "vuetify/labs/VDataTable";
 
 // firebase
@@ -31,7 +31,7 @@ const headers = [
     align: "center",
     sortable: false,
   },
-];
+] as VDataTableHeaderProps[];
 </script>
 
 <template>

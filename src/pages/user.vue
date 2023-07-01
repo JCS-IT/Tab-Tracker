@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TabItem, User } from "@/types";
+import type { TabItem, User, VDataTableHeaderProps } from "@/types";
 import { countItemsInTab, dedupeArray, getTabTotal, virtualTab } from "@/utils";
 import type { Timestamp } from "firebase/firestore";
 import { useI18n } from "vue-i18n";
@@ -78,7 +78,7 @@ const headers = {
       align: "center",
       sortable: false,
     },
-  ],
+  ] as VDataTableHeaderProps[],
   noActions: [
     {
       title: "Item",
@@ -100,7 +100,7 @@ const headers = {
       key: "time",
       align: "center",
     },
-  ],
+  ] as VDataTableHeaderProps[],
 };
 </script>
 

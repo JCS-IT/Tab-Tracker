@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
+import { getFunctions } from "firebase/functions";
 import { getMessaging } from "firebase/messaging";
 import { getAnalytics } from "firebase/analytics";
 import { getPerformance } from "firebase/performance";
