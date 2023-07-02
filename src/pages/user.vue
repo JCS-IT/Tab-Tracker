@@ -135,7 +135,7 @@ const headers = {
                 >
                   <td>{{ item.name }}</td>
                   <td>
-                    {{ $n(item.price, "currency") }}
+                    {{ $n(Number(item.price), "currency") }}
                   </td>
                   <td>
                     {{ item.date.toDate().toLocaleDateString() }}
