@@ -58,7 +58,7 @@ const headers = [
               <template #item="{ item }">
                 <tr align="center">
                   <td>{{ item.columns.name }}</td>
-                  <td>{{ $n(item.columns.price, "currency") }}</td>
+                  <td>{{ $n(Number(item.columns.price), "currency") }}</td>
                   <td>
                     <EditItem
                       :input="{
