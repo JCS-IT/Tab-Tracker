@@ -33,12 +33,13 @@ const addItem = async () => {
   if (inputValidation.valid === false) return;
   loading.value = true;
   try {
+    const item = {
+      name: input.value.name,
+      price: Number(input.value.price),
+    };
     const addItem = httpsCallable(functions, "addItem");
     await addItem({
-      item: {
-        name: input.value.name,
-        price: Number(input.value.price),
-      },
+      item,
     });
 
     toast.success(`'${input.value.name}' added successfully`);
