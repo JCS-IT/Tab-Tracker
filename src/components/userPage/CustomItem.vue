@@ -74,9 +74,7 @@ const close = () => {
 <template>
   <VDialog v-model="dialog" width="300px" @click:outside="close()">
     <template #activator="{ props }">
-      <VBtn color="secondary" v-bind="props" class="ma-1" width="100%">
-        Custom Item
-      </VBtn>
+      <VBtn v-bind="props" class="ma-1" width="100%"> Custom Item </VBtn>
     </template>
     <VAlert
       type="error"

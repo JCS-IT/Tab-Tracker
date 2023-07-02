@@ -37,7 +37,7 @@ if (prefersDark.value) {
 
 <template>
   <VApp>
-    <VAppBar color="primary" app>
+    <VAppBar app>
       <VAppBarTitle>
         <RouterLink to="/user"> JCS Tabs </RouterLink>
       </VAppBarTitle>

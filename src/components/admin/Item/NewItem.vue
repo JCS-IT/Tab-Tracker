@@ -61,7 +61,7 @@ const close = () => {
 </script>
 
 <template>
-  <VBtn color="secondary" @click="dialog = true"> New Item </VBtn>
+  <VBtn @click="dialog = true"> New Item </VBtn>
   <VDialog v-model="dialog" width="300px" @click:outside="close()">
     <VCard :loading="loading" :disabled="loading">
       <VAlert v-if="error" type="error">

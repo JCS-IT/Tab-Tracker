@@ -94,7 +94,6 @@ const close = () => {
       </VCardText>
       <VCardText v-else>
         <VBtn
-          color="secondary"
           v-for="(item, index) in items"
           :key="index"
           :loading="loading[item.name]"
