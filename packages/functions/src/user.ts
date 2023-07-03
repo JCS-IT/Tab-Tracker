@@ -1,20 +1,15 @@
 import { auth, firestore } from "firebase-admin";
 import { Timestamp } from "firebase-admin/firestore";
 import {
-  onCall,
-  HttpsError,
   FunctionsErrorCode,
+  HttpsError,
+  onCall,
 } from "firebase-functions/v2/https";
-import {
-  TabItem,
-  ClearHistoryProps,
-  ClearTabProps,
-  ToggleRoleProps,
-} from "./types";
+import { Props, TabItem } from "./types";
 
 export const clearTab = onCall(
   { enforceAppCheck: true },
-  async (event: ClearTabProps) => {
+  async (event: Props<{ email: string }>) => {
     if (
       !event?.auth?.token.admin ||
       event?.auth?.token.email !== event.data.email
@@ -76,7 +71,7 @@ export const clearTab = onCall(
 
 export const clearHistory = onCall(
   { enforceAppCheck: true },
-  async (event: ClearHistoryProps) => {
+  async (event: Props<{ email: string }>) => {
     if (!event?.auth?.token.admin) {
       throw new HttpsError(
         "permission-denied",
@@ -101,7 +96,7 @@ export const clearHistory = onCall(
 
 export const toggleRole = onCall(
   { enforceAppCheck: true },
-  async (event: ToggleRoleProps) => {
+  async (event: Props<{ email: string; role: string }>) => {
     if (!event?.auth?.token.admin) {
       throw new HttpsError(
         "permission-denied",

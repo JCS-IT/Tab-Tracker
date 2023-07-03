@@ -16,6 +16,7 @@ export const TabItemSchema = z.object({
   price: z.number(),
   date: z.instanceof(Timestamp),
   paid: z.boolean(),
+  clearedBy: z.string().optional(),
 });
 
 export const UserInfoSchema = z.object({
