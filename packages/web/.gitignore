@@ -27,6 +27,15 @@ coverage
 *.sln
 *.sw?
 
+# Yarn v2
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 # Firebase
 firestore.rules
 firestore.indexes.json
