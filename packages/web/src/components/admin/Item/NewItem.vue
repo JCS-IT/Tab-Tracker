@@ -3,7 +3,6 @@ import { functions } from "@/firebase";
 import { ItemSchema } from "@jcstabs/types";
 import { httpsCallable } from "firebase/functions";
 import { useToast } from "vue-toastification";
-import { z } from "zod";
 
 // composables
 const toast = useToast();
