@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import { mdiAccountCog, mdiArchiveCog } from "@mdi/js";
-// definePage({
-//   // path: "/admin",
-//   name: "admin",
-// });
 </script>
 
 <template>
