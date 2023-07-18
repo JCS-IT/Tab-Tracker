@@ -6,9 +6,11 @@ import vuetify from "./vuetify";
 import { loadFonts } from "./webfontloader";
 import router from "@/router";
 import i18n from "./i18n";
+import installPwa from "./pwa";
 
 export const registerPlugins = (app: App) => {
   loadFonts();
+  installPwa(router);
   app.use(router);
   app.use(vuetify);
   app.use(pinia);
