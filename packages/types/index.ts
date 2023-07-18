@@ -26,15 +26,20 @@ export const UserInfoSchema = z.object({
   createdAt: z.number(),
 });
 
-export const UserSchema = z.object({
-  info: UserInfoSchema,
-  tab: z.array(TabItemSchema),
-  roles: z.record(z.boolean()),
-  topics: z.array(z.string()),
-});
+export type UserInfo = {
+  email: string;
+  displayName: string;
+  photoURL: string;
+  createdAt: number;
+};
+
+export type User = {
+  info: UserInfo;
+  tab: TabItem[];
+  roles: Record<string, boolean>;
+  topics: string[];
+};
 
 export type Item = z.infer<typeof ItemSchema>;
 export type Items = z.infer<typeof ItemsSchema>;
 export type TabItem = z.infer<typeof TabItemSchema>;
-export type UserInfo = z.infer<typeof UserInfoSchema>;
-export type User = z.infer<typeof UserSchema>;
