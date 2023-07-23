@@ -16,7 +16,7 @@ export const clearTab = onCall(
     ) {
       throw new HttpsError(
         "permission-denied",
-        "You must be an admin to clear the tab"
+        "You must be an admin to clear the tab",
       );
     }
 
@@ -37,7 +37,7 @@ export const clearTab = onCall(
             item.paid = true;
           });
 
-        const total = () => {
+        const computeTotal = () => {
           let total = 0;
           currentTab.forEach((item) => {
             total -= item.price;
@@ -49,7 +49,7 @@ export const clearTab = onCall(
 
         processedTab.push({
           name: "Tab cleared by " + user.displayName,
-          price: total(),
+          price: computeTotal(),
           date: Timestamp.now(),
           clearedBy: user.displayName,
           paid: true,
@@ -66,7 +66,7 @@ export const clearTab = onCall(
       };
       throw new HttpsError(code, message);
     }
-  }
+  },
 );
 
 export const clearHistory = onCall(
@@ -75,7 +75,7 @@ export const clearHistory = onCall(
     if (!event?.auth?.token.admin) {
       throw new HttpsError(
         "permission-denied",
-        "You must be an admin to clear the history"
+        "You must be an admin to clear the history",
       );
     }
 
@@ -91,7 +91,7 @@ export const clearHistory = onCall(
       };
       throw new HttpsError(code, message);
     }
-  }
+  },
 );
 
 export const toggleRole = onCall(
@@ -100,7 +100,7 @@ export const toggleRole = onCall(
     if (!event?.auth?.token.admin) {
       throw new HttpsError(
         "permission-denied",
-        "You must be an admin to toggle roles"
+        "You must be an admin to toggle roles",
       );
     }
 
@@ -134,5 +134,5 @@ export const toggleRole = onCall(
       };
       throw new HttpsError(code, message);
     }
-  }
+  },
 );
