@@ -7,7 +7,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "firebase": "^9.23.0",
+    "firebase": "^10.1.0",
     "zod": "^3.21.4"
   }
 }
