@@ -20,8 +20,6 @@ const error = ref({
   message: null,
 } as { code: string | null; message: string | null });
 
-console.log("Email", props.email);
-
 // methods
 const clearTab = async () => {
   loading.value = true;
