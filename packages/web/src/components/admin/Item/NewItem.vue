@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
-import { ItemSchema } from "@jcstabs/types";
+import { ItemSchema } from "@jcstabs/shared";
 import { httpsCallable } from "firebase/functions";
 import { useToast } from "vue-toastification";
 

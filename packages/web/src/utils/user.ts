@@ -1,4 +1,4 @@
-import type { Item, TabItem } from "@jcstabs/types";
+import type { Item, TabItem } from "@jcstabs/shared";
 import type { Timestamp } from "firebase/firestore";
 
 export const getTabTotal = (input: TabItem[]) => {
@@ -34,14 +34,14 @@ export const calculatePages = (length: number, itemsPerPage: number) => {
 export const computeVisibleItems = (
   tab: TabItem[],
   page: number,
-  itemsPerPage: number
+  itemsPerPage: number,
 ) => {
   const tabCopy = [...tab];
   const start = (page - 1) * itemsPerPage;
   const end = start + itemsPerPage;
   return tabCopy
     .sort(
-      (a, b) => (a.date as Timestamp).seconds - (b.date as Timestamp).seconds
+      (a, b) => (a.date as Timestamp).seconds - (b.date as Timestamp).seconds,
     )
     .reverse()
     .slice(start, end);

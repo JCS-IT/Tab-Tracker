@@ -1,5 +1,5 @@
 import { functions } from "@/firebase";
-import type { User } from "@jcstabs/types";
+import type { User } from "@jcstabs/shared";
 import { useStorage } from "@vueuse/core";
 import { doc } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
@@ -28,7 +28,7 @@ interface UpdateTokenData {
 
 const updateSubscription = async (token: string) => {
   const userDoc = useDocument<User>(
-    doc(useFirestore(), `users/${useCurrentUser().value?.uid}`)
+    doc(useFirestore(), `users/${useCurrentUser().value?.uid}`),
   );
 
   console.log("userDoc loading", userDoc.pending.value);
@@ -37,7 +37,7 @@ const updateSubscription = async (token: string) => {
   if (!userDoc.pending.value) {
     return await httpsCallable<UpdateTokenData>(
       functions,
-      "updateToken"
+      "updateToken",
     )({
       topics: userDoc.data.value?.topics as string[],
       token,

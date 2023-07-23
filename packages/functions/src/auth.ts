@@ -5,7 +5,7 @@ export const beforeCreate = auth.user().beforeCreate(async (user) => {
     const { HttpsError } = await import("firebase-functions/v1/auth");
     throw new HttpsError(
       "permission-denied",
-      "You must be in the educbe.ca domain to create an account"
+      "You must be in the educbe.ca domain to create an account",
     );
   }
 });

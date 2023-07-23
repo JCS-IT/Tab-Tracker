@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Items, User } from "@jcstabs/types";
+import type { Items, User } from "@jcstabs/shared";
 import { getTabTotal } from "@/utils";
 import { mdiMagnify } from "@mdi/js";
 

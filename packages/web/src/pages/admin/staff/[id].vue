@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { User } from "@jcstabs/types";
+import type { User } from "@jcstabs/shared";
 import { countItemsInTab, dedupeArray, getTabTotal, virtualTab } from "@/utils";
 import { useI18n } from "vue-i18n";
 import { VDataTableVirtual } from "vuetify/labs/VDataTable";
@@ -136,7 +136,7 @@ const checkTabLength = () => {
       <VDivider />
       <VCardText>
         <span>Roles:</span>
-        <ToggleRole :user="(user as User)" role="admin" />
+        <ToggleRole :user="user as User" role="admin" />
       </VCardText>
       <VCardActions>
         <VBtn color="auto" @click="$router.back()">back</VBtn>
@@ -145,7 +145,7 @@ const checkTabLength = () => {
           :name="user?.info.displayName! + `'s`"
           v-if="checkTabLength().currentTab"
         />
-        <ClearHistory :user="(user as User)" v-if="checkTabLength().history" />
+        <ClearHistory :user="user as User" v-if="checkTabLength().history" />
       </VCardActions>
     </VCard>
   </VCard>

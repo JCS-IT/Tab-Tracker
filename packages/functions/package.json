@@ -1,5 +1,6 @@
 {
   "name": "@jcstabs/functions",
+  "version": "0.0.0",
   "scripts": {
     "lint": "eslint --fix --ext .js,.ts .",
     "build": "tsc",
@@ -26,8 +27,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.27.5",
     "firebase-functions-test": "^3.1.0",
-    "typescript": "^5.1.6",
-    "@jcstabs/types": "workspace:^1.0.0"
+    "typescript": "^5.1.6"
   },
   "private": true
 }

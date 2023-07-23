@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TabItem, User } from "@jcstabs/types";
+import type { TabItem, User } from "@jcstabs/shared";
 import type { VDataTableHeaderProps } from "@/types";
 import { countItemsInTab, dedupeArray, getTabTotal, virtualTab } from "@/utils";
 import type { Timestamp } from "firebase/firestore";
@@ -39,7 +39,7 @@ const isLoading = computed(() => {
 });
 
 const total = computed(() =>
-  i18n.n(getTabTotal(userDoc.data.value?.tab ?? []), "currency")
+  i18n.n(getTabTotal(userDoc.data.value?.tab ?? []), "currency"),
 );
 
 // methods
@@ -130,7 +130,9 @@ const headers = {
             <VDataTable :headers="headers.actions">
               <template #body>
                 <tr
-                  v-for="(item, index) in userDoc.tab.filter((e: TabItem) => !e.paid).reverse()"
+                  v-for="(item, index) in userDoc.tab
+                    .filter((e: TabItem) => !e.paid)
+                    .reverse()"
                   :key="index"
                   align="center"
                 >

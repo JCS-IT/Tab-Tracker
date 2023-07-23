@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
-import type { Item } from "@jcstabs/types";
+import type { Item } from "@jcstabs/shared";
 import { mdiTrashCan } from "@mdi/js";
 import { httpsCallable } from "firebase/functions";
 import { useToast } from "vue-toastification";

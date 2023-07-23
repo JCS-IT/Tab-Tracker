@@ -12,3 +12,8 @@ export interface TabItem {
   paid: boolean;
   clearedBy?: string;
 }
+
+export interface Item {
+  name: string;
+  price: number;
+}

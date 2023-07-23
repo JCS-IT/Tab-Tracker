@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
-import { ItemSchema, type Item } from "@jcstabs/types";
+import { ItemSchema, type Item } from "@jcstabs/shared";
 import { mdiPencil } from "@mdi/js";
 import { httpsCallable } from "firebase/functions";
 import { z } from "zod";
@@ -39,12 +39,12 @@ const updateItem = async () => {
           };
         }
         return item;
-      })
+      }),
     );
 
     await httpsCallable(
       functions,
-      "updateItem"
+      "updateItem",
     )({
       items: newItems,
     });

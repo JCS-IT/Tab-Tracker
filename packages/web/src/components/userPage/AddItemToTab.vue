@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Item } from "@jcstabs/types";
+import type { Item } from "@jcstabs/shared";
 import { useDisplay } from "vuetify";
 import { mdiPlusThick } from "@mdi/js";
 import { useToast } from "vue-toastification";
@@ -42,7 +42,7 @@ const addItem = async (item: Item) => {
     });
 
     toast.success(
-      `${item.name}: ${i18n.n(item.price, "currency")} added to tab`
+      `${item.name}: ${i18n.n(item.price, "currency")} added to tab`,
     );
 
     close();

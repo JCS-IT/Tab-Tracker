@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
 import { useFCMStore } from "@/store/fcm";
-import type { User } from "@jcstabs/types";
+import type { User } from "@jcstabs/shared";
 import { httpsCallable } from "firebase/functions";
 import { mdiBell } from "@mdi/js";
 
@@ -35,7 +35,7 @@ const saveChanges = async () => {
 
   await httpsCallable<UpdateTopicsData>(
     functions,
-    "updateTopics"
+    "updateTopics",
   )({
     before,
     after,

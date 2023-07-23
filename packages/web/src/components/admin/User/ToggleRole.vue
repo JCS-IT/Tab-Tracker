@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
-import type { User } from "@jcstabs/types";
+import type { User } from "@jcstabs/shared";
 import { httpsCallable } from "firebase/functions";
 
 const auth = useFirebaseAuth();
