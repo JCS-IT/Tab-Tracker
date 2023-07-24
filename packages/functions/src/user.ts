@@ -1,11 +1,12 @@
 import { auth, firestore } from "firebase-admin";
-import { Timestamp } from "firebase-admin/firestore";
 import {
   FunctionsErrorCode,
   HttpsError,
   onCall,
 } from "firebase-functions/v2/https";
 import { Props, TabItem } from "./types";
+import { getTabTotal } from "./utils";
+import { Timestamp } from "firebase-admin/firestore";
 
 export const clearTab = onCall(
   { enforceAppCheck: true },
@@ -25,39 +26,33 @@ export const clearTab = onCall(
       const userRef = firestore().collection("users").doc(user.uid);
 
       return await firestore().runTransaction(async (t) => {
-        const tab = await t.get(userRef).then((doc) => {
+        const currentTab: TabItem[] = await t.get(userRef).then((doc) => {
           return doc.data()?.tab;
         });
 
-        const currentTab: TabItem[] = tab;
-
         currentTab
-          .filter((item: TabItem) => !item.paid)
+          .filter((item) => !item.paid)
           .forEach((item) => {
             item.paid = true;
           });
 
-        const computeTotal = () => {
-          let total = 0;
-          currentTab.forEach((item) => {
-            total -= item.price;
-          });
-          return total;
-        };
+        const tabTotal = getTabTotal(currentTab);
 
-        const processedTab = [...currentTab];
-
-        processedTab.push({
-          name: "Tab cleared by " + user.displayName,
-          price: computeTotal(),
+        const clearedTabItem: TabItem = {
+          name: `Tab cleared by ${user.displayName}`,
+          price: tabTotal * -1,
           date: Timestamp.now(),
           clearedBy: user.displayName,
           paid: true,
+        };
+
+        currentTab.push(clearedTabItem);
+
+        t.update(userRef, {
+          tab: currentTab,
         });
 
-        return t.update(userRef, {
-          tab: processedTab,
-        });
+        return { message: "Tab cleared successfully" };
       });
     } catch (error) {
       const { code, message } = error as {

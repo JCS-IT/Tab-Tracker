@@ -9,8 +9,7 @@
     "skipLibCheck": true,
     "target": "es2017",
     "paths": {
-      "@/*": ["./src/*"],
-      "@jcstabs/shared": ["../shared"]
+      "@/*": ["./src/*"]
     }
   },
   "compileOnSave": true,

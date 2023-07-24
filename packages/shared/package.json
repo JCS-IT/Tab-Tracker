@@ -5,8 +5,15 @@
   "keywords": [],
   "author": "Leaderbot_X400",
   "license": "ISC",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
-    "firebase": "^10.1.0",
     "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "firebase": "^10.1.0",
+    "firebase-admin": "^11.10.1",
+    "typescript": "^5.1.6"
   }
 }

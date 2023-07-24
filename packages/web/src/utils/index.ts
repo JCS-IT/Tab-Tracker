@@ -1,8 +1,2 @@
-export {
-  calculatePages,
-  countItemsInTab,
-  dedupeArray,
-  getTabTotal,
-  virtualTab,
-  computeVisibleItems,
-} from "./user";
+export * from "./user";
+export * from "@jcstabs/shared";

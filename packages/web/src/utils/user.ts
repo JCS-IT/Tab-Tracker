@@ -1,23 +1,30 @@
-import type { Item, TabItem } from "@jcstabs/shared";
-import type { Timestamp } from "firebase/firestore";
+import type { TabItem } from "@jcstabs/shared";
 
-export const getTabTotal = (input: TabItem[]) => {
-  return input.reduce((acc, item) => acc + item.price, 0) as number;
-};
-
+/**
+ * Counts the number of unpaid items in a tab, grouped by item name.
+ * @param tab - The array of TabItems to be counted.
+ * @returns An object with the count of unpaid items for each item name.
+ */
 export const countItemsInTab = (tab: TabItem[]) => {
-  const count = {} as { [key: string]: number };
-  tab.forEach((item: TabItem) => {
-    count[item.name] = 0;
-  });
-  tab
-    .filter((item: TabItem) => !item.paid)
-    .forEach((item: Item) => {
-      count[item.name]++;
-    });
-  return count;
+  return tab.reduce(
+    (count: Record<string, number>, { name, paid }: TabItem) => {
+      if (!count[name]) {
+        count[name] = 0;
+      }
+      if (!paid) {
+        count[name]++;
+      }
+      return count;
+    },
+    {},
+  );
 };
 
+/**
+ * Removes duplicate items from an array of TabItems based on their name property.
+ * @param arr - The array of TabItems to be deduplicated.
+ * @returns A new array of TabItems without duplicates.
+ */
 export const dedupeArray = (arr: TabItem[]) => {
   const seen = new Set();
   return arr.filter((item) => {
@@ -27,31 +34,10 @@ export const dedupeArray = (arr: TabItem[]) => {
   });
 };
 
-export const calculatePages = (length: number, itemsPerPage: number) => {
-  return Math.ceil(length / itemsPerPage);
-};
-
-export const computeVisibleItems = (
-  tab: TabItem[],
-  page: number,
-  itemsPerPage: number,
-) => {
-  const tabCopy = [...tab];
-  const start = (page - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  return tabCopy
-    .sort(
-      (a, b) => (a.date as Timestamp).seconds - (b.date as Timestamp).seconds,
-    )
-    .reverse()
-    .slice(start, end);
-};
-
-export const virtualTab = (tab: TabItem[]): TabItem[] => {
-  const virtualTab = tab.map((item) => {
-    return {
-      ...item,
-    };
-  });
-  return virtualTab;
-};
+/**
+ * Returns a new array of TabItems with the same properties as the input array, but in reverse order.
+ * @param tab - The array of TabItems to be reversed.
+ * @returns A new array of TabItems in reverse order.
+ */
+export const virtualTab = (tab: TabItem[]): TabItem[] =>
+  tab.map((item) => ({ ...item })).reverse();

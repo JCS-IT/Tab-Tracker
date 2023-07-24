@@ -14,7 +14,7 @@ export const ItemsSchema = z.object({
 export const TabItemSchema = z.object({
   name: z.string(),
   price: z.number(),
-  date: z.instanceof(Timestamp),
+  date: z.unknown(),
   paid: z.boolean(),
   clearedBy: z.string().optional(),
 });
