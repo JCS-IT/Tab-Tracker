@@ -1,8 +1,7 @@
-import { functions } from "@/firebase";
-import type { UpdateTokenData, User } from "@jcstabs/shared";
+import { callCloudFunction } from "@/composables";
+import type { User } from "@jcstabs/shared";
 import { useStorage } from "@vueuse/core";
 import { doc } from "firebase/firestore";
-import { httpsCallable } from "firebase/functions";
 import { defineStore } from "pinia";
 import { useCurrentUser, useDocument, useFirestore } from "vuefire";
 
@@ -29,10 +28,7 @@ const updateSubscription = async (token: string) => {
 
   // once the userDoc is loaded, we can update the subscription
   if (!userDoc.pending.value) {
-    return await httpsCallable<UpdateTokenData>(
-      functions,
-      "updateToken",
-    )({
+    return await callCloudFunction("updateTokenData", {
       topics: userDoc.data.value?.topics ?? [],
       token,
       oldToken: useFCMStore().token,

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { functions } from "@/firebase";
-import type { DeleteItem, Item } from "@jcstabs/shared";
+import { callCloudFunction } from "@/composables";
+import type { Item } from "@jcstabs/shared";
 import { mdiTrashCan } from "@mdi/js";
-import { httpsCallable } from "firebase/functions";
 import { useToast } from "vue-toastification";
 
 // props
@@ -22,8 +21,7 @@ const error = ref(null as string | null);
 const deleteItem = async () => {
   try {
     loading.value = true;
-    const deleteItem = httpsCallable<DeleteItem>(functions, "deleteItem");
-    await deleteItem({ item: props.item });
+    await callCloudFunction("deleteItem", { item: props.item });
 
     toast.success(`'${props.item.name}' deleted successfully`);
 

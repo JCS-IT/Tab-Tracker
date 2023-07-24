@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { functions } from "@/firebase";
+import { callCloudFunction } from "@/composables";
 import { useFCMStore } from "@/store/fcm";
-import type { UpdateTopicsData, User } from "@jcstabs/shared";
-import { httpsCallable } from "firebase/functions";
+import type { User } from "@jcstabs/shared";
 import { mdiBell } from "@mdi/js";
 
 const currentUser = useCurrentUser();
@@ -27,10 +26,7 @@ const saveChanges = async () => {
     topics: after,
   });
 
-  await httpsCallable<UpdateTopicsData>(
-    functions,
-    "updateTopics",
-  )({
+  await callCloudFunction("updateTopicsData", {
     before,
     after,
     token: fcm.token,

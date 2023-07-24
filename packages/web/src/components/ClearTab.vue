@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { functions } from "@/firebase";
-import type { ClearTab } from "@jcstabs/shared";
-import { httpsCallable } from "firebase/functions";
+import { callCloudFunction } from "@/composables";
 import { useToast } from "vue-toastification";
 
 // composables
@@ -26,8 +24,7 @@ const clearTab = async () => {
   loading.value = true;
   try {
     const { email } = props;
-    const clearTab = httpsCallable<ClearTab>(functions, "clearTab");
-    await clearTab({ email });
+    await callCloudFunction("clearTab", { email });
     dialog.value = false;
 
     toast.success(`Your tab has been cleared.`);

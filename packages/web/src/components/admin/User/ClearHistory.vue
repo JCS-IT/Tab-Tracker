@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { functions } from "@/firebase";
-import type { ClearHistory, User } from "@jcstabs/shared";
-import { httpsCallable } from "firebase/functions";
+import { callCloudFunction } from "@/composables";
+import type { User } from "@jcstabs/shared";
 
 // inject the user
 const props = defineProps<{ user: User | null }>();
@@ -19,8 +18,8 @@ const clearHistory = async () => {
   try {
     if (props.user == null) return;
     const { email } = props.user.info;
-    const clearHistory = httpsCallable<ClearHistory>(functions, "clearHistory");
-    await clearHistory({ email });
+    await callCloudFunction("clearHistory", { email });
+
     dialog.value = false;
 
     error.value = { code: null, message: null };

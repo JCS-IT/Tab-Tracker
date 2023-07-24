@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { functions } from "@/firebase";
-import type { ToggleRole, User } from "@jcstabs/shared";
-import { httpsCallable } from "firebase/functions";
+import { callCloudFunction } from "@/composables";
+import type { User } from "@jcstabs/shared";
 
 const auth = useFirebaseAuth();
 
@@ -33,8 +32,8 @@ const toggleRole = async () => {
     if (props.user == null) return;
     const { email } = props.user.info;
     const { role } = props;
-    const toggleRole = httpsCallable<ToggleRole>(functions, "toggleRole");
-    await toggleRole({ email, role });
+    await callCloudFunction("toggleRole", { email, role });
+
     loading.value.switch = false;
     dialog.value = false;
   } catch (err) {

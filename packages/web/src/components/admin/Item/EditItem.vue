@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { functions } from "@/firebase";
-import { type Item, type UpdateItem } from "@jcstabs/shared";
+import { callCloudFunction } from "@/composables";
+import { type Item } from "@jcstabs/shared";
 import { mdiPencil } from "@mdi/js";
-import { httpsCallable } from "firebase/functions";
 
 // composables
 const props = defineProps<{
@@ -39,10 +38,7 @@ const updateItem = async () => {
       return item;
     });
 
-    await httpsCallable<UpdateItem>(
-      functions,
-      "updateItem",
-    )({
+    await callCloudFunction("updateItem", {
       items: newItems,
     });
   } catch (err) {

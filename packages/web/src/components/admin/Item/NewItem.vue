@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { functions } from "@/firebase";
-import type { AddItem } from "@jcstabs/shared";
-import { httpsCallable } from "firebase/functions";
+import { callCloudFunction } from "@/composables";
 import { useToast } from "vue-toastification";
 
 // composables
@@ -39,10 +37,7 @@ const addItem = async () => {
       price: Number(input.value.price),
     };
 
-    const addItem = httpsCallable<AddItem>(functions, "addItem");
-    await addItem({
-      item,
-    });
+    await callCloudFunction("addItem", { item });
 
     toast.success(`'${input.value.name}' added successfully`);
     close();
