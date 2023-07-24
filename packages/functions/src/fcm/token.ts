@@ -1,11 +1,6 @@
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 import { messaging } from "firebase-admin";
-
-interface UpdateTokenData {
-  topics: string[];
-  token: string;
-  oldToken?: string;
-}
+import { UpdateTokenData, UpdateTopicsData } from "@jcstabs/shared";
 
 export const updateToken = onCall<UpdateTokenData>(
   { enforceAppCheck: true },
@@ -40,14 +35,8 @@ export const updateToken = onCall<UpdateTokenData>(
           throw new HttpsError("internal", err);
         });
     });
-  }
+  },
 );
-
-interface UpdateTopicsData {
-  before: string[];
-  after: string[];
-  token: string;
-}
 
 export const updateTopics = onCall<UpdateTopicsData>(
   { enforceAppCheck: true },
@@ -87,5 +76,5 @@ export const updateTopics = onCall<UpdateTopicsData>(
           });
       }
     });
-  }
+  },
 );

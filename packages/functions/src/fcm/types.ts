@@ -7,7 +7,3 @@ export interface Change {
   before?: Item;
   after?: Item;
 }
-
-export interface ItemMap {
-  [key: string]: Item;
-}

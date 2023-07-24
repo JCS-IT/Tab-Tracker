@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
-import { type Item } from "@jcstabs/shared";
+import { type Item, type UpdateItem } from "@jcstabs/shared";
 import { mdiPencil } from "@mdi/js";
 import { httpsCallable } from "firebase/functions";
 
@@ -39,7 +39,7 @@ const updateItem = async () => {
       return item;
     });
 
-    await httpsCallable(
+    await httpsCallable<UpdateItem>(
       functions,
       "updateItem",
     )({

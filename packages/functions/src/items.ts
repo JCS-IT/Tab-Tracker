@@ -1,9 +1,10 @@
 import { firestore } from "firebase-admin";
 import { FieldValue } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
-import { Props, Item } from "./types";
+import { Props } from "./types";
+import { AddItem, DeleteItem, Item, UpdateItem } from "@jcstabs/shared";
 
-export const addItem = onCall(
+export const addItem = onCall<AddItem>(
   {
     enforceAppCheck: true,
   },
@@ -26,7 +27,7 @@ export const addItem = onCall(
   },
 );
 
-export const deleteItem = onCall(
+export const deleteItem = onCall<DeleteItem>(
   {
     enforceAppCheck: true,
   },
@@ -46,7 +47,7 @@ export const deleteItem = onCall(
   },
 );
 
-export const updateItem = onCall(
+export const updateItem = onCall<UpdateItem>(
   {
     enforceAppCheck: true,
   },

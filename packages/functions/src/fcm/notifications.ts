@@ -1,6 +1,6 @@
 import { messaging } from "firebase-admin";
 import { firestore } from "firebase-functions";
-import { Item, ItemMap, Change } from "./types";
+import { Change, Item } from "./types";
 
 export const itemsUpdated = firestore
   .document("admin/items")
@@ -26,7 +26,7 @@ export const itemsUpdated = firestore
             {
               style: "currency",
               currency: "CAD",
-            }
+            },
           ).format(changed.after?.price || 0)}`,
         },
       };
@@ -41,7 +41,7 @@ export const itemsUpdated = firestore
     } else {
       console.log(
         "removed",
-        diff.find((item) => item.before && !item.after)
+        diff.find((item) => item.before && !item.after),
       );
     }
 
@@ -49,13 +49,13 @@ export const itemsUpdated = firestore
   });
 
 const computeDifference = (before: Item[], after: Item[]): Change[] => {
-  const beforeMap: ItemMap = before.reduce(
+  const beforeMap: Record<string, Item> = before.reduce(
     (acc, item) => ({ ...acc, [item.name]: item }),
-    {}
+    {},
   );
-  const afterMap: ItemMap = after.reduce(
+  const afterMap: Record<string, Item> = after.reduce(
     (acc, item) => ({ ...acc, [item.name]: item }),
-    {}
+    {},
   );
 
   const changed = Object.keys(beforeMap)

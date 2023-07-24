@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
+import type { AddItem } from "@jcstabs/shared";
 import { httpsCallable } from "firebase/functions";
 import { useToast } from "vue-toastification";
 
@@ -38,7 +39,7 @@ const addItem = async () => {
       price: Number(input.value.price),
     };
 
-    const addItem = httpsCallable(functions, "addItem");
+    const addItem = httpsCallable<AddItem>(functions, "addItem");
     await addItem({
       item,
     });
