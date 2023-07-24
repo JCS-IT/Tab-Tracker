@@ -1,38 +1,20 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.json",
-  "include": [
-    "vite.config.ts",
-    "*.d.ts",
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "typed-router.d.ts",
-    "components.d.ts"
-  ],
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "esnext",
+    "target": "ESNext",
     "useDefineForClassFields": true,
     "allowSyntheticDefaultImports": true,
     "composite": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "strict": true,
-    "jsx": "preserve",
-    "sourceMap": false,
+    "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "paths": {
       "@/*": ["./src/*"]
     },
-    "lib": ["esnext", "dom"],
-    "types": [
-      "vite-plugin-pwa/client",
-      "firebase/firestore",
-      "@types/webfontloader",
-      "node",
-      "vuetify"
-    ]
+    "lib": ["ESNext", "DOM"]
   }
 }
