@@ -23,8 +23,7 @@
     "vue-toastification": "next",
     "vuefire": "^3.1.11",
     "vuetify": "^3.3.9",
-    "webfontloader": "^1.6.28",
-    "zod": "^3.21.4"
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.93",

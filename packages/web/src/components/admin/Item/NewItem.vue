@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
-import { ItemSchema } from "@jcstabs/shared";
 import { httpsCallable } from "firebase/functions";
 import { useToast } from "vue-toastification";
 
@@ -34,10 +33,10 @@ const addItem = async () => {
   if (inputValidation.valid === false) return;
   loading.value = true;
   try {
-    const item = ItemSchema.parse({
-      name: input.value.name,
+    const item = {
+      name: String(input.value.name),
       price: Number(input.value.price),
-    });
+    };
 
     const addItem = httpsCallable(functions, "addItem");
     await addItem({

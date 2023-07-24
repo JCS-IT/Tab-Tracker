@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
-import { ItemSchema, type Item } from "@jcstabs/shared";
+import { type Item } from "@jcstabs/shared";
 import { mdiPencil } from "@mdi/js";
 import { httpsCallable } from "firebase/functions";
-import { z } from "zod";
 
 // composables
 const props = defineProps<{
@@ -30,17 +29,15 @@ const rules = {
 const updateItem = async () => {
   loading.value = true;
   try {
-    const newItems = z.array(ItemSchema).parse(
-      props.items.map((item) => {
-        if (item.name === props.input.name) {
-          return {
-            ...item,
-            price: Number(price.value),
-          };
-        }
-        return item;
-      }),
-    );
+    const newItems = props.items.map((item) => {
+      if (item.name === props.input.name) {
+        return {
+          ...item,
+          price: Number(price.value),
+        };
+      }
+      return item;
+    });
 
     await httpsCallable(
       functions,
