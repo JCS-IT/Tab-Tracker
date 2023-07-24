@@ -1,7 +1,7 @@
-import { initializeApp } from "firebase/app";
-import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
-import { getMessaging } from "firebase/messaging";
 import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "firebase/app";
+import { getFunctions } from "firebase/functions";
+import { getMessaging } from "firebase/messaging";
 import { getPerformance } from "firebase/performance";
 
 const firebaseConfig = {
@@ -21,7 +21,5 @@ const messaging = getMessaging(firebaseApp);
 
 getAnalytics(firebaseApp);
 getPerformance(firebaseApp);
-
-connectFunctionsEmulator(functions, "localhost", 5001);
 
 export { firebaseApp, functions, messaging };
