@@ -29,6 +29,9 @@ importers:
       esbuild:
         specifier: ^0.18.16
         version: 0.18.16
+      esbuild-plugin-tsc:
+        specifier: ^0.4.0
+        version: 0.4.0(typescript@5.1.6)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -5238,6 +5241,15 @@ packages:
       is-callable: 1.2.7
       is-date-object: 1.0.5
       is-symbol: 1.0.4
+    dev: true
+
+  /esbuild-plugin-tsc@0.4.0(typescript@5.1.6):
+    resolution: {integrity: sha512-q9gWIovt1nkwchMLc2zhyksaiHOv3kDK4b0AUol8lkMCRhJ1zavgfb2fad6BKp7FT9rh/OHmEBXVjczLoi/0yw==}
+    peerDependencies:
+      typescript: ^4.0.0 || ^5.0.0
+    dependencies:
+      strip-comments: 2.0.1
+      typescript: 5.1.6
     dev: true
 
   /esbuild@0.18.16:

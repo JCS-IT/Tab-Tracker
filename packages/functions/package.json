@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "lint": "eslint --fix --ext .js,.ts .",
-    "build": "esbuild --config=esbuild.config.mjs --debug",
+    "build": "node esbuild.config.mjs",
     "build:watch": "tsc --watch",
     "serve": "firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
@@ -25,6 +25,7 @@
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
     "esbuild": "^0.18.16",
+    "esbuild-plugin-tsc": "^0.4.0",
     "eslint": "^8.45.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.27.5",
