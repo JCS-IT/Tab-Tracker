@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
-import type { User } from "@jcstabs/shared";
+import type { ToggleRole, User } from "@jcstabs/shared";
 import { httpsCallable } from "firebase/functions";
 
 const auth = useFirebaseAuth();
 
 const props = defineProps<{
   user: User;
-  role: string;
+  role: "admin" | "dev";
 }>();
 
 // data
@@ -30,8 +30,11 @@ const toggleRole = async () => {
   loading.value.switch = true;
   loading.value.dialog = true;
   try {
-    const toggleRole = httpsCallable(functions, "toggleRole");
-    await toggleRole({ email: props.user?.info.email, role: props.role });
+    if (props.user == null) return;
+    const { email } = props.user.info;
+    const { role } = props;
+    const toggleRole = httpsCallable<ToggleRole>(functions, "toggleRole");
+    await toggleRole({ email, role });
     loading.value.switch = false;
     dialog.value = false;
   } catch (err) {

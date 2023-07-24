@@ -1,13 +1,13 @@
+import { AddItem, DeleteItem, UpdateItem } from "@jcstabs/shared";
 import { firestore } from "firebase-admin";
 import { FieldValue } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
-import { Props, Item } from "./types";
 
-export const addItem = onCall(
+export const addItem = onCall<AddItem>(
   {
     enforceAppCheck: true,
   },
-  async (event: Props<{ item: Item }>) => {
+  async (event) => {
     if (!event.auth?.token.admin) {
       throw new HttpsError(
         "permission-denied",
@@ -26,11 +26,11 @@ export const addItem = onCall(
   },
 );
 
-export const deleteItem = onCall(
+export const deleteItem = onCall<DeleteItem>(
   {
     enforceAppCheck: true,
   },
-  async (event: Props<{ item: Item }>) => {
+  async (event) => {
     if (!event.auth?.token.admin) {
       throw new HttpsError(
         "permission-denied",
@@ -46,11 +46,11 @@ export const deleteItem = onCall(
   },
 );
 
-export const updateItem = onCall(
+export const updateItem = onCall<UpdateItem>(
   {
     enforceAppCheck: true,
   },
-  async (event: Props<{ items: Item[] }>) => {
+  async (event) => {
     if (!event.auth?.token.admin) {
       throw new HttpsError(
         "permission-denied",

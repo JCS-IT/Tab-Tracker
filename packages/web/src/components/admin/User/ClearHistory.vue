@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
-import type { User } from "@jcstabs/shared";
+import type { ClearHistory, User } from "@jcstabs/shared";
 import { httpsCallable } from "firebase/functions";
 
 // inject the user
@@ -17,8 +17,10 @@ const error = ref({
 const clearHistory = async () => {
   loading.value = true;
   try {
-    const clearHistory = httpsCallable(functions, "clearHistory");
-    await clearHistory({ email: props.user?.info.email });
+    if (props.user == null) return;
+    const { email } = props.user.info;
+    const clearHistory = httpsCallable<ClearHistory>(functions, "clearHistory");
+    await clearHistory({ email });
     dialog.value = false;
 
     error.value = { code: null, message: null };

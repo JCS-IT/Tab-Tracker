@@ -1,5 +1,7 @@
 import type { Timestamp } from "firebase/firestore";
 
+export * from "./functions";
+
 export type UserInfo = {
   email: string;
   displayName: string;

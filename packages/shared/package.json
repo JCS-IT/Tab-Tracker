@@ -12,6 +12,7 @@
     "firebase": "^10.1.0"
   },
   "devDependencies": {
+    "@jcstabs/functions": "workspace:^",
     "typescript": "^5.1.6"
   }
 }

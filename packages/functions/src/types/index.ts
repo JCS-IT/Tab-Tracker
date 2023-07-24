@@ -1,18 +1,8 @@
 import { Timestamp } from "firebase-admin/firestore";
-import { CallableRequest } from "firebase-functions/v2/https";
-export interface Props<T> extends CallableRequest {
-  data: T;
+import { TabItem as SharedTabItem, Item as SharedItem } from "@jcstabs/shared";
+
+export interface TabItem extends Omit<SharedTabItem, "date"> {
+  date: Timestamp;
 }
 
-export type TabItem = {
-  name: string;
-  price: number;
-  date: Timestamp;
-  paid: boolean;
-  clearedBy?: string;
-};
-
-export type Item = {
-  name: string;
-  price: number;
-};
+export interface Item extends SharedItem {}

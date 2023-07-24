@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { functions } from "@/firebase";
 import { useFCMStore } from "@/store/fcm";
-import type { User } from "@jcstabs/shared";
+import type { UpdateTopicsData, User } from "@jcstabs/shared";
 import { httpsCallable } from "firebase/functions";
 import { mdiBell } from "@mdi/js";
 
@@ -26,12 +26,6 @@ const saveChanges = async () => {
   await updateDoc(userRef, {
     topics: after,
   });
-
-  interface UpdateTopicsData {
-    before: string[];
-    after: string[];
-    token: string;
-  }
 
   await httpsCallable<UpdateTopicsData>(
     functions,

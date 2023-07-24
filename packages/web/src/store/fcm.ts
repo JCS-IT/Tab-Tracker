@@ -1,5 +1,5 @@
 import { functions } from "@/firebase";
-import type { User } from "@jcstabs/shared";
+import type { UpdateTokenData, User } from "@jcstabs/shared";
 import { useStorage } from "@vueuse/core";
 import { doc } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
@@ -20,12 +20,6 @@ export const useFCMStore = defineStore("token", {
   },
 });
 
-interface UpdateTokenData {
-  topics: string[];
-  token: string;
-  oldToken?: string;
-}
-
 const updateSubscription = async (token: string) => {
   const userDoc = useDocument<User>(
     doc(useFirestore(), `users/${useCurrentUser().value?.uid}`),
@@ -39,7 +33,7 @@ const updateSubscription = async (token: string) => {
       functions,
       "updateToken",
     )({
-      topics: userDoc.data.value?.topics as string[],
+      topics: userDoc.data.value?.topics ?? [],
       token,
       oldToken: useFCMStore().token,
     });
