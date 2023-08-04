@@ -1,4 +1,4 @@
-import { TabItem } from "../types";
+import { TabItem } from "@/types";
 
 /**
  * Calculates the total price of all tabs in the input array.

@@ -1,13 +1,13 @@
 import { auth, firestore } from "firebase-admin";
+import { Timestamp } from "firebase-admin/firestore";
 import {
   FunctionsErrorCode,
   HttpsError,
   onCall,
 } from "firebase-functions/v2/https";
-import { TabItem } from "./types";
-import { getTabTotal } from "@jcstabs/shared";
-import { Timestamp } from "firebase-admin/firestore";
-import type { ClearTab, ClearHistory, ToggleRole } from "@jcstabs/shared";
+import type { ClearHistory, ClearTab, ToggleRole } from "../../src/types";
+import { getTabTotal } from "@/utils";
+import { TabItem } from "@/types";
 
 export const clearTab = onCall<ClearTab>(
   { enforceAppCheck: true },
