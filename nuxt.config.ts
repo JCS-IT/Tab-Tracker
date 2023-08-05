@@ -45,6 +45,7 @@ export default defineNuxtConfig({
     "nuxt-vuefire",
     "@vueuse/nuxt",
     "@vite-pwa/nuxt",
+    "@nuxtjs/i18n",
   ],
   vuefire: {
     config: {
