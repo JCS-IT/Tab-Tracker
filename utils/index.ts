@@ -108,3 +108,15 @@ export const callCloudFunction = async <T extends CloudFunctionName>(
     throw error;
   }
 };
+
+/**
+ * Formats a number as a currency string in Canadian dollars.
+ * @param amount The number to format.
+ * @returns The formatted currency string.
+ */
+export const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat("en-CA", {
+    style: "currency",
+    currency: "CAD",
+  }).format(amount);
+};

@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       charset: "utf-8",
-      title: "Pulpit Pal",
+      title: "JCS Tab Tracker",
       viewport: "width=device-width, initial-scale=1",
       noscript: [
         { innerHTML: "JCS Tab Tracker requires javascript to function" },
@@ -45,7 +45,6 @@ export default defineNuxtConfig({
     "nuxt-vuefire",
     "@vueuse/nuxt",
     "@vite-pwa/nuxt",
-    "@nuxtjs/i18n",
   ],
   vuefire: {
     config: {

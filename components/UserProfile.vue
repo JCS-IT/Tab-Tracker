@@ -4,7 +4,7 @@ const auth = useFirebaseAuth();
 
 // Methods
 const logout = async () => {
-  await auth.signOut(auth);
+  await auth?.signOut();
   router.push("/");
 };
 </script>
@@ -12,7 +12,7 @@ const logout = async () => {
 <template>
   <button
     class="btn btn-ghost"
-    v-if="!auth.currentUser"
+    v-if="!auth?.currentUser"
     @click="router.push('/login')"
   >
     Login
