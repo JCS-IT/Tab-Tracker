@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { callCloudFunction } from "@/composables";
-import type { Item } from "@jcstabs/shared";
+import type { Item } from "@/types";
 import { mdiTrashCan } from "@mdi/js";
 import { useToast } from "vue-toastification";
 

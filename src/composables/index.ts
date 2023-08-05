@@ -5,9 +5,7 @@ import type {
   DeleteItem,
   ToggleRole,
   UpdateItem,
-  UpdateTokenData,
-  UpdateTopicsData,
-} from "@jcstabs/shared";
+} from "@/types";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../firebase";
 
@@ -33,10 +31,6 @@ type CloudFunctionData<T extends CloudFunctionName> = T extends "clearTab"
   ? DeleteItem
   : T extends "updateItem"
   ? UpdateItem
-  : T extends "updateTokenData"
-  ? UpdateTokenData
-  : T extends "updateTopicsData"
-  ? UpdateTopicsData
   : never;
 
 export const callCloudFunction = async <T extends CloudFunctionName>(

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TabItem } from "@jcstabs/shared";
+import type { TabItem } from "@/types";
 import { mdiTrashCan } from "@mdi/js";
 import { useToast } from "vue-toastification";
 

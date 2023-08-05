@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { useDisplay, useTheme } from "vuetify";
 import { mdiCog } from "@mdi/js";
-import { activate } from "./firebase/fcm";
+import { useTheme } from "vuetify";
 
 // composables
 const theme = useTheme();
 const prefersDark = usePreferredDark();
-const { mobile } = useDisplay();
-
 const auth = useFirebaseAuth();
 const router = useRouter();
+// const route = useRoute();
 
 // data
-const openSettings = ref(false);
 const loggedIn = ref(false);
 
 // computed
@@ -22,10 +19,6 @@ auth?.onAuthStateChanged((user) => {
   }
 
   loggedIn.value = !!user;
-
-  setTimeout(() => {
-    activate();
-  }, 30000);
 });
 
 if (prefersDark.value) {
@@ -41,33 +34,18 @@ if (prefersDark.value) {
       <VAppBarTitle>
         <RouterLink to="/user"> JCS Tabs </RouterLink>
       </VAppBarTitle>
-      <VBtn
-        icon
-        @click="openSettings = !openSettings"
-        color="auto"
-        v-if="loggedIn"
-      >
-        <VIcon :icon="mdiCog" />
-      </VBtn>
       <UserProfile />
     </VAppBar>
-    <VNavigationDrawer
-      v-model="openSettings"
-      temporary
-      :location="mobile ? 'bottom' : 'left'"
-    >
-      <Settings v-if="loggedIn" />
-    </VNavigationDrawer>
     <VMain>
       <VContainer fluid>
         <Suspense>
           <RouterView v-slot="{ Component, route }">
             <Transition
-              :name="route.meta?.transition as string || ''"
+              :name="(route.meta.transition as string) || ''"
               mode="out-in"
               appear
             >
-              <div :key="(route?.name as string)">
+              <div :key="route?.name?.toString()">
                 <component :is="Component" />
               </div>
             </Transition>

@@ -17,9 +17,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const functions = getFunctions(firebaseApp);
-const messaging = getMessaging(firebaseApp);
 
 getAnalytics(firebaseApp);
 getPerformance(firebaseApp);
 
-export { firebaseApp, functions, messaging };
+export { firebaseApp, functions };

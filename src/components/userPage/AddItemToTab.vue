@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Item } from "@jcstabs/shared";
+import type { Item } from "@/types";
 import { useDisplay } from "vuetify";
 import { mdiPlusThick } from "@mdi/js";
 import { useToast } from "vue-toastification";

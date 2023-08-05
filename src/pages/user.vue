@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TabItem, User } from "@jcstabs/shared";
+import type { TabItem, User } from "@/types";
 import type { VDataTableHeaderProps } from "@/types";
 import { countItemsInTab, dedupeArray, getTabTotal, virtualTab } from "@/utils";
 import type { Timestamp } from "firebase/firestore";

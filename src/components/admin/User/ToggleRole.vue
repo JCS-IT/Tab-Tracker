@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { callCloudFunction } from "@/composables";
-import type { User } from "@jcstabs/shared";
+import type { User } from "@/types";
 
 const auth = useFirebaseAuth();
 

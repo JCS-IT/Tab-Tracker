@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <script setup lang="ts">
-import type { Items } from "@jcstabs/shared";
+import type { Items } from "@/types";
 import type { VDataTableHeaderProps } from "@/types";
 import { VDataTable } from "vuetify/labs/VDataTable";
 

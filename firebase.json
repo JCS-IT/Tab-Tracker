@@ -5,7 +5,7 @@
   },
   "functions": [
     {
-      "source": "packages/functions",
+      "source": "functions",
       "codebase": "default",
       "ignore": [
         "node_modules",
@@ -20,7 +20,7 @@
     }
   ],
   "hosting": {
-    "public": "packages/web/dist",
+    "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {

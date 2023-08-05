@@ -1,4 +1,4 @@
-import type { TabItem } from "@jcstabs/shared";
+import type { TabItem } from "@/types";
 
 /**
  * Counts the number of unpaid items in a tab, grouped by item name.
