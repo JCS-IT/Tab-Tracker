@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { themeChange } from "theme-change";
-themeChange();
-
 const router = useRouter();
 </script>
 
@@ -18,7 +15,6 @@ const router = useRouter();
         </button>
       </div>
       <div class="navbar-end">
-        <UserProfile />
       </div>
     </header>
     <main class="flex-grow p-0 sm:p-3">

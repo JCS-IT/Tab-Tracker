@@ -1,30 +1,30 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+  },
   experimental: {
     typedPages: true,
   },
-
   app: {
     head: {
       charset: "utf-8",
-      title: "JCS Tab Tracker",
+      title: "Pulpit Pal",
       viewport: "width=device-width, initial-scale=1",
       noscript: [
-        {
-          innerHTML:
-            "JCS Tab Tracker requires javascript to function. Please check that your browser supports javascript and that it is enabled",
-        },
+        { innerHTML: "JCS Tab Tracker requires javascript to function" },
       ],
     },
   },
 
-  nitro: {
-    preset: "static",
-  },
-
   vite: {
+    server: {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Referrer-Policy": "no-referrer",
+      },
+    },
     esbuild: {
       drop:
         process.env.NODE_ENV === "development"
@@ -34,14 +34,17 @@ export default defineNuxtConfig({
       format: "esm",
     },
   },
-  // Module config
+
+  nitro: {
+    preset: "static",
+  },
+
   modules: [
     "@nuxtjs/tailwindcss",
     "nuxt-icon",
     "nuxt-vuefire",
     "@vueuse/nuxt",
     "@vite-pwa/nuxt",
-    "nuxt-purgecss",
   ],
   vuefire: {
     config: {
@@ -55,7 +58,7 @@ export default defineNuxtConfig({
     },
     auth: true,
     appCheck: {
-      debug: process.env.NODE_ENV !== "production",
+      debug: "0d002197-9bcc-42e1-a3d9-06c412bb7a81",
       isTokenAutoRefreshEnabled: true,
       provider: "ReCaptchaV3",
       key: "6LfgHEEgAAAAAEaYmNJkZHGvxQ4-c6syHPdOb5r5",
@@ -65,17 +68,14 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
-    injectRegister: "inline",
     registerType: "autoUpdate",
+    injectRegister: "inline",
     includeAssets: [
       "favicon.svg",
       "favicon.ico",
       "robots.txt",
       "apple-touch-icon.png",
     ],
-    devOptions: {
-      enabled: false,
-    },
     manifest: {
       name: "JCS Tab Tracker",
       short_name: "JCS Tabs",
@@ -102,64 +102,13 @@ export default defineNuxtConfig({
         },
       ],
     },
+    client: {
+      periodicSyncForUpdates: 1000 * 60 * 60 * 24,
+    },
     workbox: {
-      skipWaiting: true,
       cleanupOutdatedCaches: true,
-      runtimeCaching: [
-        {
-          urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-          handler: "CacheFirst",
-          options: {
-            cacheName: "google-fonts-cache",
-            expiration: {
-              maxEntries: 1,
-              maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
-            },
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
-          },
-        },
-        {
-          urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-          handler: "CacheFirst",
-          options: {
-            cacheName: "gstatic-fonts-cache",
-            expiration: {
-              maxEntries: 1,
-              maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
-            },
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
-          },
-        },
-        {
-          urlPattern: /^https:\/\/www\.googleapis.com\/plus\/v1\/people\/.*/i,
-          handler: "CacheFirst",
-          options: {
-            cacheName: "google-profile-cache",
-            expiration: {
-              maxEntries: 1,
-              maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
-            },
-          },
-        },
-        {
-          urlPattern: /^https:\/\/(.*\.googleusercontent\.com\/.*)/i,
-          handler: "CacheFirst",
-          options: {
-            cacheName: "google-profile-images",
-            expiration: {
-              maxEntries: 1,
-              maxAgeSeconds: 60 * 60 * 24 * 30, // <== 1 month
-            },
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
-          },
-        },
-      ],
+      skipWaiting: true,
+      globPatterns: ["**/*.{js,css}"],
     },
   },
 });

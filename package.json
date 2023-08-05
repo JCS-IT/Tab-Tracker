@@ -9,21 +9,21 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.7.1",
+    "@nuxt/devtools": "^0.7.4",
+    "@nuxtjs/i18n": "8.0.0-rc.2",
     "@nuxtjs/tailwindcss": "^6.8.0",
-    "@types/node": "^20.4.5",
+    "@types/node": "^20.4.8",
     "@vite-pwa/nuxt": "^0.1.0",
-    "daisyui": "^3.5.0",
+    "daisyui": "^3.5.1",
     "nuxt": "^3.6.5",
     "nuxt-purgecss": "^2.0.0"
   },
   "dependencies": {
-    "@vueuse/nuxt": "^10.2.1",
+    "@vueuse/nuxt": "^10.3.0",
     "firebase": "^10.1.0",
     "nuxt-icon": "^0.4.2",
-    "nuxt-vuefire": "^0.2.12",
-    "theme-change": "^2.5.0",
-    "vue-toastification": "next",
-    "vuefire": "^3.1.12"
+    "nuxt-vuefire": "^0.2.13",
+    "vue-toastification": "^1.7.14",
+    "vuefire": "^3.1.13"
   }
 }
