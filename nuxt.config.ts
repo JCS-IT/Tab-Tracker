@@ -58,7 +58,7 @@ export default defineNuxtConfig({
       debug: process.env.NODE_ENV !== "production",
       isTokenAutoRefreshEnabled: true,
       provider: "ReCaptchaV3",
-      key: "6Le2i50kAAAAAOrfwARWnLBoPuTnm9uZMyg-ALV1",
+      key: "6LfgHEEgAAAAAEaYmNJkZHGvxQ4-c6syHPdOb5r5",
     },
     emulators: {
       enabled: false,

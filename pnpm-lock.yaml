@@ -4,48 +4,53 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@vueuse/nuxt':
-    specifier: ^10.2.1
-    version: 10.3.0(nuxt@3.6.5)(rollup@2.79.1)(vue@3.3.4)
-  firebase:
-    specifier: ^10.1.0
-    version: 10.1.0(react-native@0.72.3)
-  nuxt-icon:
-    specifier: ^0.4.2
-    version: 0.4.2(rollup@2.79.1)(vue@3.3.4)
-  nuxt-vuefire:
-    specifier: ^0.2.12
-    version: 0.2.13(@firebase/app-types@0.9.0)(firebase@10.1.0)(rollup@2.79.1)(vuefire@3.1.13)
-  vue-toastification:
-    specifier: next
-    version: 2.0.0-rc.5(vue@3.3.4)
-  vuefire:
-    specifier: ^3.1.12
-    version: 3.1.13(firebase@10.1.0)(vue@3.3.4)
+importers:
 
-devDependencies:
-  '@nuxt/devtools':
-    specifier: ^0.7.1
-    version: 0.7.4(nuxt@3.6.5)(rollup@2.79.1)(vite@4.4.8)
-  '@nuxtjs/tailwindcss':
-    specifier: ^6.8.0
-    version: 6.8.0(rollup@2.79.1)(webpack@5.88.2)
-  '@types/node':
-    specifier: ^20.4.5
-    version: 20.4.5
-  '@vite-pwa/nuxt':
-    specifier: ^0.1.0
-    version: 0.1.0(@nuxt/kit@3.6.5)(vite-plugin-pwa@0.16.4)
-  daisyui:
-    specifier: ^3.5.0
-    version: 3.5.0
-  nuxt:
-    specifier: ^3.6.5
-    version: 3.6.5(@types/node@20.4.5)(rollup@2.79.1)
-  nuxt-purgecss:
-    specifier: ^2.0.0
-    version: 2.0.0(postcss@8.4.27)(rollup@2.79.1)
+  .:
+    dependencies:
+      '@vueuse/nuxt':
+        specifier: ^10.2.1
+        version: 10.3.0(nuxt@3.6.5)(rollup@2.79.1)(vue@3.3.4)
+      firebase:
+        specifier: ^10.1.0
+        version: 10.1.0(react-native@0.72.3)
+      nuxt-icon:
+        specifier: ^0.4.2
+        version: 0.4.2(rollup@2.79.1)(vue@3.3.4)
+      nuxt-vuefire:
+        specifier: ^0.2.12
+        version: 0.2.13(@firebase/app-types@0.9.0)(firebase@10.1.0)(rollup@2.79.1)(vuefire@3.1.13)
+      theme-change:
+        specifier: ^2.5.0
+        version: 2.5.0
+      vue-toastification:
+        specifier: next
+        version: 2.0.0-rc.5(vue@3.3.4)
+      vuefire:
+        specifier: ^3.1.12
+        version: 3.1.13(firebase@10.1.0)(vue@3.3.4)
+    devDependencies:
+      '@nuxt/devtools':
+        specifier: ^0.7.1
+        version: 0.7.4(nuxt@3.6.5)(rollup@2.79.1)(vite@4.4.8)
+      '@nuxtjs/tailwindcss':
+        specifier: ^6.8.0
+        version: 6.8.0(rollup@2.79.1)(webpack@5.88.2)
+      '@types/node':
+        specifier: ^20.4.5
+        version: 20.4.5
+      '@vite-pwa/nuxt':
+        specifier: ^0.1.0
+        version: 0.1.0(@nuxt/kit@3.6.5)(vite-plugin-pwa@0.16.4)
+      daisyui:
+        specifier: ^3.5.0
+        version: 3.5.0
+      nuxt:
+        specifier: ^3.6.5
+        version: 3.6.5(@types/node@20.4.5)(rollup@2.79.1)
+      nuxt-purgecss:
+        specifier: ^2.0.0
+        version: 2.0.0(postcss@8.4.27)(rollup@2.79.1)
 
 packages:
 
@@ -10556,6 +10561,10 @@ packages:
       acorn: 8.10.0
       commander: 2.20.3
       source-map-support: 0.5.21
+
+  /theme-change@2.5.0:
+    resolution: {integrity: sha512-B/UdsgdHAGhSKHTAQnxg/etN0RaMDpehuJmZIjLMDVJ6DGIliRHGD6pODi1CXLQAN9GV0GSyB3G6yCuK05PkPQ==}
+    dev: false
 
   /thenify-all@1.6.0:
     resolution: {integrity: sha512-RNxQH/qI8/t3thXJDwcstUO4zeqo64+Uy/+sNVRBx4Xn2OX+OZ9oP+iJnNFqplFra2ZUVeKCSa2oVWi3T4uVmA==}
