@@ -8,8 +8,10 @@ const changeTarget = (newTarget: string) => {
 </script>
 
 <template>
-  <div>
-    <RouterView />
+  <div class="grid gap-2">
+    <div class="mb-[5rem]">
+      <NuxtPage />
+    </div>
     <div class="btm-nav">
       <button
         :class="route.fullPath.includes('staff') ? 'active' : ''"

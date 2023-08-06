@@ -16,7 +16,8 @@ const isLoading = computed(() => {
     <span class="loading loading-infinity loading-lg" />
   </div>
 
-  <div class="grid justify-center" v-else>
+  <div class="grid gap-2 justify-center" v-else>
+    <AdminItemNew />
     <div class="card w-96 bg-base-200 shadow-xl">
       <div class="card-body">
         <div class="overflow-y-auto">
@@ -34,16 +35,8 @@ const isLoading = computed(() => {
                   <td>{{ item.name }}</td>
                   <td>{{ formatCurrency(item.price) }}</td>
                   <td class="join">
-                    <button class="btn btn-sm btn-ghost join-item">
-                      <Icon
-                        name="mdi:pencil"
-                        class="text-green-500"
-                        size="24"
-                      />
-                    </button>
-                    <button class="btn btn-sm btn-ghost join-item">
-                      <Icon name="mdi:delete" class="text-red-500" size="24 " />
-                    </button>
+                    <AdminItemUpdate :item="item" />
+                    <AdminItemDelete :item="item" />
                   </td>
                 </tr>
               </template>

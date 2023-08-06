@@ -25,5 +25,6 @@ export interface DeleteItem {
 }
 
 export interface UpdateItem {
-  items: Item[];
+  before: Item;
+  after: Item;
 }
