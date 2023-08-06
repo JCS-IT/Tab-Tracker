@@ -44,7 +44,7 @@ const canDelete = (date: Timestamp, paid: Boolean) => {
   </div>
   <div class="grid justify-center gap-5" v-if="userDoc && items">
     <UserAddItemToTab :items="items?.food" />
-    <div class="card w-full shadow-xl">
+    <div class="card w-[48rem] shadow-xl">
       <div class="card-body">
         <h2 class="card-title justify-center">Recent Transactions</h2>
         <div class="overflow-y-auto">

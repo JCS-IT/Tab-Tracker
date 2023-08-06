@@ -26,7 +26,7 @@ export const clearTab = onCall<ClearTab>(
       const user = await auth().getUserByEmail(event.data.email);
       const userRef = firestore().collection("users").doc(user.uid);
 
-      return await firestore().runTransaction(async (t) => {
+      await firestore().runTransaction(async (t) => {
         const currentTab: TabItem[] = await t.get(userRef).then((doc) => {
           return doc.data()?.tab;
         });
@@ -52,9 +52,8 @@ export const clearTab = onCall<ClearTab>(
         t.update(userRef, {
           tab: currentTab,
         });
-
-        return { message: "Tab cleared successfully" };
       });
+      return true;
     } catch (error) {
       const { code, message } = error as {
         code: FunctionsErrorCode;

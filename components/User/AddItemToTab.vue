@@ -56,7 +56,7 @@ const close = () => {
     Add Item
   </button>
   <dialog class="modal" ref="dialog">
-    <form method="dialog" class="modal-box" @submit.prevent>
+    <form method="dialog" class="modal-box">
       <div class="grid gap-2">
         <button
           v-for="item in items"
