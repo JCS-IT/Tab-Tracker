@@ -3,8 +3,7 @@ import { useToast } from "vue-toastification";
 
 const { email, name } = defineProps<{
   email: string;
-  name?: string;
-  text?: boolean;
+  name: string;
 }>();
 
 // Composables
@@ -15,14 +14,14 @@ const dialog = ref<HTMLDialogElement | null>(null);
 const loading = ref(false);
 
 // Methods
-const clearTab = async () => {
+const clear = async () => {
   loading.value = true;
   try {
-    await callCloudFunction("clearTab", { email });
+    await callCloudFunction("clearHistory", { email });
 
     dialog.value?.close();
 
-    toast.success(`${name ? `${name}'s'` : "Your"} tab has been cleared.`);
+    toast.success(`${name}'s history has been cleared.`);
   } catch (err) {
     console.log(err);
     const { code, message } = err as { code: string; message: string };
@@ -35,22 +34,19 @@ const clearTab = async () => {
 </script>
 
 <template>
-  <button
-    :class="`btn btn-error ${text ? 'btn-ghost text-error' : 'shadow-lg'}`"
-    @click="dialog?.showModal()"
-  >
-    Clear Tab
+  <button class="btn btn-ghost text-red-500" @click="dialog?.showModal()">
+    Clear History
   </button>
 
   <dialog ref="dialog" class="modal">
     <form method="dialog" class="modal-box max-w-2xl" @submit.prevent>
       <h3 class="text-2xl">
-        Are you sure you want to clear
-        <span class="font-bold">{{ name ? `${name}'s` : "your" }}</span> tab.
+        Are you sure you want to delete all history for
+        <span class="font-bold">{{ name }}</span>
       </h3>
       <p>This action cannot be undone.</p>
       <div class="grid grid-cols-2 gap-2 mt-3">
-        <button :class="`btn btn-error`" @click="clearTab" :disabled="loading">
+        <button :class="`btn btn-error`" @click="clear" :disabled="loading">
           <span class="loading loading-infinity loading-lg" v-if="loading" />
           <span v-else>Confirm</span>
         </button>

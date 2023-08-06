@@ -46,7 +46,7 @@ const filterUsers = computed(() => {
         />
         <ul class="grid gap-2">
           <li
-            class="hover:bg-base-300 p-2 rounded-xl"
+            class="hover:bg-base-300 p-2 rounded-xl cursor-pointer"
             v-for="user in filterUsers"
             @click="router.push(`/admin/staff/${user.uid}`)"
           >

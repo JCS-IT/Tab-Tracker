@@ -91,13 +91,24 @@ const total = computed(() =>
       </div>
       <div class="divider" />
       <div>
-        <input type="search" />
+        <AdminToggleRole :user="userDoc" />
       </div>
       <div class="divider" />
       <div>
         <button class="btn btn-ghost" @click="router.push('/admin/staff')">
           Back
         </button>
+        <ClearTab
+          v-if="sumTab(userDoc.tab) > 0"
+          :name="userDoc.info.displayName"
+          :email="userDoc.info.email"
+          text
+        />
+        <ClearHistory
+          v-if="userDoc.tab.length > 0"
+          :name="userDoc.info.displayName"
+          :email="userDoc.info.email"
+        />
       </div>
     </div>
   </div>

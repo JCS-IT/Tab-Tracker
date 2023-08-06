@@ -12,7 +12,10 @@ export type UserInfo = {
 export type User = {
   info: UserInfo;
   tab: TabItem[];
-  roles: Record<string, boolean>;
+  roles: {
+    admin?: boolean;
+    dev?: boolean;
+  };
   topics: string[];
 };
 

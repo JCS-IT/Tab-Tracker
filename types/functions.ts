@@ -11,7 +11,7 @@ export interface ClearHistory {
 
 export interface ToggleRole {
   email: string;
-  role: "admin" | "dev";
+  role: string;
 }
 
 // item functions
