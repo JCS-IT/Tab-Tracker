@@ -19,14 +19,12 @@ const to = route.query.r?.toString() || "/";
 
 // lifecycle
 const currentUser = await getCurrentUser();
-if (currentUser) {
-  router.push(to);
-} else {
-  signInWithPopup(auth, provider)
-    .then(() => {
-      router.push(to);
-    })
-    .catch((err) => {
+
+onMounted(async () => {
+  if (currentUser) {
+    router.push(to);
+  } else {
+    await signInWithPopup(auth, provider).catch((err) => {
       if (err.code === "auth/popup-blocked") {
         error.value = "Please allow popups to continue";
         return;
@@ -36,11 +34,14 @@ if (currentUser) {
       error.value = err.message;
       console.error(err);
     });
-}
+
+    router.push(to);
+  }
+});
 </script>
 
 <template>
-  <div class="h-full flex items-center">
+  <div class="h-full flex justify-center">
     <div class="alert alert-error" v-if="error">
       {{ error }}
     </div>
