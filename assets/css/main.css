@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply h-screen;
+}
+
+:root {
+  @apply h-screen w-full;
+}
+
+body {
+  @apply min-h-screen;
+}
+
+h1 {
+  @apply font-bold;
+}
+
+h2 {
+  @apply font-medium;
+}
+
+.divider {
+  @apply my-5;
+}

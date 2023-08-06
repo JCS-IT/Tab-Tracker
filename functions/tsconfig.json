@@ -6,7 +6,13 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017"
+    "skipLibCheck": true,
+    "target": "es2017",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+    }
   },
   "compileOnSave": true,
   "include": [

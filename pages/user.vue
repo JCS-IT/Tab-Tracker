@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import UseVirtualList from "@vueuse/components";
 import type { Items, TabItem, User } from "@/types";
 import { Timestamp, doc } from "firebase/firestore";
+import { sumTab } from "@/utils";
 
 definePageMeta({
   middleware: "auth",
@@ -24,20 +26,15 @@ const isLoading = computed(() => {
   }
 });
 
+const total = computed(() =>
+  formatCurrency(sumTab(userDoc.data.value?.tab ?? []))
+);
+
 // methods
 const canDelete = (date: Timestamp, paid: Boolean) => {
   const now = new Date();
   const diff = now.getTime() - date.toDate().getTime();
   return diff < 300000 && !paid;
-};
-
-const deleteItem = (item: TabItem) => {
-  const index = userDoc.data.value?.tab.findIndex(
-    (e: TabItem) => e.date === item.date
-  );
-  if (index !== undefined && index !== -1) {
-    userDoc.data.value?.tab.splice(index, 1);
-  }
 };
 </script>
 
@@ -57,6 +54,7 @@ const deleteItem = (item: TabItem) => {
                 <th>Item</th>
                 <th>Price</th>
                 <th>Date</th>
+                <th>Time</th>
               </tr>
             </thead>
             <tbody>
@@ -68,7 +66,8 @@ const deleteItem = (item: TabItem) => {
               >
                 <td>{{ item.name }}</td>
                 <td>{{ formatCurrency(item.price) }}</td>
-                <td>{{ item.date.toDate().toLocaleString() }}</td>
+                <td>{{ item.date.toDate().toLocaleDateString() }}</td>
+                <td>{{ item.date.toDate().toLocaleTimeString() }}</td>
                 <td>
                   <UserDeleteItemFromTab
                     v-if="canDelete(item.date, item.paid)"
@@ -109,6 +108,47 @@ const deleteItem = (item: TabItem) => {
             </tbody>
           </table>
         </div>
+        <div class="grid grid-cols-2">
+          <ClearTab
+            v-if="userDoc?.tab.filter((i) => !i.paid).length > 0"
+            :email="userDoc?.info.email"
+          />
+          <div v-else />
+          <h1 class="text-center mt-[5%]">Total: {{ total }}</h1>
+        </div>
+      </div>
+    </div>
+
+    <div tabindex="0" class="collapse collapse-arrow bg-base-100 shadow-lg">
+      <div class="collapse-title">
+        <h1 class="text-center">
+          <Icon name="mdi:history" />
+          History
+        </h1>
+      </div>
+      <div class="overflow-y-auto collapse-content">
+        <table class="table w-full table-zebra">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Date</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(item, index) in reverseTab(userDoc?.tab)"
+              :key="index"
+              v-memo="userDoc.tab"
+            >
+              <td>{{ item.name }}</td>
+              <td>{{ formatCurrency(item.price) }}</td>
+              <td>{{ item.date.toDate().toLocaleDateString() }}</td>
+              <td>{{ item.date.toDate().toLocaleTimeString() }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

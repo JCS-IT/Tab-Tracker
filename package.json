@@ -18,11 +18,12 @@
     "nuxt-purgecss": "^2.0.0"
   },
   "dependencies": {
+    "@vueuse/components": "^10.3.0",
     "@vueuse/nuxt": "^10.3.0",
     "firebase": "^10.1.0",
     "nuxt-icon": "^0.4.2",
     "nuxt-vuefire": "^0.2.13",
-    "vue-toastification": "next",
+    "vue-toastification": "^2.0.0-rc.5",
     "vuefire": "^3.1.13"
   }
 }

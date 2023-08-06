@@ -22,8 +22,6 @@ items?.forEach((item) => {
 
 // Methods
 const addItem = async (item: Item) => {
-  console.log(item.name);
-  console.log(loading.value[item.name]);
   loading.value[item.name] = true;
   if (!auth?.currentUser) return;
   try {

@@ -1,13 +1,4 @@
-import type {
-  AddItem,
-  ClearHistory,
-  ClearTab,
-  DeleteItem,
-  TabItem,
-  ToggleRole,
-  UpdateItem,
-} from "@/types";
-import { Functions, httpsCallable } from "firebase/functions";
+import type { TabItem } from "@/types";
 
 /**
  * Counts the number of unpaid items in a tab, grouped by item name.
@@ -48,65 +39,21 @@ export const dedupeArray = (arr: TabItem[]) => {
  * @param tab - The array of TabItems to be reversed.
  * @returns A new array of TabItems in reverse order.
  */
-export const virtualTab = (tab: TabItem[]): TabItem[] =>
-  tab.map((item) => ({ ...item })).reverse();
+export const reverseTab = (arr: TabItem[]): TabItem[] =>
+  arr.map((item) => ({ ...item })).reverse();
 
 /**
  * Returns the total price of all items in a tab.
  * @param input - The array of TabItems to be totaled.
  * @returns The total price of all items in the tab.
  **/
-export const getTabTotal = (input: TabItem[]) => {
+export const sumTab = (input: TabItem[]) => {
   let total = 0;
   for (let i = 0; i < input.length; i++) {
     total += input[i].price;
   }
 
   return total;
-};
-
-type CloudFunctionName =
-  | "clearTab"
-  | "clearHistory"
-  | "toggleRole"
-  | "addItem"
-  | "deleteItem"
-  | "updateItem"
-  | "updateTokenData"
-  | "updateTopicsData";
-
-type CloudFunctionData<T extends CloudFunctionName> = T extends "clearTab"
-  ? ClearTab
-  : T extends "clearHistory"
-  ? ClearHistory
-  : T extends "toggleRole"
-  ? ToggleRole
-  : T extends "addItem"
-  ? AddItem
-  : T extends "deleteItem"
-  ? DeleteItem
-  : T extends "updateItem"
-  ? UpdateItem
-  : never;
-
-/**
- * Calls a cloud function with the given data.
- * @param functions The Firebase Functions instance.
- * @param target The name of the cloud function to call.
- * @param data The data to pass to the cloud function.
- */
-export const callCloudFunction = async <T extends CloudFunctionName>(
-  functions: Functions,
-  target: T,
-  data: CloudFunctionData<T>
-) => {
-  try {
-    const callable = httpsCallable(functions, target);
-    return callable(data);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
 };
 
 /**

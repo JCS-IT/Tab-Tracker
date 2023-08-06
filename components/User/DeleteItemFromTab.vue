@@ -64,12 +64,12 @@ const cancel = () => {
             Are you sure you want to delete {{ item.name }} from your tab?
           </p>
         </div>
-        <div class="modal-action">
+        <div class="grid grid-cols-2 gap-2">
           <button class="btn btn-error" @click="deleteItem" :disabled="loading">
             <Icon name="mdi:delete" />
             Delete
           </button>
-          <button class="btn" @click="cancel" :disabled="loading">
+          <button class="btn btn-success" @click="cancel" :disabled="loading">
             Cancel
           </button>
         </div>
