@@ -6,11 +6,7 @@ import {
   ToggleRole,
   UpdateItem,
 } from "@/types";
-import {
-  httpsCallable,
-  getFunctions,
-  connectFunctionsEmulator,
-} from "firebase/functions";
+import { httpsCallable, getFunctions } from "firebase/functions";
 
 type CloudFunctionName =
   | "clearTab"
@@ -46,7 +42,6 @@ export const callCloudFunction = async <T extends CloudFunctionName>(
   target: T,
   data: CloudFunctionData<T>
 ) => {
-  connectFunctionsEmulator(getFunctions(), "localhost", 5001);
   try {
     const functions = getFunctions(useFirebaseApp());
     const callable = httpsCallable(functions, target);
