@@ -1,6 +1,8 @@
 import type { VDataTable } from "vuetify/labs/VDataTable";
 import type { Timestamp } from "firebase/firestore";
 
+export * from "./functions";
+
 export type VDataTableHeaderProps = Extract<
   VDataTable["$props"]["headers"],
   { key: string }

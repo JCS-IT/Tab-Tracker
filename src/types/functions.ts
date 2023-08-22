@@ -11,7 +11,7 @@ export interface ClearHistory {
 
 export interface ToggleRole {
   email: string;
-  role: "admin" | "dev";
+  role: string;
 }
 
 // item functions
@@ -25,5 +25,6 @@ export interface DeleteItem {
 }
 
 export interface UpdateItem {
-  items: Item[];
+  before: Item;
+  after: Item;
 }

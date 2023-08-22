@@ -18,7 +18,6 @@ declare module 'vue' {
     NewItem: typeof import('./src/components/admin/Item/NewItem.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Settings: typeof import('./src/components/Settings.vue')['default']
     ToggleRole: typeof import('./src/components/admin/User/ToggleRole.vue')['default']
     UserProfile: typeof import('./src/components/UserProfile.vue')['default']
   }

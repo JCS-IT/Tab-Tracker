@@ -5,7 +5,7 @@ import {
   HttpsError,
   onCall,
 } from "firebase-functions/v2/https";
-import type { ClearHistory, ClearTab, ToggleRole } from "../../types";
+import type { ClearHistory, ClearTab, ToggleRole } from "../../src/types";
 import { getTabTotal } from "@/utils";
 import { TabItem } from "@/types";
 

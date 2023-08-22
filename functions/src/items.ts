@@ -1,7 +1,7 @@
 import { firestore } from "firebase-admin";
 import { FieldValue } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
-import type { AddItem, DeleteItem, UpdateItem } from "../../types";
+import type { AddItem, DeleteItem, UpdateItem } from "../../src/types";
 
 export const addItem = onCall<AddItem>(
   {
