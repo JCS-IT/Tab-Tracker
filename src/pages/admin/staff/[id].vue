@@ -5,10 +5,9 @@ import { useI18n } from "vue-i18n";
 import { VDataTableVirtual } from "vuetify/labs/VDataTable";
 
 // Composables
-const route = useRoute();
+const route = useRoute('User');
 
 definePage({
-  name: "User",
   path: "/admin/staff/:id",
   props: {
     id: {
@@ -19,7 +18,6 @@ definePage({
 });
 
 // Firebase
-// @ts-expect-error - the ID is there but TS doesn't know it
 const user = useDocument<User>(doc(useFirestore(), `users/${route.params.id}`));
 
 // composables
@@ -64,7 +62,7 @@ const checkTabLength = () => {
 </script>
 
 <template>
-  <VCard>
+  <VCard v-if="user">
     <VCard>
       <VCardTitle>
         <VRow>

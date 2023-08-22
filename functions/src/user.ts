@@ -5,7 +5,7 @@ import {
   HttpsError,
   onCall,
 } from "firebase-functions/v2/https";
-import type { ClearHistory, ClearTab, ToggleRole } from "../../src/types";
+import type { ClearHistory, ClearTab, ToggleRole } from "../../types";
 import { getTabTotal } from "@/utils";
 import { TabItem } from "@/types";
 
@@ -18,7 +18,7 @@ export const clearTab = onCall<ClearTab>(
     ) {
       throw new HttpsError(
         "permission-denied",
-        "You must be an admin to clear the tab",
+        "You must be an admin to clear the tab"
       );
     }
 
@@ -26,7 +26,7 @@ export const clearTab = onCall<ClearTab>(
       const user = await auth().getUserByEmail(event.data.email);
       const userRef = firestore().collection("users").doc(user.uid);
 
-      return await firestore().runTransaction(async (t) => {
+      await firestore().runTransaction(async (t) => {
         const currentTab: TabItem[] = await t.get(userRef).then((doc) => {
           return doc.data()?.tab;
         });
@@ -52,9 +52,8 @@ export const clearTab = onCall<ClearTab>(
         t.update(userRef, {
           tab: currentTab,
         });
-
-        return { message: "Tab cleared successfully" };
       });
+      return true;
     } catch (error) {
       const { code, message } = error as {
         code: FunctionsErrorCode;
@@ -62,7 +61,7 @@ export const clearTab = onCall<ClearTab>(
       };
       throw new HttpsError(code, message);
     }
-  },
+  }
 );
 
 export const clearHistory = onCall<ClearHistory>(
@@ -71,7 +70,7 @@ export const clearHistory = onCall<ClearHistory>(
     if (!event?.auth?.token.admin) {
       throw new HttpsError(
         "permission-denied",
-        "You must be an admin to clear the history",
+        "You must be an admin to clear the history"
       );
     }
 
@@ -87,7 +86,7 @@ export const clearHistory = onCall<ClearHistory>(
       };
       throw new HttpsError(code, message);
     }
-  },
+  }
 );
 
 export const toggleRole = onCall<ToggleRole>(
@@ -96,7 +95,7 @@ export const toggleRole = onCall<ToggleRole>(
     if (!event?.auth?.token.admin) {
       throw new HttpsError(
         "permission-denied",
-        "You must be an admin to toggle roles",
+        "You must be an admin to toggle roles"
       );
     }
 
@@ -130,5 +129,5 @@ export const toggleRole = onCall<ToggleRole>(
       };
       throw new HttpsError(code, message);
     }
-  },
+  }
 );

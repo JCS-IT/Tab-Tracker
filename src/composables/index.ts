@@ -1,4 +1,4 @@
-import type {
+import {
   AddItem,
   ClearHistory,
   ClearTab,
@@ -6,8 +6,7 @@ import type {
   ToggleRole,
   UpdateItem,
 } from "@/types";
-import { httpsCallable } from "firebase/functions";
-import { functions } from "../firebase";
+import { httpsCallable, getFunctions } from "firebase/functions";
 
 type CloudFunctionName =
   | "clearTab"
@@ -33,11 +32,18 @@ type CloudFunctionData<T extends CloudFunctionName> = T extends "clearTab"
   ? UpdateItem
   : never;
 
+/**
+ * Calls a cloud function with the given data.
+ * @param functions The Firebase Functions instance.
+ * @param target The name of the cloud function to call.
+ * @param data The data to pass to the cloud function.
+ */
 export const callCloudFunction = async <T extends CloudFunctionName>(
   target: T,
-  data: CloudFunctionData<T>,
+  data: CloudFunctionData<T>
 ) => {
   try {
+    const functions = getFunctions(useFirebaseApp());
     const callable = httpsCallable(functions, target);
     return callable(data);
   } catch (error) {

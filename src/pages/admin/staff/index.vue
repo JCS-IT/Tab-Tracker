@@ -5,33 +5,30 @@ import { mdiMagnify } from "@mdi/js";
 
 // composables
 definePage({
-  name: "Staff",
   path: "/admin/staff",
 });
 
-//data
+interface UserWithUid extends Omit<User["info"], "createdAt"> {
+  uid: string;
+}
 
+const index = useDocument<{ users: UserWithUid[] }>(
+  doc(useFirestore(), "admin/_index")
+);
+
+const router = useRouter();
+
+// Data
 const search = ref("");
 
-// firestore snapshots
-const db = useFirestore();
-const users = useCollection<User>(collection(db, "users"));
-const items = useDocument<Items>(doc(db, "admin/items"));
-
-// computed
+// Computed
 const isLoading = computed(() => {
-  if (users.pending.value || items.pending.value) {
-    return true;
-  } else {
-    return false;
-  }
+  return index.pending.value;
 });
 
 const filterUsers = computed(() => {
-  return users.data.value?.filter((user) => {
-    return user.info.displayName
-      .toLowerCase()
-      .includes(search.value.toLowerCase());
+  return index.value?.users.filter((user) => {
+    return user.displayName.toLowerCase().includes(search.value.toLowerCase());
   });
 });
 
@@ -48,7 +45,7 @@ const filterUsers = computed(() => {
     <h1>Fetching staff list...</h1>
     <VProgressLinear indeterminate rounded stream />
   </VOverlay>
-  <VContainer fluid v-if="users && items">
+  <VContainer fluid v-if="index">
     <VRow>
       <VCol>
         <VCard>
@@ -66,13 +63,12 @@ const filterUsers = computed(() => {
           <VVirtualScroll :items="filterUsers" class="pa-4">
             <template #default="{ item }">
               <VListItem
-                :title="item.info.displayName"
-                :subtitle="'Tab ' + $n(getTabTotal(item.tab), 'currency')"
-                @click="() => $router.push(`/admin/staff/${item.id}`)"
+                :title="item.displayName"
+                @click="() => $router.push(`/admin/staff/${item.uid}`)"
               >
                 <template #prepend>
                   <VAvatar>
-                    <VImg :src="item?.info.photoURL" />
+                    <VImg :src="item?.photoURL" />
                   </VAvatar>
                 </template>
               </VListItem>
