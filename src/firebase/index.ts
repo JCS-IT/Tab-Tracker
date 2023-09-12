@@ -1,7 +1,6 @@
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getFunctions } from "firebase/functions";
-import { getMessaging } from "firebase/messaging";
 import { getPerformance } from "firebase/performance";
 
 const firebaseConfig = {
