@@ -43,7 +43,7 @@
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.2",
     "unplugin-vue-router": "^0.6.4",
-    "vite": "^4.5.2",
+    "vite": "^4.5.3",
     "vite-plugin-mkcert": "^1.16.0",
     "vite-plugin-pwa": "^0.16.4",
     "vite-plugin-vuetify": "^1.0.2",
